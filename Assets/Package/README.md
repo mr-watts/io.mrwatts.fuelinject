@@ -38,4 +38,6 @@ Add Assembly reference to `mrwatts.fuelinject.runtime` to your application's ass
 
 # Use
 
-TODO
+TODO: Document how to create/structure scene.
+TODO: Document `IInjector<T>` services.
+TODO: Document how to use when writing tests.

@@ -5,7 +5,7 @@ using System.Reflection;
 
 namespace MrWatts.Internal.FuelInject
 {
-    public sealed class ObjectDependencyInjector
+    public sealed class ObjectDependencyInjector : IInjector<object>
     {
         public void Inject(object @object, IContainer container)
         {

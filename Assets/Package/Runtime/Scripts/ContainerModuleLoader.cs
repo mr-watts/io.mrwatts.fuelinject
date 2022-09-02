@@ -3,6 +3,7 @@ using Autofac;
 using Autofac.Core;
 using Autofac.Features.ResolveAnything;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace MrWatts.Internal.FuelInject
 {
@@ -37,18 +38,32 @@ namespace MrWatts.Internal.FuelInject
                 }
             }
 
-            builder.RegisterComposite<CompositeInitializable, IInitializable>();
-            builder.RegisterComposite<CompositeAsyncInitializable, IAsyncInitializable>();
-            builder.RegisterComposite<CompositeTickable, ITickable>();
-            builder.RegisterComposite<CompositeFixedTickable, IFixedTickable>();
-            builder.RegisterComposite<CompositeLateTickable, ILateTickable>();
-            builder.RegisterComposite<CompositeDisposable, IDisposable>();
+            builder.RegisterComposite<CompositeInitializable, IInitializable>().SingleInstance();
+            builder.RegisterComposite<CompositeAsyncInitializable, IAsyncInitializable>().SingleInstance();
+            builder.RegisterComposite<CompositeTickable, ITickable>().SingleInstance();
+            builder.RegisterComposite<CompositeFixedTickable, IFixedTickable>().SingleInstance();
+            builder.RegisterComposite<CompositeLateTickable, ILateTickable>().SingleInstance();
+            builder.RegisterComposite<CompositeDisposable, IDisposable>().SingleInstance();
             // builder.RegisterComposite<CompositeAsyncDisposable, IAsyncDisposable>();
+
+            builder.RegisterType<ObjectDependencyInjector>()
+                .AsSelf()
+                .As<IInjector<object>>()
+                .SingleInstance();
+
+            builder.RegisterType<UnityGameObjectDependencyInjector>()
+                .AsSelf()
+                .As<IInjector<GameObject>>()
+                .SingleInstance();
+
+            builder.RegisterType<UnitySceneDependencyInjector>()
+                .AsSelf()
+                .As<IInjector<Scene>>()
+                .SingleInstance();
 
             container = builder.Build();
 
-            InjectSceneDependencies(container);
-
+            container.Resolve<IInjector<Scene>>().Inject(SceneManager.GetActiveScene(), container);
             container.Resolve<IInitializable>().Initialize();
 
             await container.Resolve<IAsyncInitializable>().InitializeAsync();
@@ -74,14 +89,6 @@ namespace MrWatts.Internal.FuelInject
             container?.Resolve<IDisposable>().Dispose();
 
             // await container.Resolve<IAsyncDisposable>().DisposeAsync();
-        }
-
-        private void InjectSceneDependencies(IContainer container)
-        {
-            // Create a temporary container so we don't pollute the application's container with our dependencies.
-            ContainerBuilder temporaryContainerBuilder = new();
-            temporaryContainerBuilder.RegisterSource(new AnyConcreteTypeNotAlreadyRegisteredSource());
-            temporaryContainerBuilder.Build().Resolve<UnitySceneDependencyInjector>().Inject(container);
         }
     }
 }

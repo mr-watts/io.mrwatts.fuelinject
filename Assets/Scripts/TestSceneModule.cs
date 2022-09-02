@@ -10,6 +10,9 @@ namespace MrWatts.Internal.FuelInject.TestProject
 
         public void Configure(ContainerBuilder builder)
         {
+            // TODO: Add proper tests.
+            UnityEngine.Debug.Log($"Test module configuring container");
+
             builder.RegisterInstance<FooMonoBehaviour>(fooMonoBehaviour);
 
             builder.RegisterType<Foo>().SingleInstance();

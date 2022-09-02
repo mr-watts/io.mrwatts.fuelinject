@@ -7,6 +7,13 @@ namespace MrWatts.Internal.FuelInject.TestProject
         [Inject]
         private Bar Bar { get; set; } = default!;
 
-        public Bar BarGetter { get => Bar; }
+        [Inject]
+        private IInjector<GameObject> Injector { get; set; } = default!;
+
+        public void Start()
+        {
+            Debug.Log($"Bar is {Bar}");
+            Debug.Log($"Injected injector is {Injector}");
+        }
     }
 }

@@ -30,6 +30,8 @@ The version number should be the latest version of the package (unless you want 
 
 **This package depends on external NuGet packages.** To use it, you must also install the [Autofac NuGet package](https://www.nuget.org/packages/Autofac) at **version ^6.4**.
 
+It is recommended to use a tool such as [NuGetForUnity](https://github.com/GlitchEnzo/NuGetForUnity) to install this package and automatically resolve its dependencies.
+
 ## Assembly References
 
 Add Assembly reference to `mrwatts.fuelinject.runtime` to your application's assembly definitions (e.g. `Scripts.asmdef`) you want to use this package in. It is not auto-referenced.

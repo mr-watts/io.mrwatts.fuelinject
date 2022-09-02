@@ -1,7 +1,7 @@
 {
   "dependencies": {
     "com.unity.ide.vscode": "https://github.com/wackoisgod/com.unity.ide.vscode.git?path=Packages/com.unity.ide.vscode#67c02d0abf348966163dac835afdfcd630d113a6",
-    "io.mrwatts.codeanalysisrulesets": "2.2.6"
+    "io.mrwatts.codeanalysisrulesets": "2.2.7"
   },
   "scopedRegistries": [
     {

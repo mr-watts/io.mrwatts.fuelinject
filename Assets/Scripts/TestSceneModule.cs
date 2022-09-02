@@ -14,7 +14,6 @@ namespace MrWatts.Internal.FuelInject.TestProject
 
             builder.RegisterType<Foo>().SingleInstance();
             builder.RegisterType<Bar>().SingleInstance();
-
         }
     }
 }

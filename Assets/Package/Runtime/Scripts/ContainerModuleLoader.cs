@@ -1,7 +1,6 @@
 using System;
 using Autofac;
 using Autofac.Core;
-using Autofac.Features.ResolveAnything;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 

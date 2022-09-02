@@ -76,7 +76,7 @@ Assets/Packages.meta
 UserSettings
 
 # Include this since we use it to configure project overrides.
-!mrwatts.fuelinject.runtime.csproj.user
+!*.csproj.user
 
 # Ignore Roslyn analyzers, as they are installed through install-roslyn-analyzers.sh.
 Assets/RoslynAnalyzers

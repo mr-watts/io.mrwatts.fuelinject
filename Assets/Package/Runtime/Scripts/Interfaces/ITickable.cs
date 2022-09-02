@@ -1,4 +1,4 @@
-namespace MrWatts.Internal.DependencyInjection
+namespace MrWatts.Internal.FuelInject
 {
     public interface ITickable
     {

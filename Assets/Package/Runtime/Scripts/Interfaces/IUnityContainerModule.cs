@@ -1,6 +1,6 @@
 using Autofac;
 
-namespace MrWatts.Internal.DependencyInjection
+namespace MrWatts.Internal.FuelInject
 {
     /// <summary>
     /// Exposes what Autofac's Module.Load does, but allows implementing an interface so you can still extend from

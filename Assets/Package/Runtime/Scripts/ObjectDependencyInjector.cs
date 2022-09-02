@@ -3,7 +3,7 @@ using Autofac.Core;
 using System.Linq;
 using System.Reflection;
 
-namespace MrWatts.Internal.DependencyInjection
+namespace MrWatts.Internal.FuelInject
 {
     public sealed class ObjectDependencyInjector
     {

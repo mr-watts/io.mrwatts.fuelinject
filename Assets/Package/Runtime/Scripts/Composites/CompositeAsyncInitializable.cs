@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
 using System.Collections.Generic;
 
-namespace MrWatts.Internal.DependencyInjection
+namespace MrWatts.Internal.FuelInject
 {
     public sealed class CompositeAsyncInitializable : IAsyncInitializable
     {

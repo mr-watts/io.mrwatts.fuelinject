@@ -4,7 +4,7 @@ using Autofac.Core;
 using Autofac.Features.ResolveAnything;
 using UnityEngine;
 
-namespace MrWatts.Internal.DependencyInjection
+namespace MrWatts.Internal.FuelInject
 {
     /// <summary>
     /// <para>Loads configured container modules, builds the container, and injects the necessary dependencies into

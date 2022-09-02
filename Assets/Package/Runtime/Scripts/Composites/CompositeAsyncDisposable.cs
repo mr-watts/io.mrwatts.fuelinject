@@ -2,7 +2,7 @@
 // using System.Threading.Tasks;
 // using System.Collections.Generic;
 
-namespace MrWatts.Internal.DependencyInjection
+namespace MrWatts.Internal.FuelInject
 {
     /*
         NOTE: Currently not conveniently possible to implement in Unity 2021 because IAsyncDisposable is part of .NET

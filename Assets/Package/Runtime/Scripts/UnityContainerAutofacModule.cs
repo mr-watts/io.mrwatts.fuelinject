@@ -1,6 +1,6 @@
 using Autofac;
 
-namespace MrWatts.Internal.DependencyInjection
+namespace MrWatts.Internal.FuelInject
 {
     /// <summary>
     /// Thin wrapper around Autofac's module to not force module developers to inherit from Module, as it prevents

@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
 
-namespace MrWatts.Internal.DependencyInjection
+namespace MrWatts.Internal.FuelInject
 {
     public interface IAsyncInitializable
     {

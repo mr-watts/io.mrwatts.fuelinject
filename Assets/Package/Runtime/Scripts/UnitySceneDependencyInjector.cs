@@ -2,7 +2,7 @@ using Autofac;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace MrWatts.Internal.DependencyInjection
+namespace MrWatts.Internal.FuelInject
 {
     public sealed class UnitySceneDependencyInjector
     {

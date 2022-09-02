@@ -1,7 +1,7 @@
 using Autofac;
 using UnityEngine;
 
-namespace MrWatts.Internal.DependencyInjection
+namespace MrWatts.Internal.FuelInject
 {
     public sealed class UnityGameObjectDependencyInjector
     {

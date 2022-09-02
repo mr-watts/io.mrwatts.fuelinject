@@ -75,8 +75,7 @@ Assets/Packages.meta
 # Exclude user-specific Unity settings.
 UserSettings
 
-# Include this since we use it to configure our static code analysis tools
-!Scripts.csproj.user
-!Tests.csproj.user
+# Include this since we use it to configure project overrides.
+!mrwatts.fuelinject.runtime.csproj.user
 
 # === Mr. Watts configuration END ===

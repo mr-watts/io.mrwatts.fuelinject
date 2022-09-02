@@ -8,7 +8,7 @@
         or add more rules.
     -->
 
-    <Include Path="./../../../Library/PackageCache/io.mrwatts.codeanalysisrulesets@2.2.7/CSharp/Ruleset.xml" Action="Default" />
+    <Include Path="./../../../Library/PackageCache/io.mrwatts.codeanalysisrulesets@2.2.8/CSharp/Ruleset.xml" Action="Default" />
 
     <!-- Example: To disable RCS1013, enable this code. -->
     <!-- <Rules AnalyzerId="Roslynator.CSharp.Analyzers" RuleNamespace="Roslynator.CSharp.Analyzers">

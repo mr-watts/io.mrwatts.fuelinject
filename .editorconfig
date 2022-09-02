@@ -1,0 +1,34 @@
+root = true
+
+[*]
+end_of_line = lf
+indent_size = 4
+indent_style = space
+charset=utf-8
+insert_final_newline = false
+trim_trailing_whitespace = true
+
+[*.asset]
+
+# Don't trim trailing whitespace on asset files since Unity automatically inserts trailing spaces on some lines, and
+# it causes constant back and forths in Git between manually editing them and Unity automatically updating them.
+trim_trailing_whitespace = false
+
+[*.cs]
+
+# Settings for Roslynator rules.
+roslynator_infinite_loop_style = while
+roslynator_doc_comment_summary_style = multi_line
+roslynator_null_check_style = pattern_matching
+roslynator_equals_token_new_line = after
+roslynator_new_line_before_while_in_do_statement = false
+roslynator_conditional_operator_new_line = after
+roslynator_binary_operator_new_line = after
+roslynator_arrow_token_new_line = after
+roslynator_empty_string_style = field
+roslynator_conditional_operator_condition_parentheses_style = omit
+roslynator_suppress_unity_script_methods = true
+
+# Settings for Meziantou rules.
+MA0051.maximum_lines_per_method = 100
+MA0051.maximum_statements_per_method = 50

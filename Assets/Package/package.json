@@ -1,0 +1,23 @@
+{
+    "name": "io.mrwatts.fuelinject",
+    "version": "0.1.0",
+    "displayName": "Fuel Inject",
+    "description": "Adds dependency injection support to Unity (currently through Autofac).",
+    "unity": "2021.3",
+    "keywords": [
+        "Dependency",
+        "Injection",
+        "Service",
+        "Container",
+        "IoC",
+        "Inversion Of Control"
+    ],
+    "author": {
+        "name": "Mr. Watts",
+        "email": "hello@mrwatts.io",
+        "url": "https://www.mrwatts.io"
+    },
+    "publishConfig": {
+        "registry": "https://gitlab.com/api/v4/projects/27157125/packages/npm/"
+    }
+}

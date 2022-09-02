@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RuleSet Name="Mr. Watts Project Rules" Description=" " ToolsVersion="10.0">
+    <!--
+        This ruleset provides rules to use that apply to the code analyzers used for files related to the assembly
+        definition in this subfolder (and assemblies referencing it).
+
+        By default, it simply extends the global Mr. Watts ruleset, but you can override specific rules from it below,
+        or add more rules.
+    -->
+
+    <Include Path="./../../../Library/PackageCache/io.mrwatts.codeanalysisrulesets@2.2.6/CSharp/Ruleset.xml" Action="Default" />
+
+    <!-- Example: To disable RCS1013, enable this code. -->
+    <!-- <Rules AnalyzerId="Roslynator.CSharp.Analyzers" RuleNamespace="Roslynator.CSharp.Analyzers">
+        <Rule Id="RCS1013" Action="None" />
+    </Rules> -->
+</RuleSet>

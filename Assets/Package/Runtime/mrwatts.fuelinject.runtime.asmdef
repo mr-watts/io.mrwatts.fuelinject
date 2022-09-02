@@ -1,0 +1,16 @@
+{
+    "name": "mrwatts.fuelinject.runtime",
+    "rootNamespace": "",
+    "references": [
+        "mrwatts.codeanalysisrulesets.runtime"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": false,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

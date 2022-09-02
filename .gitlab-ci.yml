@@ -1,0 +1,30 @@
+variables:
+    UNITY_PACKAGE_PATH: "Assets/Package/"
+    NPM_REGISTRY_PATH: "//gitlab.com/api/v4/projects/27157125/packages/npm/"
+
+build-snapshot:
+    stage: build
+    image: node:current-alpine
+    needs: []
+    script:
+        # Ensure the tarball name and package version include the commit name.
+        - apk add git
+        - >
+            export SNAPSHOT_VERSION=`git describe --tags`;
+            sed -i -e "s/\"version\": \"[0-9]*.[0-9]*.[0-9]*\",/\"version\": \"${SNAPSHOT_VERSION}\",/" "$UNITY_PACKAGE_PATH/package.json"
+        - mkdir build
+        - npm pack "${UNITY_PACKAGE_PATH}" --pack-destination=build/
+    artifacts:
+        paths:
+            - build/
+        expire_in: 30 days
+
+registry-publication:
+    stage: deploy
+    image: node:current-alpine
+    needs: []
+    script:
+        - echo "${NPM_REGISTRY_PATH}:_authToken=${CI_JOB_TOKEN}" > .npmrc
+        - npm publish "${UNITY_PACKAGE_PATH}"
+    only:
+        - tags

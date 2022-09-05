@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using Autofac;
 using Autofac.Core;
 using UnityEngine;
@@ -9,12 +11,19 @@ namespace MrWatts.Internal.FuelInject
     /// <summary>
     /// <para>Loads configured container modules, builds the container, and injects the necessary dependencies into
     /// objects in the scene.</para>
+    /// <para>Dependencies will only be injected into objects that are in the scene this loader('s game object) is in.</para>
     /// <para>MonoBehaviours requiring dependencies preferably shouldn't use them before Start is called, as the only
     /// order that is guaranteed is that Awake (used by this class) is called before Start. If you want to talk to
     /// dependencies in Awake, you must guarantee the Scipt Execution Order through your project settings.</para>
     /// </summary>
     public sealed class ContainerModuleLoader : MonoBehaviour
     {
+        private const int DEFAULT_MODULE_PRIORITY = 0;
+
+        [SerializeField]
+        [Tooltip("Whether to automatically scan root game objects in (all) scene(s) for modules and add them automatically. These then don't need to be added to start-up modules. This is especially useful if you use additive scenes, wish to dynamically load the scene with a loader, automatically letting modules from all scenes be inserted.")]
+        private bool automaticallyAddRootGameObjectModules = true;
+
         [SerializeField]
         [Tooltip("Modules (implementing IUnityContainerModule) to load when the scene starts up. This is usually a module of your scene itself. If you consume other modules as well, such as from libraries, you usually want to register those using RegisterModule in the scene module itself instead of adding them here, so you can apply additional configuration if necessary.")]
         private Component[] startupModules = default!;
@@ -23,17 +32,7 @@ namespace MrWatts.Internal.FuelInject
         {
             ContainerBuilder builder = new();
 
-            foreach (Component startupModule in startupModules)
-            {
-                if (startupModule is IUnityContainerModule unityModule)
-                {
-                    builder.RegisterModule(new UnityContainerAutofacModule(unityModule));
-                }
-                else if (startupModule is IModule module)
-                {
-                    builder.RegisterModule(module);
-                }
-            }
+            LoadModules(builder);
 
             builder.RegisterComposite<CompositeInitializable, IInitializable>().SingleInstance();
             builder.RegisterComposite<CompositeAsyncInitializable, IAsyncInitializable>().SingleInstance();
@@ -62,7 +61,74 @@ namespace MrWatts.Internal.FuelInject
 
             gameObject.AddComponent<UnityKernel>();
 
-            container.Resolve<IInjector<Scene>>().Inject(SceneManager.GetActiveScene(), container);
+            container.Resolve<IInjector<Scene>>().Inject(gameObject.scene, container);
+        }
+
+        private void LoadModules(ContainerBuilder builder)
+        {
+            List<(int Priority, IModule Module)> modules = RetrieveStartupModules();
+
+            if (automaticallyAddRootGameObjectModules)
+            {
+                modules.AddRange(RetrieveModulesForAutoload());
+            }
+
+            foreach (IModule module in modules.OrderBy(x => x.Priority).Select(x => x.Module))
+            {
+                builder.RegisterModule(module);
+            }
+        }
+
+        private List<(int Priority, IModule Module)> RetrieveStartupModules()
+        {
+            return startupModules
+                .Select(TryRetrieveModuleFromComponent)
+                .Where(x => x.Module is not null)
+                .Cast<(int Priority, IModule Module)>()
+                .ToList();
+        }
+
+        private List<(int Priority, IModule Module)> RetrieveModulesForAutoload()
+        {
+            List<(int Priority, IModule Module)> modules = new();
+
+            for (int i = 0; i < SceneManager.sceneCount; ++i)
+            {
+                modules.AddRange(RetrieveRootGameObjectModulesFromScene(SceneManager.GetSceneAt(i)));
+            }
+
+            return modules;
+        }
+
+        private List<(int Priority, IModule Module)> RetrieveModulesFromGameObject(GameObject gameObject)
+        {
+            return gameObject
+                .GetComponents<Component>()
+                .Select(TryRetrieveModuleFromComponent)
+                .Where(x => x.Module is not null)
+                .Cast<(int Priority, IModule Module)>()
+                .ToList();
+        }
+
+        private (int Priority, IModule? Module) TryRetrieveModuleFromComponent(Component component)
+        {
+            IModule? module = null;
+
+            if (component is IUnityContainerModule unityModule)
+            {
+                module = new UnityContainerAutofacModule(unityModule);
+            }
+            else if (component is IModule autofacModule)
+            {
+                module = autofacModule;
+            }
+
+            return (component is IPrioritizable prioritizable ? prioritizable.Priority : DEFAULT_MODULE_PRIORITY, module);
+        }
+
+        private List<(int Priority, IModule Module)> RetrieveRootGameObjectModulesFromScene(Scene scene)
+        {
+            return scene.GetRootGameObjects().SelectMany(RetrieveModulesFromGameObject).ToList();
         }
     }
 }

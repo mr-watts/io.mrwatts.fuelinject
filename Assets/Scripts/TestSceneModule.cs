@@ -11,13 +11,17 @@ namespace MrWatts.Internal.FuelInject.TestProject
         [SerializeField]
         private InitializableMonoBehaviour initializableMonoBehaviour = default!;
 
+        [SerializeField]
+        private AsyncInitializableMonoBehaviour asyncInitializableMonoBehaviour = default!;
+
         public void Configure(ContainerBuilder builder)
         {
             builder.RegisterInstance(monoBehaviourWithBarDependency);
             builder.RegisterInstance(initializableMonoBehaviour).AsImplementedInterfaces();
+            builder.RegisterInstance(asyncInitializableMonoBehaviour).AsImplementedInterfaces().SingleInstance();
 
             builder.RegisterType<Foo>().SingleInstance();
-            builder.RegisterType<Bar>().SingleInstance();
+            builder.RegisterType<Bar>().AsSelf().As<IBar>().SingleInstance();
         }
     }
 }

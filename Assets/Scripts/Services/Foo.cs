@@ -3,5 +3,7 @@ namespace MrWatts.Internal.FuelInject.TestProject
     public sealed class Foo
     {
         private Bar Bar { get; set; }
+
+        public Bar BarGetter { get => Bar; }
     }
 }

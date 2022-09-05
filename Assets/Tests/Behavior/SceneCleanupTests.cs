@@ -28,6 +28,8 @@ namespace MrWatts.Internal.FuelInject.TestProject.Tests.Behaviour
         [Order(2)]
         public IEnumerator SceneTestProperlyCleansUpGameObjects()
         {
+            yield return null;
+
             var fooMonoBehaviour = GameObjectFinder.Find<MonoBehaviourWithBarDependency>();
 
             Assert.IsNull(
@@ -35,8 +37,6 @@ namespace MrWatts.Internal.FuelInject.TestProject.Tests.Behaviour
                 "Foo exists in a test that never loaded a scene. If you are running all tests in succession " +
                 "and this fails, this means another scene test is leaking its scene objects and not clearing them properly."
             );
-
-            yield return null;
         }
 
         /*
@@ -60,6 +60,8 @@ namespace MrWatts.Internal.FuelInject.TestProject.Tests.Behaviour
         // [Order(4)]
         // public IEnumerator SceneTestProperlyCleansUpGameObjectsWhenExceptionOccurs()
         // {
+        //     yield return null;
+
         //     var fooMonoBehaviour = GameObjectFinder.Find<MonoBehaviourWithBarDependency>();
 
         //     Assert.IsNull(
@@ -68,13 +70,11 @@ namespace MrWatts.Internal.FuelInject.TestProject.Tests.Behaviour
         //         "and this fails, this means another scene test is leaking its scene objects and not clearing them " +
         //         "properly when it fails with an exception."
         //     );
-
-        //     yield return null;
         // }
 
         private IEnumerator LoadTestScene()
         {
-            yield return SceneLoader.Load("TestScene");
+            yield return SetupScene("TestScene");
         }
     }
 }

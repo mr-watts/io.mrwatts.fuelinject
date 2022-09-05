@@ -9,11 +9,11 @@ namespace MrWatts.Internal.FuelInject.TestProject.Tests.Behaviour
     [TestFixture]
     internal sealed class KernelTests : SceneTestGroup
     {
-        protected override string? SceneName { get; } = "TestScene";
-
         [UnityTest]
         public IEnumerator InitializableServicesGetExecuted()
         {
+            yield return SetupScene("TestScene");
+
             var service = GameObjectFinder.Get<InitializableMonoBehaviour>();
 
             Assert.IsTrue(service.IsInitialized);

@@ -18,7 +18,7 @@ namespace MrWatts.Internal.FuelInject.TestProject.Tests.Behaviour
         {
             var service = GameObjectFinder.Get<MonoBehaviourWithBarDependency>();
 
-            Assert.NotNull(service!.BarGetter);
+            Assert.NotNull(service.BarGetter);
             Assert.IsInstanceOf(typeof(Bar), service.BarGetter);
 
             yield return null;

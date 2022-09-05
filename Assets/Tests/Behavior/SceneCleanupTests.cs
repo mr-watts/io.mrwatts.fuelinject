@@ -7,14 +7,14 @@ using UnityEngine.TestTools;
 namespace MrWatts.Internal.FuelInject.TestProject.Tests.Behaviour
 {
     /// <summary>
-    /// Contains tests that verify the scene is cleaned up properly after running a test.
-    ///
-    /// The prefixes are necessary to force Unity to run them in the right order.
+    /// <para>Contains tests that verify the scene is cleaned up properly after running a test.</para>
+    /// <para>The prefixes are necessary to force Unity to run them in the right order.</para>
     /// </summary>
     [TestFixture]
     internal sealed class SceneCleanupTests : SceneTestGroup
     {
-        [UnityTest, Order(1)]
+        [UnityTest]
+        [Order(1)]
         public IEnumerator SceneTestProperlyCleansUpGameObjectsPreparation()
         {
             yield return LoadTestScene();
@@ -24,7 +24,8 @@ namespace MrWatts.Internal.FuelInject.TestProject.Tests.Behaviour
             Assert.NotNull(service!.BarGetter);
         }
 
-        [UnityTest, Order(2)]
+        [UnityTest]
+        [Order(2)]
         public IEnumerator SceneTestProperlyCleansUpGameObjects()
         {
             var fooMonoBehaviour = GameObjectFinder.Find<MonoBehaviourWithBarDependency>();
@@ -42,7 +43,8 @@ namespace MrWatts.Internal.FuelInject.TestProject.Tests.Behaviour
             Can't cause a test to fail on purpose as ExceptedException no longer exists in NUnit, and it can't be
             implemented ourselves since it requires implementing IEnumerableTestMethodCommand, which is internal.
         */
-        // [UnityTest, Order(3)]
+        // [UnityTest]
+        // [Order(3)]
         // public IEnumerator SceneTestProperlyCleansUpGameObjectsWhenExceptionOccursPreparation()
         // {
         //     yield return LoadTestScene();
@@ -54,7 +56,8 @@ namespace MrWatts.Internal.FuelInject.TestProject.Tests.Behaviour
         //     throw new Exception("Oh no, the test failed");
         // }
 
-        // [UnityTest, Order(4)]
+        // [UnityTest]
+        // [Order(4)]
         // public IEnumerator SceneTestProperlyCleansUpGameObjectsWhenExceptionOccurs()
         // {
         //     var fooMonoBehaviour = GameObjectFinder.Find<MonoBehaviourWithBarDependency>();

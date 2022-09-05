@@ -1,5 +1,4 @@
 using Autofac;
-using UnityEngine;
 
 namespace MrWatts.Internal.FuelInject.TestProject
 {
@@ -7,7 +6,6 @@ namespace MrWatts.Internal.FuelInject.TestProject
     {
         public void Configure(ContainerBuilder builder)
         {
-            Debug.Log("Non-MonoBehaviour test module configuring container");
         }
     }
 }

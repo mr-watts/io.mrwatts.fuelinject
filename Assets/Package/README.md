@@ -179,6 +179,8 @@ You can also look at [the tests in this repository](https://gitlab.com/mr-watts/
 
 **Enable `automaticallyAddRootGameObjectModules` for your `ContainerModuleLoader`** to allow the test utilities to override and inject additional bindings without requiring changes in your application code.
 
+Also, don't forget to add the assembly `mrwatts.fuelinject.testing` to your (test) assembly references to get access to the test utilities.
+
 ## Basic Scene Test
 
 A basic scene test that loads a scene and verifies that the window exists looks like this:

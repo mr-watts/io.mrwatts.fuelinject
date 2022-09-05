@@ -8,9 +8,13 @@ namespace MrWatts.Internal.FuelInject.TestProject
         [SerializeField]
         private MonoBehaviourWithBarDependency monoBehaviourWithBarDependency = default!;
 
+        [SerializeField]
+        private InitializableMonoBehaviour initializableMonoBehaviour = default!;
+
         public void Configure(ContainerBuilder builder)
         {
             builder.RegisterInstance(monoBehaviourWithBarDependency);
+            builder.RegisterInstance(initializableMonoBehaviour).AsImplementedInterfaces();
 
             builder.RegisterType<Foo>().SingleInstance();
             builder.RegisterType<Bar>().SingleInstance();

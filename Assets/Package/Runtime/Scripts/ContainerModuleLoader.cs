@@ -19,9 +19,7 @@ namespace MrWatts.Internal.FuelInject
         [Tooltip("Modules (implementing IUnityContainerModule) to load when the scene starts up. This is usually a module of your scene itself. If you consume other modules as well, such as from libraries, you usually want to register those using RegisterModule in the scene module itself instead of adding them here, so you can apply additional configuration if necessary.")]
         private Component[] startupModules = default!;
 
-        private IContainer? container;
-
-        private async void Awake()
+        private void Awake()
         {
             ContainerBuilder builder = new();
 
@@ -60,34 +58,11 @@ namespace MrWatts.Internal.FuelInject
                 .As<IInjector<Scene>>()
                 .SingleInstance();
 
-            container = builder.Build();
+            IContainer container = builder.Build();
+
+            gameObject.AddComponent<UnityKernel>();
 
             container.Resolve<IInjector<Scene>>().Inject(SceneManager.GetActiveScene(), container);
-            container.Resolve<IInitializable>().Initialize();
-
-            await container.Resolve<IAsyncInitializable>().InitializeAsync();
-        }
-
-        private void Update()
-        {
-            container?.Resolve<ITickable>().Tick();
-        }
-
-        private void FixedUpdate()
-        {
-            container?.Resolve<IFixedTickable>().FixedTick();
-        }
-
-        private void LateUpdate()
-        {
-            container?.Resolve<ILateTickable>().LateTick();
-        }
-
-        private /*async*/ void OnDestroy()
-        {
-            container?.Resolve<IDisposable>().Dispose();
-
-            // await container.Resolve<IAsyncDisposable>().DisposeAsync();
         }
     }
 }

@@ -43,3 +43,4 @@ To learn more about how Autofac itself works, see the [Autofac documentation](ht
 TODO: Document how to create/structure scene.
 TODO: Document `IInjector<T>` services.
 TODO: Document how to use when writing tests.
+TODO: Document how to use SceneTestGroup.

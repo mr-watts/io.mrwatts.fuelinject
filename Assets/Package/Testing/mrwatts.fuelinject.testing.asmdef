@@ -1,0 +1,21 @@
+{
+    "name": "mrwatts.fuelinject.testing",
+    "rootNamespace": "",
+    "references": [
+        "mrwatts.fuelinject.runtime",
+        "mrwatts.codeanalysisrulesets.runtime",
+        "UnityEngine.TestRunner"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [
+        "Autofac.dll",
+        "Microsoft.Bcl.AsyncInterfaces.dll"
+    ],
+    "autoReferenced": false,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

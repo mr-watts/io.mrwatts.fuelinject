@@ -1,5 +1,12 @@
 {
   "dependencies": {
+    "com.unity.ext.nunit": {
+      "version": "2.0.2",
+      "depth": 1,
+      "source": "registry",
+      "dependencies": {},
+      "url": "https://packages.unity.com"
+    },
     "com.unity.ide.vscode": {
       "version": "https://github.com/wackoisgod/com.unity.ide.vscode.git?path=Packages/com.unity.ide.vscode#67c02d0abf348966163dac835afdfcd630d113a6",
       "depth": 0,
@@ -7,12 +14,35 @@
       "dependencies": {},
       "hash": "67c02d0abf348966163dac835afdfcd630d113a6"
     },
+    "com.unity.test-framework": {
+      "version": "2.0.1-exp.1",
+      "depth": 0,
+      "source": "registry",
+      "dependencies": {
+        "com.unity.ext.nunit": "2.0.2",
+        "com.unity.modules.imgui": "1.0.0",
+        "com.unity.modules.jsonserialize": "1.0.0"
+      },
+      "url": "https://packages.unity.com"
+    },
     "io.mrwatts.codeanalysisrulesets": {
       "version": "2.2.8",
       "depth": 0,
       "source": "registry",
       "dependencies": {},
       "url": "https://gitlab.com/api/v4/projects/27157125/packages/npm"
+    },
+    "com.unity.modules.imgui": {
+      "version": "1.0.0",
+      "depth": 1,
+      "source": "builtin",
+      "dependencies": {}
+    },
+    "com.unity.modules.jsonserialize": {
+      "version": "1.0.0",
+      "depth": 1,
+      "source": "builtin",
+      "dependencies": {}
     }
   }
 }

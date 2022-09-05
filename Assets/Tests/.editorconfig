@@ -1,0 +1,3 @@
+# Allow use of var in tests because it makes mocking easier and this is not code actually used in production.
+[*.cs]
+dotnet_diagnostic.RCS1008.severity = none

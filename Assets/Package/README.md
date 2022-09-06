@@ -47,9 +47,6 @@ Add Assembly reference to `mrwatts.fuelinject.runtime` to your application's ass
 Create a script containing the code for your application module. This is where you will configure your bindings, Autofac submodules, and attach existing scene objects to the container so they can be injected into other services:
 
 ```csharp
-using Autofac;
-using UnityEngine;
-
 namespace Application
 {
     public sealed class YourApplicationModule : MonoBehaviour, IUnityContainerModule
@@ -94,9 +91,7 @@ Explicitly add your module from step 1 to the list of startup modules. All modul
 
 After that, you can use Autofac as you would otherwise. `MonoBehaviour`s cannot have custom constructors, so they must resort to using injection by property, for example:
 
-```
-using UnityEngine;
-
+```cs
 namespace Application
 {
     public sealed class SomeMonoBehaviourDependency : MonoBehaviour
@@ -186,13 +181,6 @@ Also, don't forget to add the assembly `mrwatts.fuelinject.testing` to your (tes
 A basic scene test that loads a scene and verifies that the window exists looks like this:
 
 ```cs
-using System.Collections;
-using MrWatts.Internal.FuelInject.Testing;
-using MrWatts.Internal.FuelInject.Testing.Utility;
-using NUnit.Framework;
-using UnityEngine;
-using UnityEngine.TestTools;
-
 namespace Application
 {
     [TestFixture]
@@ -216,13 +204,6 @@ namespace Application
 Suppose `FooWindow` has an `IBar` dependency injected that it uses to perform some task, and you want to override `IBar` with something else (such as a mock from [FakeItEasy](https://autofac.readthedocs.io)), then you can override the binding to do so:
 
 ```cs
-using System.Collections;
-using Autofac;
-using MrWatts.Internal.FuelInject.Testing;
-using MrWatts.Internal.FuelInject.Testing.Utility;
-using NUnit.Framework;
-using UnityEngine.TestTools;
-
 namespace Application
 {
     [TestFixture]
@@ -259,13 +240,6 @@ namespace Application
 `WaitForAsyncResult` can be used to transform `Task`s, `ValueTask`s, and other `IAsyncResult`s from .NET into an `IEnumerable` (Unity coroutine) that works with Unity's scene tests to "await" it, for example:
 
 ```cs
-using System.Collections;
-using MrWatts.Internal.FuelInject.Testing;
-using MrWatts.Internal.FuelInject.Testing.Utility;
-using NUnit.Framework;
-using UnityEngine;
-using UnityEngine.TestTools;
-
 namespace Application
 {
     [TestFixture]

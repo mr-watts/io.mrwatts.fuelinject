@@ -5,6 +5,7 @@
 # 0.2.1
 
 -   Fix test assembly breaking projects due to missing NUnit (#8).
+-   Make script execution order of module loader higher priority so it injects before Awake of most `MonoBehaviour`s by default.
 
 # 0.2.0
 

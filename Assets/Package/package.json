@@ -1,6 +1,6 @@
 {
     "name": "io.mrwatts.fuelinject",
-    "version": "0.2.1",
+    "version": "0.3.0",
     "displayName": "Fuel Inject",
     "description": "Adds dependency injection support to Unity (currently through Autofac).",
     "unity": "2021.3",

@@ -10,9 +10,9 @@
 # 0.2.0
 
 -   Internal restructuring.
--   Add proper usage instructions to README.
--   Facilitate testing by adding `SceneTestGroup` (in assembly `mrwatts.fuelinject.testing`).
--   `IInjector<object>`, `IInjector<GameObject>`, and `IInjector<Scene>` are now available for clients to use when they need to inject dependencies into objects at runtime (e.g. after the scene was already loaded).
+-   Add proper usage instructions to README (#6).
+-   Facilitate testing by adding `SceneTestGroup` (in assembly `mrwatts.fuelinject.testing`) (#4).
+-   `IInjector<object>`, `IInjector<GameObject>`, and `IInjector<Scene>` are now available for clients to use when they need to inject dependencies into objects at runtime (e.g. after the scene was already loaded) (#5).
 
 # 0.1.1
 

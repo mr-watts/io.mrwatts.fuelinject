@@ -1,6 +1,5 @@
 using System;
 using System.Runtime.Serialization;
-using UnityEngine;
 
 namespace MrWatts.Internal.FuelInject.Testing.Utility
 {
@@ -18,7 +17,7 @@ namespace MrWatts.Internal.FuelInject.Testing.Utility
         {
         }
 
-        public GameObjectFinderException(SerializationInfo info, StreamingContext context) : base(info, context)
+        public GameObjectFinderException(SerializationInfo info, in StreamingContext context) : base(info, context)
         {
         }
     }

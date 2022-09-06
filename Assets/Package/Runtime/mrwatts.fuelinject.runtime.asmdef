@@ -7,7 +7,7 @@
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
-    "overrideReferences": false,
+    "overrideReferences": true,
     "precompiledReferences": [
         "Autofac.dll",
         "Microsoft.Bcl.AsyncInterfaces.dll"

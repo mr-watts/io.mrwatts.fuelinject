@@ -109,6 +109,10 @@ namespace Application
 
 # Service Interfaces
 
+Fuel Inject exposes some additional interfaces you can implement that fit well with how Unity applications work. Each has its own subchapter below.
+
+Note that you are responsible for registering (binding) these appropriately in your container module.
+
 ## `IInitializable`
 
 Implement `IInitializable` if your service needs to do something on startup.

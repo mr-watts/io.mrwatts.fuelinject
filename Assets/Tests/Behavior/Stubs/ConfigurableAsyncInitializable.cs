@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 
 namespace MrWatts.Internal.FuelInject.TestProject.Tests.Behaviour
@@ -7,6 +8,8 @@ namespace MrWatts.Internal.FuelInject.TestProject.Tests.Behaviour
         public readonly Task taskToWaitFor;
 
         public bool IsInitialized { get; private set; }
+
+        public EventHandler? OnInitialized;
 
         public ConfigurableAsyncInitializable(Task taskToWaitFor)
         {
@@ -18,6 +21,8 @@ namespace MrWatts.Internal.FuelInject.TestProject.Tests.Behaviour
             await taskToWaitFor;
 
             IsInitialized = true;
+
+            OnInitialized?.Invoke(this, EventArgs.Empty);
         }
     }
 }

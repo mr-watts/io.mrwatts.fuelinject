@@ -137,6 +137,26 @@ Implement `ILateTickable` if your service needs to do something every frame, aft
 
 Implement `IDisposable` if your service needs to do something as the scene is unloaded. It is equivalent to `MonoBehaviour.OnDestroy`.
 
+# Ordering
+
+When injecting `IEnumerable<T>` in your services, ordering is sometimes relevant. For example, you might want to have one `IInitializable` execute before another. This can be achieved by using ordering:
+
+```cs
+// Execute initializer as earlier than others.
+builder.RegisterType<Foo>().As<IInitializable>().WithOrder(-1).SingleInstance();
+
+// Execute initializer as later than others.
+builder.RegisterType<Foo>().As<IInitializable>().WithOrder(1).SingleInstance();
+
+// Execute initializer in default order (0).
+builder.RegisterType<Foo>().As<IInitializable>().SingleInstance();
+builder.RegisterType<Foo>().As<IInitializable>().WithOrder(0).SingleInstance();
+```
+
+Execution order for multiple services that have the same ordering is unspecified.
+
+> This is similar to [Autofac.Extras.Ordering](https://github.com/mthamil/Autofac.Extras.Ordering), but does not force you to specify the order for _all_ services, as they might be scattered across modules, where some might not care, and others might want to execute as early or late as possible.
+
 # Runtime Injection
 
 Since the container module loader only resolves dependencies for Unity objects in the scene and services it creates itself, dependencies are not automagically injected into prefabs or Unity objects instantiated at runtime. If you need this, you can inject one of the following dependencies in your class to do so:

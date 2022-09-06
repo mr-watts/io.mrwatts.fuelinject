@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace MrWatts.Internal.FuelInject
 {
@@ -7,7 +8,7 @@ namespace MrWatts.Internal.FuelInject
     {
         private readonly IEnumerable<IAsyncInitializable> delegates;
 
-        public CompositeAsyncInitializable(IEnumerable<IAsyncInitializable> delegates)
+        public CompositeAsyncInitializable(IOrderedEnumerable<IAsyncInitializable> delegates)
         {
             this.delegates = delegates;
         }

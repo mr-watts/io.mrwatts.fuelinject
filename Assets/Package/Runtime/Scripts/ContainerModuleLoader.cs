@@ -34,6 +34,7 @@ namespace MrWatts.Internal.FuelInject
 
             LoadModules(builder);
 
+            builder.RegisterSource(new OrderedRegistrationSource());
             builder.RegisterComposite<CompositeInitializable, IInitializable>().SingleInstance();
             builder.RegisterComposite<CompositeAsyncInitializable, IAsyncInitializable>().SingleInstance();
             builder.RegisterComposite<CompositeTickable, ITickable>().SingleInstance();

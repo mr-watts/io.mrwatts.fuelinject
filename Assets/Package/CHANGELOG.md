@@ -1,6 +1,6 @@
-# x.y.z (Not Released Yet)
+# 0.3.0 (Not Released Yet)
 
--   TODO
+-   Support ordering by injecting `IOrderedEnumerable<T>` and using `WithOrder`.
 
 # 0.2.1
 

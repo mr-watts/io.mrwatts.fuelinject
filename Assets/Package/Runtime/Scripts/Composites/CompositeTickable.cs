@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 
 namespace MrWatts.Internal.FuelInject
 {
@@ -6,7 +7,7 @@ namespace MrWatts.Internal.FuelInject
     {
         private readonly IEnumerable<ITickable> delegates;
 
-        public CompositeTickable(IEnumerable<ITickable> delegates)
+        public CompositeTickable(IOrderedEnumerable<ITickable> delegates)
         {
             this.delegates = delegates;
         }

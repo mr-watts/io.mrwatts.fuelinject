@@ -1,4 +1,5 @@
 // using System;
+// using System.Linq;
 // using System.Threading.Tasks;
 // using System.Collections.Generic;
 
@@ -22,7 +23,7 @@ namespace MrWatts.Internal.FuelInject
     // {
     //     private readonly IEnumerable<IAsyncDisposable> delegates;
 
-    //     public CompositeAsyncDisposable(IEnumerable<IAsyncDisposable> delegates)
+    //     public CompositeAsyncDisposable(IOrderedEnumerable<IAsyncDisposable> delegates)
     //     {
     //         this.delegates = delegates;
     //     }

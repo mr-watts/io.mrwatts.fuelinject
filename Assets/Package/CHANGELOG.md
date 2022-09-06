@@ -2,6 +2,10 @@
 
 -   TODO
 
+# 0.2.1
+
+-   Fix test assembly breaking projects due to missing NUnit (#8).
+
 # 0.2.0
 
 -   Internal restructuring.

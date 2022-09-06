@@ -153,7 +153,21 @@ builder.RegisterType<Foo>().As<IInitializable>().SingleInstance();
 builder.RegisterType<Foo>().As<IInitializable>().WithOrder(0).SingleInstance();
 ```
 
-Execution order for multiple services that have the same ordering is unspecified.
+If you are writing a new service that accepts this ordered collection itself, use `IOrderedEnumerable`:
+
+```cs
+public sealed class Foo
+{
+    private readonly IEnumerable<IBar> delegates;
+
+    public CompositeInitializable(IOrderedEnumerable<IBar> delegates)
+    {
+        this.delegates = delegates;
+    }
+}
+```
+
+Note that execution order for multiple services that have the same ordering is unspecified.
 
 > This is similar to [Autofac.Extras.Ordering](https://github.com/mthamil/Autofac.Extras.Ordering), but does not force you to specify the order for _all_ services, as they might be scattered across modules, where some might not care, and others might want to execute as early or late as possible.
 

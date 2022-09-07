@@ -1,4 +1,8 @@
-# 0.3.0 (Not Released Yet)
+# 0.3.1
+
+-   Fix Unity still validating `mrwatts.fuelinject.testing` during builds, causing failures, even when it's not referenced.
+
+# 0.3.0
 
 -   Support ordering by injecting `IOrderedEnumerable<T>` and using `WithOrder`.
 

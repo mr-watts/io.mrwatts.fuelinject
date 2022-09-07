@@ -12,8 +12,7 @@
     "overrideReferences": true,
     "precompiledReferences": [
         "nunit.framework.dll",
-        "Autofac.dll",
-        "Microsoft.Bcl.AsyncInterfaces.dll"
+        "Autofac.dll"
     ],
     "autoReferenced": false,
     "defineConstraints": [],

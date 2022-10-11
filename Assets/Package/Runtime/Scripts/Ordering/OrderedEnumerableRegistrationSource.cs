@@ -9,7 +9,7 @@ using Autofac.Features.Metadata;
 
 namespace MrWatts.Internal.FuelInject
 {
-    public class OrderedRegistrationSource : IRegistrationSource
+    public sealed class OrderedEnumerableRegistrationSource : IRegistrationSource
     {
         public bool IsAdapterForIndividualComponents => false;
 
@@ -30,9 +30,9 @@ namespace MrWatts.Internal.FuelInject
             }
 
             return new[] {
-                (IComponentRegistration)typeof(OrderedRegistrationSource).GetRuntimeMethods().Single(x => x.Name == nameof(CreateRegistration))
+                (IComponentRegistration)typeof(OrderedEnumerableRegistrationSource).GetRuntimeMethods().Single(x => x.Name == nameof(CreateRegistration))
                     .MakeGenericMethod(serviceWithType.ServiceType.GenericTypeArguments.Single())
-                    .Invoke(null, new object[0])
+                    .Invoke(null, Array.Empty<object>()),
             };
         }
 
@@ -51,13 +51,13 @@ namespace MrWatts.Internal.FuelInject
 
         private static IOrderedEnumerable<TService> Resolve<TService>(IComponentContext context, IEnumerable<Parameter> parameters)
         {
-            var type = typeof(IEnumerable<>).MakeGenericType(typeof(Meta<>).MakeGenericType(typeof(TService)));
-            var serviceMetaItems = (Meta<TService>[])context.Resolve(type, parameters);
+            Type type = typeof(IEnumerable<>).MakeGenericType(typeof(Meta<>).MakeGenericType(typeof(TService)));
+            Meta<TService>[] serviceMetaItems = (Meta<TService>[])context.Resolve(type, parameters);
 
             return serviceMetaItems
                 .OrderBy(x => x.Metadata.ContainsKey(OrderingMetadataKey.MAIN_KEY) ? (IComparable)x.Metadata[OrderingMetadataKey.MAIN_KEY]! : 0)
                 .Select(x => x.Value)
-                .OrderBy(x => 1);
+                .OrderBy(_ => 1);
         }
     }
 }

@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using Autofac;
@@ -35,28 +34,6 @@ namespace MrWatts.Internal.FuelInject
             LoadModules(builder);
 
             builder.RegisterSource(new OrderedEnumerableRegistrationSource());
-            builder.RegisterComposite<CompositeInitializable, IInitializable>().SingleInstance();
-            builder.RegisterComposite<CompositeAsyncInitializable, IAsyncInitializable>().SingleInstance();
-            builder.RegisterComposite<CompositeTickable, ITickable>().SingleInstance();
-            builder.RegisterComposite<CompositeFixedTickable, IFixedTickable>().SingleInstance();
-            builder.RegisterComposite<CompositeLateTickable, ILateTickable>().SingleInstance();
-            builder.RegisterComposite<CompositeDisposable, IDisposable>().SingleInstance();
-            // builder.RegisterComposite<CompositeAsyncDisposable, IAsyncDisposable>();
-
-            builder.RegisterType<ObjectDependencyInjector>()
-                .AsSelf()
-                .As<IInjector<object>>()
-                .SingleInstance();
-
-            builder.RegisterType<UnityGameObjectDependencyInjector>()
-                .AsSelf()
-                .As<IInjector<GameObject>>()
-                .SingleInstance();
-
-            builder.RegisterType<UnitySceneDependencyInjector>()
-                .AsSelf()
-                .As<IInjector<Scene>>()
-                .SingleInstance();
 
             builder.RegisterType<ConfigurableComponentContextProxy>()
                 .AsSelf()
@@ -80,6 +57,9 @@ namespace MrWatts.Internal.FuelInject
         private void LoadModules(ContainerBuilder builder)
         {
             List<(int Priority, IModule Module)> modules = RetrieveStartupModules();
+
+            builder.RegisterModule(new KernelModule());
+            builder.RegisterModule(new UnityInjectionModule());
 
             if (automaticallyAddRootGameObjectModules)
             {

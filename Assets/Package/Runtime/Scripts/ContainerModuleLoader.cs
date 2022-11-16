@@ -65,6 +65,11 @@ namespace MrWatts.Internal.FuelInject
 
             IContainer container = builder.Build();
 
+            /*
+                Proxy the container (IComponentContext) through a proxy class, because the IComponentContext may not be
+                bound directly using container.Register<IComponentContext>(context => context) as `context` may not be
+                stored.
+            */
             container.Resolve<ConfigurableComponentContextProxy>().Delegatee = container;
 
             gameObject.AddComponent<UnityKernel>();

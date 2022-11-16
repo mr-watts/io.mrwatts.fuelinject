@@ -58,11 +58,18 @@ namespace MrWatts.Internal.FuelInject
                 .As<IInjector<Scene>>()
                 .SingleInstance();
 
+            builder.RegisterType<ConfigurableComponentContextProxy>()
+                .AsSelf()
+                .As<IComponentContext>()
+                .SingleInstance();
+
             IContainer container = builder.Build();
+
+            container.Resolve<ConfigurableComponentContextProxy>().Delegatee = container;
 
             gameObject.AddComponent<UnityKernel>();
 
-            container.Resolve<IInjector<Scene>>().Inject(gameObject.scene, container);
+            container.Resolve<IInjector<Scene>>().Inject(gameObject.scene);
         }
 
         private void LoadModules(ContainerBuilder builder)

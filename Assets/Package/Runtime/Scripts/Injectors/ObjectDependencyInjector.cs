@@ -7,7 +7,14 @@ namespace MrWatts.Internal.FuelInject
 {
     public sealed class ObjectDependencyInjector : IInjector<object>
     {
-        public void Inject(object @object, IComponentContext context)
+        private readonly IComponentContext context;
+
+        public ObjectDependencyInjector(IComponentContext context)
+        {
+            this.context = context;
+        }
+
+        public void Inject(object @object)
         {
             context.InjectProperties(@object, new DelegatePropertySelector((p, _) => p.GetCustomAttributes<InjectAttribute>().Any()));
         }

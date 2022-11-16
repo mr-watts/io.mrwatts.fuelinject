@@ -13,11 +13,11 @@ namespace MrWatts.Internal.FuelInject
             this.gameObjectInjector = gameObjectInjector;
         }
 
-        public void Inject(Scene @object, IContainer container)
+        public void Inject(Scene @object, IComponentContext context)
         {
             foreach (GameObject gameObject in @object.GetRootGameObjects())
             {
-                gameObjectInjector.Inject(gameObject, container);
+                gameObjectInjector.Inject(gameObject, context);
             }
         }
     }

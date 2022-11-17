@@ -1,9 +1,7 @@
-using Autofac;
-
 namespace MrWatts.Internal.FuelInject
 {
     public interface IInjector<T>
     {
-        void Inject(T @object, IContainer container);
+        void Inject(T @object);
     }
 }

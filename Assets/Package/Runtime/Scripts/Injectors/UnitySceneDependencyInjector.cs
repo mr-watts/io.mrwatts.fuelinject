@@ -1,4 +1,3 @@
-using Autofac;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -13,11 +12,11 @@ namespace MrWatts.Internal.FuelInject
             this.gameObjectInjector = gameObjectInjector;
         }
 
-        public void Inject(Scene @object, IContainer container)
+        public void Inject(Scene @object)
         {
             foreach (GameObject gameObject in @object.GetRootGameObjects())
             {
-                gameObjectInjector.Inject(gameObject, container);
+                gameObjectInjector.Inject(gameObject);
             }
         }
     }

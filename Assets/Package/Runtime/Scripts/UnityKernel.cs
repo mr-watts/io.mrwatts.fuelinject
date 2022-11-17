@@ -113,8 +113,8 @@ namespace MrWatts.Internal.FuelInject
 
             // Should not happen, but better safe than sorry.
             Debug.LogWarning(
-                "Async exception encountered and no logger set for UnityKernel. You can (should) fix this by " +
-                "registering a IUnityKernelLogger in one of your modules. To avoid silencing errors, directly " +
+                "Exception encountered, but no logger is configured for the UnityKernel. You can (should) fix this " +
+                "by registering a IUnityKernelLogger in one of your modules. To avoid silencing errors, directly " +
                 "logging exception to the Unity console."
             );
 

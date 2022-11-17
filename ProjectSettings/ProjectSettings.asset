@@ -13,7 +13,7 @@ PlayerSettings:
   useOnDemandResources: 0
   accelerometerFrequency: 60
   companyName: Mr. Watts
-  productName: Onion
+  productName: Fuel Inject
   defaultCursor: {fileID: 0}
   cursorHotspot: {x: 0, y: 0}
   m_SplashScreenBackgroundColor: {r: 0.13725491, g: 0.12156863, b: 0.1254902, a: 1}
@@ -155,7 +155,7 @@ PlayerSettings:
   androidSupportedAspectRatio: 1
   androidMaxAspectRatio: 2.1
   applicationIdentifier:
-    Standalone: com.Mr.-Watts.Onion
+    Standalone: com.Mr.-Watts.FuelInject
   buildNumber:
     Standalone: 0
     iPhone: 0
@@ -714,16 +714,16 @@ PlayerSettings:
     Windows Store Apps: 6
   m_RenderingPath: 1
   m_MobileRenderingPath: 1
-  metroPackageName: MrWatts.Onion
+  metroPackageName: MrWatts.FuelInject
   metroPackageVersion: 1.0.0.0
   metroCertificatePath: 
   metroCertificatePassword: 
   metroCertificateSubject: 
   metroCertificateIssuer: 
   metroCertificateNotAfter: 0000000000000000
-  metroApplicationDescription: Onion by Mr. Watts
+  metroApplicationDescription: Fuel Inject by Mr. Watts
   wsaImages: {}
-  metroTileShortName: Onion
+  metroTileShortName: Fuel Inject
   metroTileShowName: 0
   metroMediumTileShowName: 0
   metroLargeTileShowName: 0

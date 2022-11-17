@@ -18,9 +18,7 @@ variables:
     UNITY_PACKAGE_PATH: "Assets/Package/"
     NPM_REGISTRY_PATH: "//gitlab.com/api/v4/projects/27157125/packages/npm/"
 
-image:
-    name: $IMAGE:$UNITY_VERSION-base-$IMAGE_VERSION
-    pull_policy: if-not-present
+image: $IMAGE:$UNITY_VERSION-base-$IMAGE_VERSION
 
 get-unity-version:
     image: alpine

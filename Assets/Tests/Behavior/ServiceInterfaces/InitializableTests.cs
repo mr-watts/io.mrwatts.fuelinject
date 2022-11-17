@@ -1,9 +1,11 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Autofac;
 using MrWatts.Internal.FuelInject.Testing;
 using MrWatts.Internal.FuelInject.Testing.Utility;
 using NUnit.Framework;
+using UnityEngine;
 using UnityEngine.TestTools;
 
 namespace MrWatts.Internal.FuelInject.TestProject.Tests.Behaviour
@@ -22,7 +24,9 @@ namespace MrWatts.Internal.FuelInject.TestProject.Tests.Behaviour
         [UnityTest]
         public IEnumerator SetupSceneWaitsForServicesToInitializeIfRequested()
         {
-            var initializable = new ListeningInitializable();
+            bool wasCalled = false;
+
+            CallbackInvokingInitializable initializable = new(() => wasCalled = true);
 
             yield return SetupScene(
                 "TestScene",
@@ -32,7 +36,7 @@ namespace MrWatts.Internal.FuelInject.TestProject.Tests.Behaviour
                 }
             );
 
-            Assert.IsTrue(initializable.IsInitialized);
+            Assert.IsTrue(wasCalled);
         }
 
         // NOTE: Can't be tested because the scene will already have initialized it anyway due to it being synchronous.
@@ -84,6 +88,44 @@ namespace MrWatts.Internal.FuelInject.TestProject.Tests.Behaviour
             Assert.AreSame(initializableDefault, list[1]);
             Assert.AreSame(initializableMid, list[2]);
             Assert.AreSame(initializableLast, list[3]);
+        }
+
+        [UnityTest]
+        public IEnumerator ExceptionsAreSentToUnityKernelLogger()
+        {
+            bool didThrowException = false;
+            var initializable = new CallbackInvokingInitializable(
+                () =>
+                {
+                    didThrowException = true;
+
+                    throw new Exception("Oh no, initializable failed");
+                }
+            );
+            var listeningUnityKernelLogger = new ListeningUnityKernelLogger();
+
+            IEnumerator sceneLoadingCoroutine = SetupScene(
+                "TestScene",
+                builder =>
+                {
+                    builder.RegisterInstance(initializable).As<IInitializable>();
+                    builder.RegisterInstance(listeningUnityKernelLogger).As<IUnityKernelLogger>();
+                },
+                false
+            );
+
+            Assert.IsFalse(listeningUnityKernelLogger.WasExceptionLogged);
+
+            // Need to do it this way since our failing initializable will prevent the final initializable SetupScene
+            // registers to know when they all finished from running, so we would be blocking indefinitely.
+            while (!didThrowException)
+            {
+                yield return sceneLoadingCoroutine;
+            }
+
+            yield return new WaitForEndOfFrame();
+
+            Assert.IsTrue(listeningUnityKernelLogger.WasExceptionLogged);
         }
     }
 }

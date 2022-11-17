@@ -1,8 +1,8 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using Autofac;
 using Autofac.Core;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -25,6 +25,10 @@ namespace MrWatts.Internal.FuelInject
         private bool automaticallyAddRootGameObjectModules = true;
 
         [SerializeField]
+        [Tooltip("Whether to automatically load the Unity logger (sub)module. You can disable this if you don't want to load UnityLoggerModule, or want to load it yourself to perform additional customizations to it.\n\nFuel Inject needs an IUnityKernelLogger to function correctly, so you are responsible for binding one yourself if you choose not to use the built-in UnityLoggerModule!")]
+        private bool automaticallyLoadUnityLoggerModule = true;
+
+        [SerializeField]
         [Tooltip("Modules (implementing IUnityContainerModule) to load when the scene starts up. This is usually a module of your scene itself. If you consume other modules as well, such as from libraries, you usually want to register those using RegisterModule in the scene module itself instead of adding them here, so you can apply additional configuration if necessary.")]
         private Component[] startupModules = default!;
 
@@ -35,28 +39,6 @@ namespace MrWatts.Internal.FuelInject
             LoadModules(builder);
 
             builder.RegisterSource(new OrderedEnumerableRegistrationSource());
-            builder.RegisterComposite<CompositeInitializable, IInitializable>().SingleInstance();
-            builder.RegisterComposite<CompositeAsyncInitializable, IAsyncInitializable>().SingleInstance();
-            builder.RegisterComposite<CompositeTickable, ITickable>().SingleInstance();
-            builder.RegisterComposite<CompositeFixedTickable, IFixedTickable>().SingleInstance();
-            builder.RegisterComposite<CompositeLateTickable, ILateTickable>().SingleInstance();
-            builder.RegisterComposite<CompositeDisposable, IDisposable>().SingleInstance();
-            // builder.RegisterComposite<CompositeAsyncDisposable, IAsyncDisposable>();
-
-            builder.RegisterType<ObjectDependencyInjector>()
-                .AsSelf()
-                .As<IInjector<object>>()
-                .SingleInstance();
-
-            builder.RegisterType<UnityGameObjectDependencyInjector>()
-                .AsSelf()
-                .As<IInjector<GameObject>>()
-                .SingleInstance();
-
-            builder.RegisterType<UnitySceneDependencyInjector>()
-                .AsSelf()
-                .As<IInjector<Scene>>()
-                .SingleInstance();
 
             builder.RegisterType<ConfigurableComponentContextProxy>()
                 .AsSelf()
@@ -80,6 +62,14 @@ namespace MrWatts.Internal.FuelInject
         private void LoadModules(ContainerBuilder builder)
         {
             List<(int Priority, IModule Module)> modules = RetrieveStartupModules();
+
+            builder.RegisterModule(new KernelModule());
+            builder.RegisterModule(new UnityInjectionModule());
+
+            if (automaticallyLoadUnityLoggerModule)
+            {
+                builder.RegisterModule(new UnityLoggerModule());
+            }
 
             if (automaticallyAddRootGameObjectModules)
             {

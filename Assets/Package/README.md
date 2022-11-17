@@ -210,7 +210,7 @@ Some basic logging is included so you can follow what is going on.
 
 By default, the Unity console logger is used for logging through `UnityLoggerModule`. If you want to use some other logger, such as Serilog, you can overrule the necessary bindings (see also below).
 
-You can also disable `automaticallyLoadUnityLogModule` on `ContainerModuleLoader` if you don't want any logger bindings to be created by default at all. In this case _you become responsible_ for getting the necessary loggers bound to the necessary interfaces.
+You can also disable `automaticallyLoadUnityLoggerModule` on `ContainerModuleLoader` if you don't want any logger bindings to be created by default at all. In this case _you become responsible_ for getting the necessary loggers bound to the necessary interfaces.
 
 ## Kernel / Asynchronous Exceptions
 

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using Autofac;
 using Autofac.Core;
+using Autofac.Diagnostics;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -23,6 +25,10 @@ namespace MrWatts.Internal.FuelInject
         [SerializeField]
         [Tooltip("Whether to automatically scan root game objects in (all) scene(s) for modules and add them automatically. These then don't need to be added to start-up modules. This is especially useful if you use additive scenes, wish to dynamically load the scene with a loader, automatically letting modules from all scenes be inserted.")]
         private bool automaticallyAddRootGameObjectModules = true;
+
+        [SerializeField]
+        [Tooltip("Whether to enable container diagnostics. This will automatically load the ContainerDiagnosticsModule for the current container, logging its output to the Unity console. If you want to log somewhere else, disable this and load the module yourself with a custom tracer.")]
+        private bool enableContainerDiagnostics = false;
 
         [SerializeField]
         [Tooltip("Modules (implementing IUnityContainerModule) to load when the scene starts up. This is usually a module of your scene itself. If you consume other modules as well, such as from libraries, you usually want to register those using RegisterModule in the scene module itself instead of adding them here, so you can apply additional configuration if necessary.")]
@@ -67,6 +73,14 @@ namespace MrWatts.Internal.FuelInject
 
         private void LoadModules(ContainerBuilder builder)
         {
+            if (enableContainerDiagnostics)
+            {
+                DefaultDiagnosticTracer tracer = new();
+                tracer.OperationCompleted += (_, args) => Debug.unityLogger.Log("Container Diagnostics", args.TraceContent);
+
+                builder.RegisterModule(new ContainerDiagnosticsModule(tracer));
+            }
+
             List<(int Priority, IModule Module)> modules = RetrieveStartupModules();
 
             if (automaticallyAddRootGameObjectModules)

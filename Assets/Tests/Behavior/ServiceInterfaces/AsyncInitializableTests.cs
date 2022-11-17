@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Concurrent;
 using System.Threading.Tasks;
@@ -5,6 +6,7 @@ using Autofac;
 using MrWatts.Internal.FuelInject.Testing;
 using MrWatts.Internal.FuelInject.Testing.Utility;
 using NUnit.Framework;
+using NUnit.Framework.Internal;
 using UnityEngine.TestTools;
 
 namespace MrWatts.Internal.FuelInject.TestProject.Tests.Behaviour
@@ -104,6 +106,31 @@ namespace MrWatts.Internal.FuelInject.TestProject.Tests.Behaviour
 
             Assert.True(queue.TryDequeue(out initializable));
             Assert.AreSame(asyncInitializableLast, initializable);
+        }
+
+        [UnityTest]
+        public IEnumerator ExceptionsAreSentToUnityKernelLogger()
+        {
+            TaskCompletionSource<bool> completionSource = new();
+            var asyncInitializable = new ConfigurableAsyncInitializable(completionSource.Task);
+            var listeningUnityKernelLogger = new ListeningUnityKernelLogger();
+
+            IEnumerator sceneLoadingCoroutine = SetupScene(
+                "TestScene",
+                builder =>
+                {
+                    builder.RegisterInstance(asyncInitializable).As<IAsyncInitializable>();
+                    builder.RegisterInstance(listeningUnityKernelLogger).As<IUnityKernelLogger>();
+                }
+            );
+
+            Assert.IsFalse(asyncInitializable.IsInitialized);
+
+            completionSource.SetException(new Exception("Oh no, asynchronous action failed"));
+
+            yield return sceneLoadingCoroutine;
+
+            Assert.IsTrue(listeningUnityKernelLogger.WasExceptionLogged);
         }
     }
 }

@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Autofac;
 using Autofac.Core;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -22,6 +23,10 @@ namespace MrWatts.Internal.FuelInject
         [SerializeField]
         [Tooltip("Whether to automatically scan root game objects in (all) scene(s) for modules and add them automatically. These then don't need to be added to start-up modules. This is especially useful if you use additive scenes, wish to dynamically load the scene with a loader, automatically letting modules from all scenes be inserted.")]
         private bool automaticallyAddRootGameObjectModules = true;
+
+        [SerializeField]
+        [Tooltip("Whether to automatically load the Unity logger (sub)module. You can disable this if you don't want to load UnityLoggerModule, or want to load it yourself to perform additional customizations to it.\n\nFuel Inject needs an IUnityKernelLogger to function correctly, so you are responsible for binding one yourself if you choose not to use the built-in UnityLoggerModule!")]
+        private bool automaticallyLoadUnityLogModule = true;
 
         [SerializeField]
         [Tooltip("Modules (implementing IUnityContainerModule) to load when the scene starts up. This is usually a module of your scene itself. If you consume other modules as well, such as from libraries, you usually want to register those using RegisterModule in the scene module itself instead of adding them here, so you can apply additional configuration if necessary.")]
@@ -60,6 +65,11 @@ namespace MrWatts.Internal.FuelInject
 
             builder.RegisterModule(new KernelModule());
             builder.RegisterModule(new UnityInjectionModule());
+
+            if (automaticallyLoadUnityLogModule)
+            {
+                builder.RegisterModule(new UnityLoggerModule());
+            }
 
             if (automaticallyAddRootGameObjectModules)
             {

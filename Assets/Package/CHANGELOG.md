@@ -1,6 +1,7 @@
-# Next
+# 0.4.0
 
 -   Rewrite `IInjector` to not take an `IContainer`, so it matches the readme and can be used to inject into dynamically spawned game objects.
+-   Container diagnostics can now be easily enabled on the `ContainerModuleLoader`. See also the new _Logging_ section in the README.
 -   Exceptions from `IAsyncInitializable` are now properly logged. See also the new _Logging_ section in the README.
 
 # 0.3.1

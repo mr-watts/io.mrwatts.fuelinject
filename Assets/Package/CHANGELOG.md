@@ -1,3 +1,7 @@
+# Next
+
+-   Rewrite `IInjector` to not take an `IContainer`, so it matches the readme and can be used to inject into dynamically spawned game objects.
+
 # 0.3.1
 
 -   Fix Unity still validating `mrwatts.fuelinject.testing` during builds, causing failures, even when it's not referenced.

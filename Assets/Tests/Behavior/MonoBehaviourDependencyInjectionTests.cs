@@ -55,6 +55,25 @@ namespace MrWatts.Internal.FuelInject.TestProject.Tests.Behaviour
             Assert.IsInstanceOf(typeof(IInjector<Scene>), service.InjectorGetter);
         }
 
+        [UnityTest]
+        public IEnumerator GameObjectInjectorCanBeUsedToInjectIntoDynamicallySpawnedObjects()
+        {
+            yield return LoadTestScene();
+
+            var service = GameObjectFinder.Get<MonoBehaviourWithIInjectorGameObjectDependency>();
+
+            GameObject gameObject = new();
+            gameObject.AddComponent<MonoBehaviourWithIInjectorGameObjectDependency>();
+
+            var component = gameObject.GetComponent<MonoBehaviourWithIInjectorGameObjectDependency>();
+
+            Assert.IsNull(component.InjectorGetter);
+
+            service.InjectorGetter.Inject(gameObject);
+
+            Assert.NotNull(component.InjectorGetter);
+        }
+
         private IEnumerator LoadTestScene()
         {
             yield return SetupScene("TestScene");

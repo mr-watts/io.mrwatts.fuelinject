@@ -695,7 +695,7 @@ PlayerSettings:
   scriptingDefineSymbols: {}
   additionalCompilerArguments:
     Standalone:
-    - -nowarn=CS8632
+    - -nowarn:CS8632
   platformArchitecture: {}
   scriptingBackend:
     Standalone: 1

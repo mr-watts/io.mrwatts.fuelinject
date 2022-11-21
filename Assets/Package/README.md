@@ -241,6 +241,14 @@ public sealed class MyLoggerUnityKernelLoggerAdapter : IUnityKernelLogger
 }
 ```
 
+## Container Diagnostics
+
+Autofac [supports outputting diagnostics](https://autofac.readthedocs.io/en/latest/advanced/debugging.html#quick-start), so you can follow what the container is doing when resolving services. This can be handy to debug loops or other tough-to-debug issues.
+
+Fuel Inject supports the `enableContainerDiagnostics` setting on `ContainerModuleLoader`, which is a quick and easy way to log the diagnostics of the container to the Unity console.
+
+If you want to log the diagnostics somewhere else, you can either add `ContainerDiagnosticsModule` with your own tracer yourself (and keep `enableContainerDiagnostics` disabled), or add your own build callback, as described on the documentation page above.
+
 # Testing
 
 Follow [the standard procedure](https://docs.unity3d.com/Packages/com.unity.test-framework@1.1) for writing tests in Unity and ensure that you can run basic unit tests before proceeding.

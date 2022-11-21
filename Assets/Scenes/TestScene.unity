@@ -249,6 +249,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   automaticallyAddRootGameObjectModules: 1
+  enableContainerDiagnostics: 0
   startupModules: []
 --- !u!4 &265865459
 Transform:

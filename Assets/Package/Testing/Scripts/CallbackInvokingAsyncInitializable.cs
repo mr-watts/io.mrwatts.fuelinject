@@ -3,10 +3,7 @@ using System.Threading.Tasks;
 
 namespace MrWatts.Internal.FuelInject.Testing
 {
-    /// <summary>
-    /// Module that, on Configure, executes the specified callback.
-    /// </summary>
-    public sealed class CallbackInvokingAsyncInitializable : IAsyncInitializable
+    internal sealed class CallbackInvokingAsyncInitializable : IAsyncInitializable
     {
         private readonly Action callback;
 

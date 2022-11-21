@@ -1,6 +1,6 @@
 using System;
 
-namespace MrWatts.Internal.FuelInject.Testing
+namespace MrWatts.Internal.FuelInject.TestProject.Tests.Behaviour
 {
     internal sealed class CallbackInvokingInitializable : IInitializable
     {

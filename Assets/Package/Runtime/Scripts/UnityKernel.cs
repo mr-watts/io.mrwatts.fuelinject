@@ -30,39 +30,95 @@ namespace MrWatts.Internal.FuelInject
         // [Inject]
         // private IAsyncDisposable AsyncDisposable { get; set; }
 
+        [Inject]
+        private IUnityKernelLogger? Logger { get; set; }
+
         private async void Start()
         {
-            Initializable?.Initialize();
-
-            if (AsyncInitializable is not null)
+            try
             {
-                await AsyncInitializable.InitializeAsync();
+                Initializable?.Initialize();
+
+                if (AsyncInitializable is not null)
+                {
+                    await AsyncInitializable.InitializeAsync();
+                }
+            }
+            catch (Exception exception)
+            {
+                LogException(exception);
             }
         }
 
         private void Update()
         {
-            Tickable?.Tick();
+            try
+            {
+                Tickable?.Tick();
+            }
+            catch (Exception exception)
+            {
+                LogException(exception);
+            }
         }
 
         private void FixedUpdate()
         {
-            FixedTickable?.FixedTick();
+            try
+            {
+                FixedTickable?.FixedTick();
+            }
+            catch (Exception exception)
+            {
+                LogException(exception);
+            }
         }
 
         private void LateUpdate()
         {
-            LateTickable?.LateTick();
+            try
+            {
+                LateTickable?.LateTick();
+            }
+            catch (Exception exception)
+            {
+                LogException(exception);
+            }
         }
 
-        private /*async*/ void OnDestroy()
+        private void OnDestroy()
         {
-            Disposable?.Dispose();
+            try
+            {
+                Disposable?.Dispose();
 
-            // if (AsyncDisposable is not null)
-            // {
-            //     await AsyncDisposable.DisposeAsync();
-            // }
+                /*if (AsyncDisposable is not null)
+                {
+                    await AsyncDisposable.DisposeAsync();
+                }*/
+            }
+            catch (Exception exception)
+            {
+                LogException(exception);
+            }
+        }
+
+        private void LogException(Exception exception)
+        {
+            if (Logger is not null)
+            {
+                Logger.LogException(exception);
+                return;
+            }
+
+            // Should not happen, but better safe than sorry.
+            Debug.LogWarning(
+                "Exception encountered, but no logger is configured for the UnityKernel. You can (should) fix this " +
+                "by registering a IUnityKernelLogger in one of your modules. To avoid silencing errors, directly " +
+                "logging exception to the Unity console."
+            );
+
+            Debug.LogException(exception);
         }
     }
 }

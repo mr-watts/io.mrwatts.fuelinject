@@ -206,6 +206,41 @@ class Foo
 
 # Logging
 
+Some basic logging is included so you can follow what is going on.
+
+By default, the Unity console logger is used for logging through `UnityLoggerModule`. If you want to use some other logger, such as Serilog, you can overrule the necessary bindings (see also below).
+
+You can also disable `automaticallyLoadUnityLoggerModule` on `ContainerModuleLoader` if you don't want any logger bindings to be created by default at all. In this case _you become responsible_ for getting the necessary loggers bound to the necessary interfaces.
+
+## Kernel / Asynchronous Exceptions
+
+`IUnityKernelLogger` handles logging for the `UnityKernel`, which is the `MonoBehaviour` that executes your initializables, disposables, and others. Because of the nature of `async` code, such as for `IAsyncInitializable`, exceptions can only propagate by returning a `Task`, which is impossible for `MonoBehaviour`s. To solve this, `UnityKernel` uses `IUnityKernelLogger` to do logging of exceptions, for both synchronous and asynchronous code.
+
+If you want to use some other logger, such as Serilog, you can overrule create your own adapter, for example:
+
+```cs
+using System;
+using UnityEngine;
+
+/// <summary>
+/// Adapter that adpts an Unity ILogger to the IUnityKernelLogger interface.
+/// </summary>
+public sealed class MyLoggerUnityKernelLoggerAdapter : IUnityKernelLogger
+{
+    private readonly IMyLogger logger;
+
+    public UnityLoggerUnityKernelLoggerAdapter(IMyLogger logger)
+    {
+        this.logger = logger;
+    }
+
+    public void LogException(Exception exception)
+    {
+        logger.LogExceptionSomehow(exception);
+    }
+}
+```
+
 ## Container Diagnostics
 
 Autofac [supports outputting diagnostics](https://autofac.readthedocs.io/en/latest/advanced/debugging.html#quick-start), so you can follow what the container is doing when resolving services. This can be handy to debug loops or other tough-to-debug issues.

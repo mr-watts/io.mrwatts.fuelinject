@@ -45,8 +45,7 @@ ${UNITY_EXECUTABLE:-xvfb-run --auto-servernum --server-args='-screen 0 640x480x2
   -enableCodeCoverage \
   -coverageResultsPath $UNITY_DIR/$TEST_PLATFORM-coverage \
   -coverageOptions "generateAdditionalMetrics;generateHtmlReport;generateHtmlReportHistory;generateBadgeReport;" \
-  -debugCodeOptimization \
-  -quit
+  -debugCodeOptimization
 
 UNITY_EXIT_CODE=$?
 

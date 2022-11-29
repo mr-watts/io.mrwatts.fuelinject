@@ -4,7 +4,7 @@ using UnityEngine;
 namespace MrWatts.Internal.FuelInject.Testing.Utility
 {
     /// <summary>
-    /// <para>Custom yield instruction that allows waiting until a predicate returns true in Unity coroutines.</para>
+    /// <para>Custom yield instruction that extends WaitUntil to throw an exception if waiting takes too long.</para>
     /// <para>See Unity's WaitUntil if you want to wait without timeout.</para>
     /// </summary>
     /// <example>
@@ -18,9 +18,21 @@ namespace MrWatts.Internal.FuelInject.Testing.Utility
     public sealed class WaitTemporarilyUntil : CustomYieldInstruction
     {
         private readonly Func<bool> predicate;
+        private readonly TimeSpan timeToWait;
         private readonly DateTime endDateTime;
 
-        public override bool keepWaiting => DateTime.Now < endDateTime && !predicate();
+        public override bool keepWaiting
+        {
+            get
+            {
+                if (DateTime.Now >= endDateTime)
+                {
+                    throw new TimeoutException($"Timed out waiting {timeToWait.TotalSeconds} seconds for predicate to return true");
+                }
+
+                return !predicate();
+            }
+        }
 
         /// <summary>
         /// Constructor.
@@ -30,8 +42,9 @@ namespace MrWatts.Internal.FuelInject.Testing.Utility
         public WaitTemporarilyUntil(Func<bool> predicate, TimeSpan? timeToWait = null)
         {
             this.predicate = predicate;
+            this.timeToWait = timeToWait is null ? TimeSpan.FromSeconds(10) : (TimeSpan)timeToWait;
 
-            endDateTime = DateTime.Now.Add(timeToWait is null ? TimeSpan.FromSeconds(10) : (TimeSpan)timeToWait);
+            endDateTime = DateTime.Now.Add(this.timeToWait);
         }
     }
 }

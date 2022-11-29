@@ -26,9 +26,7 @@ namespace MrWatts.Internal.FuelInject.TestProject.Tests.Behaviour
                 }
             );
 
-            yield return new WaitTemporarilyUntil(() => wasCalled = true);
-
-            Assert.IsTrue(wasCalled);
+            yield return new WaitTemporarilyUntil(() => wasCalled);
         }
 
         [UnityTest]
@@ -51,8 +49,6 @@ namespace MrWatts.Internal.FuelInject.TestProject.Tests.Behaviour
 
             yield return sceneLoadingCoroutine;
             yield return new WaitTemporarilyUntil(() => listeningUnityKernelLogger.WasExceptionLogged);
-
-            Assert.IsTrue(listeningUnityKernelLogger.WasExceptionLogged);
         }
     }
 }

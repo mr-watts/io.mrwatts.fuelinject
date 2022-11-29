@@ -123,8 +123,6 @@ namespace MrWatts.Internal.FuelInject.TestProject.Tests.Behaviour
             }
 
             yield return new WaitTemporarilyUntil(() => listeningUnityKernelLogger.WasExceptionLogged);
-
-            Assert.IsTrue(listeningUnityKernelLogger.WasExceptionLogged);
         }
     }
 }

@@ -267,6 +267,30 @@ test-playmode-with-junit-reports:
 #     only:
 #         - $CI_DEFAULT_BRANCH
 
+dotnet-format:
+    image: mcr.microsoft.com/dotnet/sdk:7.0-alpine
+    stage: build_and_test
+    needs: []
+    before_script:
+        - apk add --no-cache jq npm
+        - npm install --save-dev jsonjunit
+    script:
+        # TIP: If this job fails, you can just autofix the problems by running the same locally, and removing the
+        # --verify-no-changes option.
+        - export DOTNET_CLI_TELEMETRY_OPTOUT=1
+        - dotnet new console --no-restore --name=App --output=.
+        - dotnet format --verify-no-changes --no-restore whitespace App.csproj --include=Assets/Scripts/ --include=Assets/Package/ --include=Assets/Tests/ --report report.json || EXIT_STATUS=$?
+        - ci/dotnet-format-json-to-junit-json.sh < report.json > ci/junit-report.json
+        - npx jsonjunit --json ci --junit ci
+        - exit $EXIT_STATUS
+    artifacts:
+        when: always
+        paths:
+            - report.json
+        reports:
+            junit:
+                - ci/junit-report.xml
+
 build-snapshot:
     stage: build_and_test
     image: node:current-alpine

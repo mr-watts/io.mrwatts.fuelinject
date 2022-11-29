@@ -5,7 +5,6 @@ using Autofac;
 using MrWatts.Internal.FuelInject.Testing;
 using MrWatts.Internal.FuelInject.Testing.Utility;
 using NUnit.Framework;
-using UnityEngine;
 using UnityEngine.TestTools;
 
 namespace MrWatts.Internal.FuelInject.TestProject.Tests.Behaviour
@@ -123,7 +122,7 @@ namespace MrWatts.Internal.FuelInject.TestProject.Tests.Behaviour
                 yield return sceneLoadingCoroutine;
             }
 
-            yield return new WaitForEndOfFrame();
+            yield return new WaitTemporarilyUntil(() => listeningUnityKernelLogger.WasExceptionLogged);
 
             Assert.IsTrue(listeningUnityKernelLogger.WasExceptionLogged);
         }

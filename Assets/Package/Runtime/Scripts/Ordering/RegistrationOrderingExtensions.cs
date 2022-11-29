@@ -16,7 +16,8 @@ namespace MrWatts.Internal.FuelInject
         public static IRegistrationBuilder<TLimit, TActivatorData, TRegistrationStyle> WithOrder<TLimit, TActivatorData, TRegistrationStyle>(
             this IRegistrationBuilder<TLimit, TActivatorData, TRegistrationStyle> registration,
             IComparable order
-        ) {
+        )
+        {
             return registration.WithMetadata(OrderingMetadataKey.MAIN_KEY, order);
         }
     }

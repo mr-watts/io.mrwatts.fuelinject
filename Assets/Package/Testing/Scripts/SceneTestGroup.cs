@@ -45,11 +45,13 @@ namespace MrWatts.Internal.FuelInject.Testing
         /// <param name="waitForInitializables">Whether or not to wait for all initializables to finish executing before proceeding with the test.</param>
         protected IEnumerator SetupScene(string name, Action<ContainerBuilder>? containerBindingCallback = null, bool waitForInitializables = true)
         {
-            SceneSetupResult result = SetupScene(new(name)
-            {
-                ContainerBindingCallback = containerBindingCallback,
-                AttachKernelListeners = waitForInitializables,
-            });
+            SceneSetupResult result = SetupScene(
+                new(name)
+                {
+                    ContainerBindingCallback = containerBindingCallback,
+                    AttachKernelListeners = waitForInitializables,
+                }
+            );
 
             yield return result.SceneLoadingOperation;
 

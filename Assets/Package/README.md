@@ -340,3 +340,27 @@ namespace Application
     }
 }
 ```
+
+### `WaitTemporarilyUntil`
+
+`WaitTemporarilyUntil` is a variant of Unity's `WaitUntil` that supports passing a timeout, after which the waiting automatically stops:
+
+```cs
+namespace Application
+{
+    [TestFixture]
+    internal sealed class FooTests
+    {
+        [UnityTest]
+        public IEnumerator WaitsForSomethingAsync()
+        {
+            bool somethingWasDone = false;
+
+            yield return new WaitTemporarilyUntil(() => somethingWasDone)); // Waits 10 seconds.
+            yield return new WaitTemporarilyUntil(() => somethingWasDone, TimeSpan.FromSeconds(5)); // Waits 5 seconds.
+
+            Assert.IsTrue(somethingWasDone, "Oh no, it either failed to be done, or it timed out");
+        }
+    }
+}
+```

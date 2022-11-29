@@ -1,3 +1,7 @@
+# Next
+
+-   Add `WaitTemporarilyUntil` utility that automatically times out, to the test assembly to aid in writing tests.
+
 # 0.4.0
 
 -   Rewrite `IInjector` to not take an `IContainer`, so it matches the readme and can be used to inject into dynamically spawned game objects.

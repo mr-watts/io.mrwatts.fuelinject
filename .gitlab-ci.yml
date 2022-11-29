@@ -98,7 +98,7 @@ get-activation-file:
         when: always
         expire_in: 2 weeks
     tags:
-        - saas-linux-medium-amd64
+        - saas-linux-large-amd64
     coverage: /<Linecoverage>(.*?)</Linecoverage>/
 
 # Tests without junit reporting results in GitLab
@@ -140,7 +140,7 @@ get-activation-file:
                 - "$UNITY_DIR/$TEST_PLATFORM-coverage/coverage.xml"
         expire_in: 2 weeks
     tags:
-        - saas-linux-medium-amd64
+        - saas-linux-large-amd64
     coverage: /<Linecoverage>(.*?)</Linecoverage>/
 
 test-playmode-with-junit-reports:

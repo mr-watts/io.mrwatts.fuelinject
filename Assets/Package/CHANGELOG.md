@@ -1,5 +1,6 @@
 # Next
 
+-   Fix warning always being shown about no `IUnityKernelLogger` being bound when not explicitly overruling it.
 -   Add `WaitTemporarilyUntil` utility that automatically times out, to the test assembly to aid in writing tests.
 
 # 0.4.0

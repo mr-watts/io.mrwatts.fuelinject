@@ -294,3 +294,8 @@ registry-publication:
     only:
         - tags
 
+workflow:
+    rules:
+        - if: $CI_MERGE_REQUEST_ID
+          when: never
+        - when: always

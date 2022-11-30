@@ -9,7 +9,7 @@ PACKAGE_MANIFEST_PATH="Packages/manifest.json"
 
 # Install NuGet packages through NuGetForUnity. We ignore compiler errors because our scripts depend on these NuGet
 # packages, so they will always fail compilation at this step (as we are about to install them).
-unity-editor -batchmode -ignoreCompilerError -projectPath /src -executeMethod NugetForUnity.NugetHelper.Restore
+unity-editor -batchmode -ignoreCompilerError -projectPath $UNITY_DIR -executeMethod NugetForUnity.NugetHelper.Restore
 
 echo -e "\e[0Ksection_start:`date +%s`:nuget_packages_section[collapsed=true]\r\e[0KInstalling NuGet packages through NuGetForUnity"
 

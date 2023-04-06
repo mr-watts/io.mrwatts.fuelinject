@@ -43,7 +43,7 @@
       "url": "https://packages.unity.com"
     },
     "io.mrwatts.codeanalysisrulesets": {
-      "version": "2.2.8",
+      "version": "2.4.0",
       "depth": 0,
       "source": "registry",
       "dependencies": {},

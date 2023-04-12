@@ -25,6 +25,12 @@ namespace MrWatts.Internal.FuelInject
                 .AsSelf()
                 .As<IInjector<Scene>>()
                 .SingleInstance();
+
+            builder.RegisterType<GameObjectInstantiator>()
+                .AsSelf()
+                .As<IGameObjectInstantiator>()
+                .As<IInstantiator<GameObject>>()
+                .SingleInstance();
         }
     }
 }

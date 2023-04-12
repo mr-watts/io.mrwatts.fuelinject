@@ -197,9 +197,32 @@ class Foo
 
     public void Bar()
     {
-        GameObject gameObject = Instantiate(somePrefab);
+        GameObject gameObject = createGameObjectSomehow();
 
         injector.Inject(gameObject);
+    }
+}
+```
+
+## Convenient Runtime Instantiation
+
+As instantiating `GameObject`s by cloning prefabs or other `GameObject`s and injecting afterwards is a common pattern, you can inject `IGameObjectInstantiator`  into your class to make this more convenient:
+
+```cs
+class Foo
+{
+    private readonly IGameObjectInjector instantiator;
+
+    public Foo(IGameObjectInjector instantiator)
+    {
+        this.instantiator = instantiator;
+    }
+
+    public void Bar()
+    {
+        GameObject gameObject = instantiator.Instantiate(somePrefab);
+
+        // gameObject, its components, and their children will have their dependencies injected.
     }
 }
 ```

@@ -1,3 +1,7 @@
+# Upcoming
+
+-   `IGameObjectInstantiator` is now available for clients to use when wanting to clone prefabs or other `GameObject`s and immediately inject dependencies.
+
 # 0.4.1
 
 -   Fix warning always being shown about no `IUnityKernelLogger` being bound when not explicitly overruling it.

@@ -264,7 +264,7 @@ test-playmode-with-junit-reports:
 #         - $CI_DEFAULT_BRANCH
 
 dotnet-format:
-    image: mcr.microsoft.com/dotnet/sdk:7.0-alpine
+    image: mcr.microsoft.com/dotnet/sdk:6.0-alpine
     stage: build_and_test
     needs: []
     before_script:

@@ -27,6 +27,9 @@ namespace MrWatts.Internal.FuelInject
         [Inject]
         private IDisposable? Disposable { get; set; }
 
+        [Inject]
+        private ITerminatable? Terminatable { get; set; }
+
         // [Inject]
         // private IAsyncDisposable AsyncDisposable { get; set; }
 
@@ -96,6 +99,18 @@ namespace MrWatts.Internal.FuelInject
                 {
                     await AsyncDisposable.DisposeAsync();
                 }*/
+            }
+            catch (Exception exception)
+            {
+                LogException(exception);
+            }
+        }
+
+        private void OnApplicationQuit()
+        {
+            try
+            {
+                Terminatable?.Terminate();
             }
             catch (Exception exception)
             {

@@ -141,6 +141,10 @@ Implement `ILateTickable` if your service needs to do something every frame, aft
 
 Implement `IDisposable` if your service needs to do something as the scene is unloaded. It is equivalent to `MonoBehaviour.OnDestroy`.
 
+## `ITerminatable`
+
+Implement `ITerminatable` if your service needs to do something as the application exits. It is equivalent to `MonoBehaviour.OnApplicationQuit`.
+
 # Ordering
 
 When injecting `IEnumerable<T>` in your services, ordering is sometimes relevant. For example, you might want to have one `IInitializable` execute before another. This can be achieved by using ordering:
@@ -206,7 +210,7 @@ class Foo
 
 ## Convenient Runtime Instantiation
 
-As instantiating `GameObject`s by cloning prefabs or other `GameObject`s and injecting afterwards is a common pattern, you can inject `IGameObjectInstantiator`  into your class to make this more convenient:
+As instantiating `GameObject`s by cloning prefabs or other `GameObject`s and injecting afterwards is a common pattern, you can inject `IGameObjectInstantiator` into your class to make this more convenient:
 
 ```cs
 class Foo

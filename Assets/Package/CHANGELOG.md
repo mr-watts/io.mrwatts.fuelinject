@@ -1,5 +1,6 @@
-# Upcoming
+# 0.5.0
 
+-   `ITerminatable` is now available to allow subscribing to the application exiting.
 -   `IGameObjectInstantiator` is now available for clients to use when wanting to clone prefabs or other `GameObject`s and immediately inject dependencies.
 
 # 0.4.1

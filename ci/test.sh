@@ -7,31 +7,6 @@ echo "Testing for $TEST_PLATFORM, Unit Type: $TESTING_TYPE"
 CODE_COVERAGE_PACKAGE="com.unity.testtools.codecoverage"
 PACKAGE_MANIFEST_PATH="Packages/manifest.json"
 
-# Install NuGet packages through NuGetForUnity. We ignore compiler errors because our scripts depend on these NuGet
-# packages, so they will always fail compilation at this step (as we are about to install them).
-unity-editor -batchmode -ignoreCompilerError -projectPath $UNITY_DIR -executeMethod NugetForUnity.NugetHelper.Restore
-
-echo -e "\e[0Ksection_start:`date +%s`:nuget_packages_section[collapsed=true]\r\e[0KInstalling NuGet packages through NuGetForUnity"
-
-${UNITY_EXECUTABLE:-xvfb-run --auto-servernum --server-args='-screen 0 640x480x24' unity-editor} \
-    -projectPath $UNITY_DIR \
-    -executeMethod NugetForUnity.NugetHelper.Restore \
-    -logFile /dev/stdout \
-    -batchmode \
-    -nographics \
-    -debugCodeOptimization \
-    -quit \
-    -ignoreCompilerErrors
-
-UNITY_NUGET_EXIT_CODE=$?
-
-if [ $UNITY_NUGET_EXIT_CODE -eq 0 ]; then
-  echo "Package installation finished successfully";
-else
-  echo "Package installation failed with error code $UNITY_NUGET_EXIT_CODE";
-fi
-
-echo -e "\e[0Ksection_end:`date +%s`:nuget_packages_section\r\e[0K"
 echo -e "\e[0Ksection_start:`date +%s`:unity_tests_section[collapsed=true]\r\e[0KRunning Unity tests"
 
 ${UNITY_EXECUTABLE:-xvfb-run --auto-servernum --server-args='-screen 0 640x480x24' unity-editor} \

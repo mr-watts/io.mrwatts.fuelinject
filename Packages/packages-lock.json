@@ -1,18 +1,18 @@
 {
   "dependencies": {
+    "com.tsk.ide.vscode": {
+      "version": "1.4.2",
+      "depth": 0,
+      "source": "registry",
+      "dependencies": {},
+      "url": "https://package.openupm.com"
+    },
     "com.unity.ext.nunit": {
       "version": "2.0.3",
       "depth": 1,
       "source": "registry",
       "dependencies": {},
       "url": "https://packages.unity.com"
-    },
-    "com.unity.ide.vscode": {
-      "version": "https://github.com/wackoisgod/com.unity.ide.vscode.git?path=Packages/com.unity.ide.vscode#407dfadb2187e58dfe22d6a77ebc47c1020dbe67",
-      "depth": 0,
-      "source": "git",
-      "dependencies": {},
-      "hash": "407dfadb2187e58dfe22d6a77ebc47c1020dbe67"
     },
     "com.unity.settings-manager": {
       "version": "1.0.3",

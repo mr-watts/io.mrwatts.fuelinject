@@ -1,0 +1,51 @@
+{
+  "version": 1,
+  "dependencies": {
+    ".NETStandard,Version=v2.1": {
+      "MrWatts.CodeAnalysisRulesets": {
+        "type": "Direct",
+        "requested": "[3.0.0, )",
+        "resolved": "3.0.0",
+        "contentHash": "smMi3AK3A5esDijWLoejeFq/pU4I11GNKHlJ61YCHSj4q9EPAmcDJwWiyli46roO2x6W6OHa7EoiodDiw61oog==",
+        "dependencies": {
+          "ErrorProne.NET.CoreAnalyzers": "0.4.0-beta.1",
+          "Meziantou.Analyzer": "2.0.62",
+          "Microsoft.Unity.Analyzers": "1.17.0",
+          "Roslynator.Analyzers": "4.3.0",
+          "Roslynator.CodeAnalysis.Analyzers": "4.3.0",
+          "Roslynator.Formatting.Analyzers": "4.3.0"
+        }
+      },
+      "ErrorProne.NET.CoreAnalyzers": {
+        "type": "Transitive",
+        "resolved": "0.4.0-beta.1",
+        "contentHash": "jW7IDd7xMJoz2IyhyI2NE7JB5o+mH9AuLHDh4I79dL/WpbLRhPGXlcK1GmZa2HjSXEl2a9zXQ4/Hyo9lOaNq1g=="
+      },
+      "Meziantou.Analyzer": {
+        "type": "Transitive",
+        "resolved": "2.0.62",
+        "contentHash": "uG2CiDIm97q8KrUt8B34WdElpEDDLOe4YzrLWpwlQmesXrSX2WuJZ+HwIGWrJgDBBMi2a3tVjeF8oKjV+AhUdA=="
+      },
+      "Microsoft.Unity.Analyzers": {
+        "type": "Transitive",
+        "resolved": "1.17.0",
+        "contentHash": "yg1ThpevWnblJTCIzPw52EUzuzBHdjWT0yxpCfDgFT2ti6HLRB1ZZMoKYYx9U/egqQHL7cfHkPY5psLHCL9AoA=="
+      },
+      "Roslynator.Analyzers": {
+        "type": "Transitive",
+        "resolved": "4.3.0",
+        "contentHash": "NZNaV9DAYGHKZ753WfhtBj8eoP40LLJsA6JQXdzhF87iTZAdbKCgp32mI3cnQF4TMXz7bk+CgzF/kDG+m+9bCg=="
+      },
+      "Roslynator.CodeAnalysis.Analyzers": {
+        "type": "Transitive",
+        "resolved": "4.3.0",
+        "contentHash": "n5w4w/RE168IAaIFJruz7Qhig0OTGUwiXGGZa7ynvP9r4dcoMTFk+/xPnLNuiKuxX+ldjWpvaUiR4kNKREsoYg=="
+      },
+      "Roslynator.Formatting.Analyzers": {
+        "type": "Transitive",
+        "resolved": "4.3.0",
+        "contentHash": "fvPmVbNguTZbQoAxI6Onk76S+VN6NA2yAglOZFVqNj5D9C9b5o+IR2SttP9cB093KRzyjOzFmXDHnvAg1NEAqg=="
+      }
+    }
+  }
+}

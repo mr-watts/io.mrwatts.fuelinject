@@ -84,6 +84,8 @@ UserSettings
 # Include custom C# project configuration that enriches generated projects.
 *.sln
 *.csproj
+!CSharpProjFolders/RoslynAnalyzerNuGetDependencies/RoslynAnalyzerNuGetDependencies.csproj
+!CSharpProjFolders/UnityNuGetDependencies/UnityNuGetDependencies.csproj
 CSharpProjFolders/RoslynAnalyzerNuGetDependencies/Packages
 
 # Exclude this folder which can be used to store any local files related to this project that have no use in the repo

@@ -141,6 +141,11 @@ get-activation-file:
         - apt-get install -y dotnet-sdk-7.0
         - apt-get install -y default-jre libsaxonb-java
 
+        # Not strictly part of testing, but better to have this in a suboptimal place than to not have this at all.
+        # It can be extracted to a separate job later, which requires passing the right artifacts between steps.
+        - npm install --save-dev jsonjunit
+        - chmod +x ./ci/dotnet-build.sh && ./ci/dotnet-build.sh
+
         ## Install NuGet Dependencies.
         # Ignore post-processor task not being found first time.
         - dotnet restore CSharpProjFolders/UnityNuGetDependencies/UnityNuGetDependencies.csproj --locked-mode || true
@@ -157,6 +162,7 @@ get-activation-file:
             junit:
                 - $UNITY_DIR/$TEST_PLATFORM-junit-results.xml
                 - "$UNITY_DIR/$TEST_PLATFORM-coverage/coverage.xml"
+                - $UNITY_DIR/dotnet-build-errors-junit.xml
         expire_in: 2 weeks
     tags:
         - saas-linux-large-amd64

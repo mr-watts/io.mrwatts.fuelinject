@@ -141,12 +141,6 @@ get-activation-file:
         - apt-get install -y dotnet-sdk-7.0
         - apt-get install -y default-jre libsaxonb-java
 
-        # Not strictly part of testing, but better to have this in a suboptimal place than to not have this at all.
-        # It can be extracted to a separate job later, which requires passing the right artifacts between steps.
-        - apt-get install -y npm
-        - npm install --save-dev jsonjunit
-        - chmod +x ./ci/dotnet-build.sh && ./ci/dotnet-build.sh
-
         ## Install NuGet Dependencies.
         # Ignore post-processor task not being found first time.
         - dotnet restore CSharpProjFolders/UnityNuGetDependencies/UnityNuGetDependencies.csproj --locked-mode || true
@@ -154,6 +148,12 @@ get-activation-file:
 
         - chmod +x ./ci/test.sh && ./ci/test.sh
         - saxonb-xslt -s $UNITY_DIR/$TEST_PLATFORM-results.xml -xsl $CI_PROJECT_DIR/ci/nunit-transforms/nunit3-junit.xslt >$UNITY_DIR/$TEST_PLATFORM-junit-results.xml
+
+        # Not strictly part of testing, but better to have this in a suboptimal place than to not have this at all.
+        # It can be extracted to a separate job later, which requires passing the right artifacts between steps.
+        - apt-get install -y npm
+        - npm install --save-dev jsonjunit
+        - chmod +x ./ci/dotnet-build.sh && ./ci/dotnet-build.sh
     artifacts:
         when: always
         paths:

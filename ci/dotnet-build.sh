@@ -18,7 +18,7 @@ DOTNET_BUILD_EXIT_CODE=$?
 
 cat "$JUNIT_JSON_OUTPUT_FILE"
 
-npx jsonjunit --json ci --junit ci
+node node_modules/.bin/jsonjunit --json ci --junit ci
 
 rm $DOTNET_BUILD_LOG
 

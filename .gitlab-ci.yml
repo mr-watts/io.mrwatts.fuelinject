@@ -143,6 +143,7 @@ get-activation-file:
 
         # Not strictly part of testing, but better to have this in a suboptimal place than to not have this at all.
         # It can be extracted to a separate job later, which requires passing the right artifacts between steps.
+        - apt-get install -y npm
         - npm install --save-dev jsonjunit
         - chmod +x ./ci/dotnet-build.sh && ./ci/dotnet-build.sh
 
@@ -302,7 +303,7 @@ dotnet-format:
         - dotnet new console --no-restore --name=App --output=.
         - dotnet format --verify-no-changes --no-restore whitespace App.csproj --include=Assets/Scripts/ --include=Assets/Package/ --include=Assets/Tests/ --report report.json || EXIT_STATUS=$?
         - ci/dotnet-format-json-to-junit-json.sh < report.json > ci/junit-report.json
-        - npx jsonjunit --json ci --junit ci
+        - node node_modules/.bin/jsonjunit --json ci --junit ci
         - exit $EXIT_STATUS
     artifacts:
         when: always

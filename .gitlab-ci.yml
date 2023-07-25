@@ -18,6 +18,10 @@ variables:
     UNITY_PACKAGE_PATH: "Assets/Package/"
     NPM_REGISTRY_PATH: "//gitlab.com/api/v4/projects/27157125/packages/npm/"
 
+    MRWATTS_PRIVATE_PACKAGE_REGISTRY_USERNAME: gitlab-ci-token
+    MRWATTS_PRIVATE_PACKAGE_REGISTRY_PASSWORD: ${CI_JOB_TOKEN}
+    UNITY_INSTALLATION_BASE_PATH: /opt/unity-by-version
+
 image: $IMAGE:$UNITY_VERSION-base-$IMAGE_VERSION
 
 get-unity-version:
@@ -51,6 +55,10 @@ get-unity-version:
         - echo "[npmAuth.\"https://gitlab.com/api/v4/projects/27157125/packages/npm/\"]" > ~/.upmconfig.toml
         - echo "_authToken = \"${CI_JOB_TOKEN}\"" >> ~/.upmconfig.toml
         - echo "alwaysAuth = true" >> ~/.upmconfig.toml
+
+        # Create a versioned Unity suffix, used by the postprocessor task, as it scans by Unity version.
+        - mkdir /opt/unity-by-version
+        - ln -s /opt/unity "/opt/unity-by-version/$UNITY_VERSION"
 
         - chmod +x ./ci/before_script.sh && ./ci/before_script.sh
     needs:
@@ -132,9 +140,12 @@ get-activation-file:
         - apt-get update
         - apt-get install -y dotnet-sdk-7.0
         - apt-get install -y default-jre libsaxonb-java
+
+        ## Install NuGet Dependencies.
         # Ignore post-processor task not being found first time.
         - dotnet restore CSharpProjFolders/UnityNuGetDependencies/UnityNuGetDependencies.csproj --locked-mode || true
         - dotnet restore CSharpProjFolders/UnityNuGetDependencies/UnityNuGetDependencies.csproj --locked-mode
+
         - chmod +x ./ci/test.sh && ./ci/test.sh
         - saxonb-xslt -s $UNITY_DIR/$TEST_PLATFORM-results.xml -xsl $CI_PROJECT_DIR/ci/nunit-transforms/nunit3-junit.xslt >$UNITY_DIR/$TEST_PLATFORM-junit-results.xml
     artifacts:

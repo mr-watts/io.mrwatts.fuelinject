@@ -391,3 +391,54 @@ namespace Application
     }
 }
 ```
+
+# Package Development
+
+To run most CLI commands, you need a couple of environment variables to be set. These can be found in `.env.dist`. Ensure these are loaded in your environment. There are a couple of ways to do that:
+
+1. Export the variables in `.env.dist` manually:
+    1. [Using `$env:FOO = 'Bar'`](https://stackoverflow.com/a/714918) (PowerShell only)
+    1. Using `SET FOO=Bar` (Windows Command Prompt only)
+    1. Using `export FOO=BAR` (Bash and compatible shells only).
+        - With Bash, you can also put these in your `.bashrc` to not have to do this every time, if desired.
+    1. Prepend the variables in `.env.dist` to the command using `FOO=BAR BAZ=CUX dotnet ...` (Bash and compatible shells only).
+1. Copy `.env.dist` to `.env`, fill in the variables to your liking, and use something like [direnv](https://direnv.net/) to automatically load them into your environment. (That way you can use the same configuration for native and container builds.)
+
+## Installing NuGet Packages
+
+After all necessary variables are in your environment, in the project root folder:
+
+```sh
+dotnet restore CSharpProjFolders/UnityNuGetDependencies/UnityNuGetDependencies.csproj --locked-mode
+```
+
+**You might need to run it twice the first time due to [a bug](https://gitlab.com/mr-watts/medenvision/live-surgery/unity-live-surgery/-/merge_requests/32#note_1225443419).**
+
+After post-processing finishes, you can start or focus the Unity window of your project and let Unity import the dependencies.
+
+## Running Roslyn Analyzers
+
+Run the following to install them:
+
+```sh
+dotnet restore --locked-mode
+```
+
+**Look at the output**, it must say something like:
+
+```
+Determining projects to restore...
+  Restored /path/to/Project.csproj (in ... ms).
+```
+
+Sometimes when this command runs, it restores a completely different project despite the argument for an unknown reason and it won't work.
+
+After it finishes, restart OmniSharp and you should get the necessary highlighting in your editor.
+
+### Run Globally
+
+If you want to check for analyzer errors across the codebase in one go, run:
+
+```
+dotnet build
+```

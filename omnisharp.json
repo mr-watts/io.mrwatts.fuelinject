@@ -1,0 +1,15 @@
+﻿{
+    "RoslynExtensionsOptions": {
+        "EnableAnalyzersSupport": true,
+        "AnalyzeOpenDocumentsOnly": true,
+        "DocumentAnalysisTimeoutMs": 600000
+    },
+    "FormattingOptions": {
+        "enableEditorConfigSupport": true
+    },
+    "RenameOptions": {
+        "RenameInComments": true,
+        "RenameOverloads": true,
+        "RenameInStrings": true
+    }
+}

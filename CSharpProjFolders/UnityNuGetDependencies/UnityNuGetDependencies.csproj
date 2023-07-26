@@ -1,0 +1,42 @@
+<!--
+    This file acts as stub for installing NuGet dependencies for Unity using the .NET CLI.
+-->
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <TargetFramework>netstandard2.1</TargetFramework>
+        <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
+        <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+        <PostProcessDotNetPackagesForUnityAssemblyFile>$(PkgMrWatts_MSBuild_UnityPostProcessor)/lib/netstandard2.1/MSBuildUnityPostProcessor.dll</PostProcessDotNetPackagesForUnityAssemblyFile>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <!--
+            NOTE: You might want to disable Assembly Version Validation in your Unity project to allow loading two
+            packages that have a shared dependency, but only differ in minor or patch versions.
+
+            Note that disabling it will also no longer warn you if major versions mismatch!
+
+            The alternative is to have the package use floating versions, but this requires access to the culprit project:
+
+            https://docs.microsoft.com/en-us/nuget/concepts/dependency-resolution#floating-versions
+        -->
+        <PackageReference Include="Autofac" Version="6.4.0" />
+
+        <!-- Development dependencies. -->
+        <PackageReference Include="MrWatts.MSBuild.UnityPostProcessor" Version="1.0.6" GeneratePathProperty="true" PrivateAssets="all" />
+        <ProjectReference Include="../RoslynAnalyzerNuGetDependencies/RoslynAnalyzerNuGetDependencies.csproj" />
+    </ItemGroup>
+
+    <!-- NOTE: Necessary because a `dotnet restore` will not prune packages you remove automatically. -->
+    <Target Name="CleanUpUnityPackageFolder" BeforeTargets="Restore">
+        <Message Text="Cleaning up installed packages to start from a clean slate..." Importance="high" />
+        <RemoveDir Directories="$(NuGetPackageRoot)" />
+    </Target>
+
+    <UsingTask TaskName="UnityPostProcessor.PostProcessDotNetPackagesForUnity" AssemblyFile="$(PostProcessDotNetPackagesForUnityAssemblyFile)" />
+
+    <Target Name="PostProcessDotNetPackagesForUnity" AfterTargets="Restore">
+        <Message Text="Running post-processing script for Unity..." Importance="high" />
+        <PostProcessDotNetPackagesForUnity ProjectRoot="$(ProjectDir)/../../" PackageRoot="$(NuGetPackageRoot)" UnityInstallationBasePath="$(UNITY_INSTALLATION_BASE_PATH)" />
+    </Target>
+</Project>

@@ -141,6 +141,12 @@ Implement `ILateTickable` if your service needs to do something every frame, aft
 
 Implement `IDisposable` if your service needs to do something as the scene is unloaded. It is equivalent to `MonoBehaviour.OnDestroy`.
 
+## `IAsyncDisposable`
+
+Implement `IAsyncDisposable` if your service needs to do something as the scene is unloaded, and that task is asynchronous.
+
+All asynchronous disposables are executed _sequentially_ (i.e. not in parallel) by a `MonoBehaviour`.
+
 ## `ITerminatable`
 
 Implement `ITerminatable` if your service needs to do something as the application exits. It is equivalent to `MonoBehaviour.OnApplicationQuit`.

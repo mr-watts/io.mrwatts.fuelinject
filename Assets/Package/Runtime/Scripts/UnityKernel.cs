@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using UnityEngine;
 
 namespace MrWatts.Internal.FuelInject
@@ -17,6 +18,9 @@ namespace MrWatts.Internal.FuelInject
 
         [Inject]
         private ITickable? Tickable { get; set; }
+
+        [Inject]
+        private IAsyncTickable? AsyncTickable { get; set; }
 
         [Inject]
         private IFixedTickable? FixedTickable { get; set; }
@@ -38,6 +42,8 @@ namespace MrWatts.Internal.FuelInject
         [Inject]
         private IUnityKernelLogger? Logger { get; set; }
 
+        private ValueTask? currentAsyncTickableTask;
+
         private async void Start()
         {
             try
@@ -55,7 +61,7 @@ namespace MrWatts.Internal.FuelInject
             }
         }
 
-        private void Update()
+        private async void Update()
         {
             try
             {
@@ -64,6 +70,26 @@ namespace MrWatts.Internal.FuelInject
             catch (Exception exception)
             {
                 LogException(exception);
+            }
+
+            if (AsyncTickable is null || currentAsyncTickableTask is not null)
+            {
+                return;
+            }
+
+            try
+            {
+                currentAsyncTickableTask = AsyncTickable.TickAsync();
+
+                await (ValueTask)currentAsyncTickableTask;
+            }
+            catch (Exception exception)
+            {
+                LogException(exception);
+            }
+            finally
+            {
+                currentAsyncTickableTask = null;
             }
         }
 

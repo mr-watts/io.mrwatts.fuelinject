@@ -13,6 +13,7 @@ namespace MrWatts.Internal.FuelInject
             builder.RegisterComposite<CompositeInitializable, IInitializable>().SingleInstance();
             builder.RegisterComposite<CompositeAsyncInitializable, IAsyncInitializable>().SingleInstance();
             builder.RegisterComposite<CompositeTickable, ITickable>().SingleInstance();
+            builder.RegisterComposite<CompositeAsyncTickable, IAsyncTickable>().SingleInstance();
             builder.RegisterComposite<CompositeFixedTickable, IFixedTickable>().SingleInstance();
             builder.RegisterComposite<CompositeLateTickable, ILateTickable>().SingleInstance();
             builder.RegisterComposite<CompositeDisposable, IDisposable>().SingleInstance();

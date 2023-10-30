@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
 
@@ -20,7 +22,7 @@ namespace MrWatts.Internal.FuelInject
         private ITickable? Tickable { get; set; }
 
         [Inject]
-        private IAsyncTickable? AsyncTickable { get; set; }
+        private IEnumerable<IAsyncTickable>? AsyncTickables { get; set; }
 
         [Inject]
         private IFixedTickable? FixedTickable { get; set; }
@@ -42,7 +44,7 @@ namespace MrWatts.Internal.FuelInject
         [Inject]
         private IUnityKernelLogger? Logger { get; set; }
 
-        private ValueTask? currentAsyncTickableTask;
+        private ConcurrentDictionary<IAsyncTickable, Task> activeAsyncTickables = new();
 
         private async void Start()
         {
@@ -72,24 +74,36 @@ namespace MrWatts.Internal.FuelInject
                 LogException(exception);
             }
 
-            if (AsyncTickable is null || currentAsyncTickableTask is not null)
+            if (AsyncTickables is null)
             {
                 return;
             }
 
-            try
+            foreach (IAsyncTickable asyncTickable in AsyncTickables)
             {
-                currentAsyncTickableTask = AsyncTickable.TickAsync();
+                if (activeAsyncTickables.ContainsKey(asyncTickable))
+                {
+                    continue;
+                }
 
-                await (ValueTask)currentAsyncTickableTask;
-            }
-            catch (Exception exception)
-            {
-                LogException(exception);
-            }
-            finally
-            {
-                currentAsyncTickableTask = null;
+                Task task = asyncTickable.TickAsync().AsTask();
+
+                activeAsyncTickables.TryAdd(asyncTickable, task);
+
+                _ = task.ContinueWith(result =>
+                {
+                    try
+                    {
+                        if (result.IsFaulted)
+                        {
+                            LogException(result.Exception);
+                        }
+                    }
+                    finally
+                    {
+                        activeAsyncTickables.TryRemove(asyncTickable, out _);
+                    }
+                });
             }
         }
 

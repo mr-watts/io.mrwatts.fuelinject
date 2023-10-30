@@ -41,7 +41,37 @@ namespace MrWatts.Internal.FuelInject.TestProject.Tests.Behaviour
         }
 
         [UnityTest]
-        public IEnumerator OneCanBlockAllAsyncTickablesUntilFullyCompleted()
+        public IEnumerator BlocksItsOwnTickUntilLastRunFullyCompleted()
+        {
+            TaskCompletionSource<bool> completionSource = new();
+            var asyncTickable = new ConfigurableAsyncTickable(completionSource.Task);
+
+            IEnumerator sceneLoadingCoroutine = SetupScene(
+                "TestScene",
+                builder =>
+                {
+                    builder.RegisterInstance(asyncTickable).As<IAsyncTickable>();
+                }
+            );
+
+            yield return sceneLoadingCoroutine;
+            yield return new WaitForEndOfFrame();
+
+            Assert.IsFalse(asyncTickable.HasTicked);
+
+            yield return new WaitForEndOfFrame();
+
+            Assert.IsFalse(asyncTickable.HasTicked);
+
+            completionSource.SetResult(true);
+
+            yield return new WaitForEndOfFrame();
+
+            Assert.IsTrue(asyncTickable.HasTicked);
+        }
+
+        [UnityTest]
+        public IEnumerator OneAsyncTickableDoesNotBlockOthers()
         {
             TaskCompletionSource<bool> completionSource = new();
             var blockingAsyncTickable = new ConfigurableAsyncTickable(completionSource.Task);
@@ -59,20 +89,16 @@ namespace MrWatts.Internal.FuelInject.TestProject.Tests.Behaviour
             yield return sceneLoadingCoroutine;
             yield return new WaitForEndOfFrame();
 
-            Assert.IsFalse(workingAsyncTickable.HasTicked);
+            Assert.IsTrue(workingAsyncTickable.HasTicked);
             Assert.IsFalse(blockingAsyncTickable.HasTicked);
 
-            yield return new WaitForEndOfFrame();
-
-            Assert.IsFalse(workingAsyncTickable.HasTicked);
-            Assert.IsFalse(blockingAsyncTickable.HasTicked);
-
-            completionSource.SetResult(true);
+            workingAsyncTickable.Reset();
 
             yield return new WaitForEndOfFrame();
+            yield return new WaitTemporarilyUntil(() => workingAsyncTickable.HasTicked);
 
             Assert.IsTrue(workingAsyncTickable.HasTicked);
-            Assert.IsTrue(blockingAsyncTickable.HasTicked);
+            Assert.IsFalse(blockingAsyncTickable.HasTicked);
         }
 
         [UnityTest]

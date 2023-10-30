@@ -133,13 +133,13 @@ Implement `ITickable` if your service needs to do something every frame. It is e
 
 Implement `IAsyncTickable` if your service needs to do something every frame, and it is async.
 
-All asynchronous tickables are executed _sequentially_ (i.e. not in parallel) by a `MonoBehaviour` each frame, just like `ITickable` or the Unity `MonoBehaviour` `Update` method.
+All asynchronous tickables are executed _in parallel_ by a `MonoBehaviour` each frame, because this is usually the behaviour you want.
 
 If your asynchronous tickable does not finish before the frame ends, until it is done, its returned `Task`:
 
 -   **Does not block** and operates separately from non-async `ITickable`s.
--   Because they are not executed in parallel, **blocks** other `IAsyncTickable`s.
-    -   If you don't want this, you can manage tasks yourself in your `TickAsync` method by not `await`ing it, but you will need to `await` them at some point to ensure exceptions propagate correctly.
+-   Because they are executed in parallel, **does not block** other `IAsyncTickable`s.
+-   **Blocks** the same `IAsyncTickable` from executing again.
 -   Uses .NET's default scheduling logic, so **_usually_ doesn't operate on the main thread**.
     -   If you want to operate on the main thread, you can do so yourself by using a `MainThreadDispatcher` or similar.
 

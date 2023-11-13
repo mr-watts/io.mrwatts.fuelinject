@@ -24,7 +24,7 @@
 
         <!-- Development dependencies. -->
         <PackageReference Include="MrWatts.MSBuild.UnityPostProcessor" Version="1.0.6" GeneratePathProperty="true" PrivateAssets="all" />
-        <ProjectReference Include="../RoslynAnalyzerNuGetDependencies/RoslynAnalyzerNuGetDependencies.csproj" />
+        <ProjectReference Include="../RoslynAnalyzerDependencies.csproj" />
     </ItemGroup>
 
     <!-- NOTE: Necessary because a `dotnet restore` will not prune packages you remove automatically. -->

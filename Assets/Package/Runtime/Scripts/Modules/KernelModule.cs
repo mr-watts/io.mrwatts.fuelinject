@@ -17,7 +17,10 @@ namespace MrWatts.Internal.FuelInject
             builder.RegisterComposite<CompositeLateTickable, ILateTickable>().SingleInstance();
             builder.RegisterComposite<CompositeDisposable, IDisposable>().SingleInstance();
             builder.RegisterComposite<CompositeTerminatable, ITerminatable>().SingleInstance();
-            // builder.RegisterComposite<CompositeAsyncDisposable, IAsyncDisposable>();
+
+#if UNITY_2022_1_OR_NEWER
+            builder.RegisterComposite<CompositeAsyncDisposable, IAsyncDisposable>();
+#endif
         }
     }
 }

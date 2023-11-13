@@ -141,6 +141,12 @@ Implement `ILateTickable` if your service needs to do something every frame, aft
 
 Implement `IDisposable` if your service needs to do something as the scene is unloaded. It is equivalent to `MonoBehaviour.OnDestroy`.
 
+## `IAsyncDisposable`
+
+Implement `IAsyncDisposable` if your service needs to do something as the scene is unloaded, and that task is asynchronous.
+
+All asynchronous disposables are executed _sequentially_ (i.e. not in parallel) by a `MonoBehaviour`.
+
 ## `ITerminatable`
 
 Implement `ITerminatable` if your service needs to do something as the application exits. It is equivalent to `MonoBehaviour.OnApplicationQuit`.
@@ -409,7 +415,7 @@ To run most CLI commands, you need a couple of environment variables to be set. 
 After all necessary variables are in your environment, in the project root folder:
 
 ```sh
-dotnet restore CSharpProjFolders/UnityNuGetDependencies/UnityNuGetDependencies.csproj --locked-mode
+dotnet restore NuGetDependencies/Unity --locked-mode
 ```
 
 **You might need to run it twice the first time due to [a bug](https://gitlab.com/mr-watts/medenvision/live-surgery/unity-live-surgery/-/merge_requests/32#note_1225443419).**

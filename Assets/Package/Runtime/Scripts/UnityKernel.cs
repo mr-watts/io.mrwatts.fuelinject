@@ -30,8 +30,10 @@ namespace MrWatts.Internal.FuelInject
         [Inject]
         private ITerminatable? Terminatable { get; set; }
 
-        // [Inject]
-        // private IAsyncDisposable AsyncDisposable { get; set; }
+#if UNITY_2022_1_OR_NEWER
+        [Inject]
+        private IAsyncDisposable? AsyncDisposable { get; set; }
+#endif
 
         [Inject]
         private IUnityKernelLogger? Logger { get; set; }
@@ -89,16 +91,22 @@ namespace MrWatts.Internal.FuelInject
             }
         }
 
+#if UNITY_2022_1_OR_NEWER
+        private async void OnDestroy()
+#else
         private void OnDestroy()
+#endif
         {
             try
             {
                 Disposable?.Dispose();
 
-                /*if (AsyncDisposable is not null)
+#if UNITY_2022_1_OR_NEWER
+                if (AsyncDisposable is not null)
                 {
                     await AsyncDisposable.DisposeAsync();
-                }*/
+                }
+#endif
             }
             catch (Exception exception)
             {

@@ -409,7 +409,7 @@ To run most CLI commands, you need a couple of environment variables to be set. 
 After all necessary variables are in your environment, in the project root folder:
 
 ```sh
-dotnet restore CSharpProjFolders/UnityNuGetDependencies/UnityNuGetDependencies.csproj --locked-mode
+dotnet restore NuGetDependencies/Unity --locked-mode
 ```
 
 **You might need to run it twice the first time due to [a bug](https://gitlab.com/mr-watts/medenvision/live-surgery/unity-live-surgery/-/merge_requests/32#note_1225443419).**

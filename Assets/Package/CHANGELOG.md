@@ -1,3 +1,7 @@
+# Unreleased
+
+-   `IAsyncDisposable` is now supported on Unity >= 2022.
+
 # 0.5.0
 
 -   `ITerminatable` is now available to allow subscribing to the application exiting.

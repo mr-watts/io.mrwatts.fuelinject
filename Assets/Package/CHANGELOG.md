@@ -1,5 +1,9 @@
 # Unreleased
 
+-   No changes yet.
+
+# 0.6.0
+
 -   `IAsyncTickable` is now supported.
 -   `IAsyncDisposable` is now supported on Unity >= 2022.
 

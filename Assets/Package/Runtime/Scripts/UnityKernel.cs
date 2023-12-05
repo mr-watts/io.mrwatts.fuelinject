@@ -63,7 +63,7 @@ namespace MrWatts.Internal.FuelInject
             }
         }
 
-        private async void Update()
+        private void Update()
         {
             try
             {

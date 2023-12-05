@@ -5,7 +5,6 @@ using Autofac;
 using MrWatts.Internal.FuelInject.Testing;
 using MrWatts.Internal.FuelInject.Testing.Utility;
 using NUnit.Framework;
-using UnityEngine;
 using UnityEngine.TestTools;
 
 namespace MrWatts.Internal.FuelInject.TestProject.Tests.Behaviour
@@ -29,13 +28,13 @@ namespace MrWatts.Internal.FuelInject.TestProject.Tests.Behaviour
             Assert.IsFalse(asyncTickable.HasTicked);
 
             yield return sceneLoadingCoroutine;
-            yield return new WaitForEndOfFrame();
+            yield return null;
 
             Assert.IsTrue(asyncTickable.HasTicked);
 
             asyncTickable.Reset();
 
-            yield return new WaitForEndOfFrame();
+            yield return null;
 
             Assert.IsTrue(asyncTickable.HasTicked);
         }
@@ -55,17 +54,17 @@ namespace MrWatts.Internal.FuelInject.TestProject.Tests.Behaviour
             );
 
             yield return sceneLoadingCoroutine;
-            yield return new WaitForEndOfFrame();
+            yield return null;
 
             Assert.IsFalse(asyncTickable.HasTicked);
 
-            yield return new WaitForEndOfFrame();
+            yield return null;
 
             Assert.IsFalse(asyncTickable.HasTicked);
 
             completionSource.SetResult(true);
 
-            yield return new WaitForEndOfFrame();
+            yield return null;
 
             Assert.IsTrue(asyncTickable.HasTicked);
         }
@@ -87,14 +86,14 @@ namespace MrWatts.Internal.FuelInject.TestProject.Tests.Behaviour
             );
 
             yield return sceneLoadingCoroutine;
-            yield return new WaitForEndOfFrame();
+            yield return null;
 
             Assert.IsTrue(workingAsyncTickable.HasTicked);
             Assert.IsFalse(blockingAsyncTickable.HasTicked);
 
             workingAsyncTickable.Reset();
 
-            yield return new WaitForEndOfFrame();
+            yield return null;
             yield return new WaitTemporarilyUntil(() => workingAsyncTickable.HasTicked);
 
             Assert.IsTrue(workingAsyncTickable.HasTicked);

@@ -129,6 +129,20 @@ All asynchronous initializables are executed _sequentially_ (i.e. not in paralle
 
 Implement `ITickable` if your service needs to do something every frame. It is equivalent to `MonoBehaviour.Update`.
 
+## `IAsyncTickable`
+
+Implement `IAsyncTickable` if your service needs to do something every frame, and it is async.
+
+All asynchronous tickables are executed _in parallel_ by a `MonoBehaviour` each frame, because this is usually the behaviour you want.
+
+If your asynchronous tickable does not finish before the frame ends, until it is done, its returned `Task`:
+
+-   **Does not block** and operates separately from non-async `ITickable`s.
+-   Because they are executed in parallel, **does not block** other `IAsyncTickable`s.
+-   **Blocks** the same `IAsyncTickable` from executing again.
+-   Uses .NET's default scheduling logic, so **_usually_ doesn't operate on the main thread**.
+    -   If you want to operate on the main thread, you can do so yourself by using a `MainThreadDispatcher` or similar.
+
 ## `IFixedTickable`
 
 Implement `ITickable` if your service needs to do something every physics system frame. It is equivalent to `MonoBehaviour.FixedUpdate`.

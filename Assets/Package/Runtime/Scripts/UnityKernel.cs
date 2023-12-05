@@ -1,4 +1,7 @@
 using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 
 namespace MrWatts.Internal.FuelInject
@@ -19,6 +22,9 @@ namespace MrWatts.Internal.FuelInject
         private ITickable? Tickable { get; set; }
 
         [Inject]
+        private IEnumerable<IAsyncTickable>? AsyncTickables { get; set; }
+
+        [Inject]
         private IFixedTickable? FixedTickable { get; set; }
 
         [Inject]
@@ -37,6 +43,8 @@ namespace MrWatts.Internal.FuelInject
 
         [Inject]
         private IUnityKernelLogger? Logger { get; set; }
+
+        private ConcurrentDictionary<IAsyncTickable, Task> activeAsyncTickables = new();
 
         private async void Start()
         {
@@ -64,6 +72,38 @@ namespace MrWatts.Internal.FuelInject
             catch (Exception exception)
             {
                 LogException(exception);
+            }
+
+            if (AsyncTickables is null)
+            {
+                return;
+            }
+
+            foreach (IAsyncTickable asyncTickable in AsyncTickables)
+            {
+                if (activeAsyncTickables.ContainsKey(asyncTickable))
+                {
+                    continue;
+                }
+
+                Task task = asyncTickable.TickAsync().AsTask();
+
+                activeAsyncTickables.TryAdd(asyncTickable, task);
+
+                _ = task.ContinueWith(result =>
+                {
+                    try
+                    {
+                        if (result.IsFaulted)
+                        {
+                            LogException(result.Exception);
+                        }
+                    }
+                    finally
+                    {
+                        activeAsyncTickables.TryRemove(asyncTickable, out _);
+                    }
+                });
             }
         }
 

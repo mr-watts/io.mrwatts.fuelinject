@@ -131,11 +131,7 @@ namespace MrWatts.Internal.FuelInject
             }
         }
 
-#if UNITY_2022_1_OR_NEWER
-        private async void OnDestroy()
-#else
         private void OnDestroy()
-#endif
         {
             try
             {
@@ -144,7 +140,13 @@ namespace MrWatts.Internal.FuelInject
 #if UNITY_2022_1_OR_NEWER
                 if (AsyncDisposable is not null)
                 {
-                    await AsyncDisposable.DisposeAsync();
+                    /*
+                        We use Wait instead of 'await' with async void since Unity won't wait for OnDestroy to finish
+                        with the latter anyway, and if we don't block, Android devices such as the Quest 3 will not wait
+                        for the task to finish before definitively terminating the application, killing these pending
+                        tasks.
+                    */
+                    AsyncDisposable.DisposeAsync().AsTask().Wait();
                 }
 #endif
             }

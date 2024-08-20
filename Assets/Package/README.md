@@ -237,9 +237,9 @@ As instantiating `GameObject`s by cloning prefabs or other `GameObject`s and inj
 ```cs
 class Foo
 {
-    private readonly IGameObjectInjector instantiator;
+    private readonly IGameObjectInstantiator instantiator;
 
-    public Foo(IGameObjectInjector instantiator)
+    public Foo(IGameObjectInstantiator instantiator)
     {
         this.instantiator = instantiator;
     }

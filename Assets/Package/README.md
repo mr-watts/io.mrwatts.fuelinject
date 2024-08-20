@@ -125,6 +125,8 @@ Implement `IAsyncInitializable` if your service needs to do something on startup
 
 All asynchronous initializables are executed _sequentially_ (i.e. not in parallel) by a `MonoBehaviour` after the container is fully built, _after_ all synchronous initializables are done initializing.
 
+Note that this blocks until the task is done using `Task.Wait()`, as devices such as the Meta Quest 3 (Android) do not wait for pending tasks to close before fully closing the application, resulting in pending `IAsyncDisposable`s to be terminated early.
+
 ## `ITickable`
 
 Implement `ITickable` if your service needs to do something every frame. It is equivalent to `MonoBehaviour.Update`.

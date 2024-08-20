@@ -2,6 +2,10 @@
 
 -   No changes yet.
 
+# 0.6.1
+
+-   Fix `IAsyncDisposable`s not being properly awaited on Android devices, resulting in pending tasks being killed.
+
 # 0.6.0
 
 -   `IAsyncTickable` is now supported.

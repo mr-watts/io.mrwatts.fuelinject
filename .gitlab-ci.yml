@@ -134,11 +134,8 @@ get-activation-file:
         # This could be made faster by adding these packages to base image or running in a separate job (and step)
         # We could use an image with these two depencencies only and only do the saxonb-xslt command on
         # previous job's artifacts
-        - wget https://packages.microsoft.com/config/ubuntu/18.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb
-        - dpkg -i packages-microsoft-prod.deb
-        - rm packages-microsoft-prod.deb
         - apt-get update
-        - apt-get install -y dotnet-sdk-7.0
+        - apt-get install -y dotnet-sdk-8.0
         - apt-get install -y python3
         - apt-get install -y default-jre libsaxonb-java
 

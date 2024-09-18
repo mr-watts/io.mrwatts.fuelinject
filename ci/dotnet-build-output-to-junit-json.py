@@ -22,19 +22,13 @@ for line in fileinput.input():
         tests_by_file[file] = []
 
     tests_by_file[file].append({
-        "title": matches.group('file'),
+        "title": matches.group('analyzerCode') or 'Unknown',
+        "state": "failed",
+        "fail": True,
         "duration": 0,
-        "tests": [
-            {
-                "title": matches.group('analyzerCode') or 'Unknown',
-                "state": "failed",
-                "fail": True,
-                "duration": 0,
-                "err": {
-                    "message": f"{matches.group('severity').upper()}: {matches.group('line')}:{matches.group('column')}: {matches.group('message').strip()}"
-                }
-            }
-        ]
+        "err": {
+            "message": f"{matches.group('severity').upper()}: {matches.group('line')}:{matches.group('column')}: {matches.group('message').strip()}"
+        }
     })
 
 suites = []

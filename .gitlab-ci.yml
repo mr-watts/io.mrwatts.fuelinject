@@ -161,7 +161,7 @@ get-activation-file:
             junit:
                 - $UNITY_DIR/$TEST_PLATFORM-junit-results.xml
                 - "$UNITY_DIR/$TEST_PLATFORM-coverage/coverage.xml"
-                - $UNITY_DIR/dotnet-build-errors-junit.xml
+                - $UNITY_DIR/ci/dotnet-build-errors-junit.xml
         expire_in: 2 weeks
     tags:
         - saas-linux-large-amd64

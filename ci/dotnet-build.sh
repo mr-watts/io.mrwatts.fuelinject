@@ -26,7 +26,7 @@ fi
 echo "Running .NET build"
 
 DOTNET_BUILD_LOG="/tmp/dotnet-build.log"
-JUNIT_JSON_OUTPUT_FILE="$UNITY_DIR/dotnet-build-errors-junit.json"
+JUNIT_JSON_OUTPUT_FILE="$UNITY_DIR/ci/dotnet-build-errors-junit.json"
 
 chmod +x ./ci/dotnet-build-output-to-junit-json.py
 

@@ -24,11 +24,12 @@ for line in fileinput.input():
         tests_by_file[file] = []
 
     file_name = Path(file).name
+    is_failure = matches.group('severity').upper() == 'ERROR'
 
     tests_by_file[file].append({
         "title": f"{file_name} ({matches.group('analyzerCode') or 'Unknown'})",
-        "state": "failed",
-        "fail": True,
+        "state":  "failed",
+        "fail": is_failure,
         "duration": 0,
         "err": {
             "message": f"{matches.group('severity').upper()}: {matches.group('line')}:{matches.group('column')}: {matches.group('message').strip()}"

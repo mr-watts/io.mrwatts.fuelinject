@@ -1,5 +1,14 @@
 # Unreleased
 
+-   No changes yet.
+
+# 0.6.1
+
+-   Fix `IAsyncDisposable`s not being properly awaited on Android devices, resulting in pending tasks being killed.
+
+# 0.6.0
+
+-   `IAsyncTickable` is now supported.
 -   `IAsyncDisposable` is now supported on Unity >= 2022.
 
 # 0.5.0

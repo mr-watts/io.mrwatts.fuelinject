@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_EnablePreReleasePackages: 0
-  m_EnablePackageDependencies: 0
   m_AdvancedSettingsExpanded: 1
   m_ScopedRegistriesSettingsExpanded: 1
   m_SeeAllPackageVersions: 0
+  m_DismissPreviewPackagesInUse: 0
   oneTimeWarningShown: 0
   m_Registries:
   - m_Id: main
@@ -26,15 +26,6 @@ MonoBehaviour:
     m_IsDefault: 1
     m_Capabilities: 7
     m_ConfigSource: 0
-  - m_Id: scoped:project:OpenUPM
-    m_Name: OpenUPM
-    m_Url: https://package.openupm.com
-    m_Scopes:
-    - com.tsk.ide.vscode
-    - com.serilog.sinks.unity3d
-    m_IsDefault: 0
-    m_Capabilities: 0
-    m_ConfigSource: 4
   - m_Id: scoped:project:Mr. Watts UPM Registry
     m_Name: Mr. Watts UPM Registry
     m_Url: https://gitlab.com/api/v4/projects/27157125/packages/npm
@@ -43,7 +34,7 @@ MonoBehaviour:
     m_IsDefault: 0
     m_Capabilities: 0
     m_ConfigSource: 4
-  m_UserSelectedRegistryName: OpenUPM
+  m_UserSelectedRegistryName: Mr. Watts UPM Registry
   m_UserAddingNewScopedRegistry: 0
   m_RegistryInfoDraft:
     m_Modified: 0

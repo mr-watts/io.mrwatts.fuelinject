@@ -125,9 +125,25 @@ Implement `IAsyncInitializable` if your service needs to do something on startup
 
 All asynchronous initializables are executed _sequentially_ (i.e. not in parallel) by a `MonoBehaviour` after the container is fully built, _after_ all synchronous initializables are done initializing.
 
+Note that this blocks until the task is done using `Task.Wait()`, as devices such as the Meta Quest 3 (Android) do not wait for pending tasks to close before fully closing the application, resulting in pending `IAsyncDisposable`s to be terminated early.
+
 ## `ITickable`
 
 Implement `ITickable` if your service needs to do something every frame. It is equivalent to `MonoBehaviour.Update`.
+
+## `IAsyncTickable`
+
+Implement `IAsyncTickable` if your service needs to do something every frame, and it is async.
+
+All asynchronous tickables are executed _in parallel_ by a `MonoBehaviour` each frame, because this is usually the behaviour you want.
+
+If your asynchronous tickable does not finish before the frame ends, until it is done, its returned `Task`:
+
+-   **Does not block** and operates separately from non-async `ITickable`s.
+-   Because they are executed in parallel, **does not block** other `IAsyncTickable`s.
+-   **Blocks** the same `IAsyncTickable` from executing again.
+-   Uses .NET's default scheduling logic, so **_usually_ doesn't operate on the main thread**.
+    -   If you want to operate on the main thread, you can do so yourself by using a `MainThreadDispatcher` or similar.
 
 ## `IFixedTickable`
 
@@ -221,9 +237,9 @@ As instantiating `GameObject`s by cloning prefabs or other `GameObject`s and inj
 ```cs
 class Foo
 {
-    private readonly IGameObjectInjector instantiator;
+    private readonly IGameObjectInstantiator instantiator;
 
-    public Foo(IGameObjectInjector instantiator)
+    public Foo(IGameObjectInstantiator instantiator)
     {
         this.instantiator = instantiator;
     }

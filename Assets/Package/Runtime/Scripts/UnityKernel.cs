@@ -1,4 +1,7 @@
 using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 
 namespace MrWatts.Internal.FuelInject
@@ -19,6 +22,9 @@ namespace MrWatts.Internal.FuelInject
         private ITickable? Tickable { get; set; }
 
         [Inject]
+        private IEnumerable<IAsyncTickable>? AsyncTickables { get; set; }
+
+        [Inject]
         private IFixedTickable? FixedTickable { get; set; }
 
         [Inject]
@@ -37,6 +43,8 @@ namespace MrWatts.Internal.FuelInject
 
         [Inject]
         private IUnityKernelLogger? Logger { get; set; }
+
+        private ConcurrentDictionary<IAsyncTickable, Task> activeAsyncTickables = new();
 
         private async void Start()
         {
@@ -65,6 +73,38 @@ namespace MrWatts.Internal.FuelInject
             {
                 LogException(exception);
             }
+
+            if (AsyncTickables is null)
+            {
+                return;
+            }
+
+            foreach (IAsyncTickable asyncTickable in AsyncTickables)
+            {
+                if (activeAsyncTickables.ContainsKey(asyncTickable))
+                {
+                    continue;
+                }
+
+                Task task = asyncTickable.TickAsync().AsTask();
+
+                activeAsyncTickables.TryAdd(asyncTickable, task);
+
+                _ = task.ContinueWith(result =>
+                {
+                    try
+                    {
+                        if (result.IsFaulted)
+                        {
+                            LogException(result.Exception);
+                        }
+                    }
+                    finally
+                    {
+                        activeAsyncTickables.TryRemove(asyncTickable, out _);
+                    }
+                });
+            }
         }
 
         private void FixedUpdate()
@@ -91,11 +131,7 @@ namespace MrWatts.Internal.FuelInject
             }
         }
 
-#if UNITY_2022_1_OR_NEWER
-        private async void OnDestroy()
-#else
         private void OnDestroy()
-#endif
         {
             try
             {
@@ -104,7 +140,13 @@ namespace MrWatts.Internal.FuelInject
 #if UNITY_2022_1_OR_NEWER
                 if (AsyncDisposable is not null)
                 {
-                    await AsyncDisposable.DisposeAsync();
+                    /*
+                        We use Wait instead of 'await' with async void since Unity won't wait for OnDestroy to finish
+                        with the latter anyway, and if we don't block, Android devices such as the Quest 3 will not wait
+                        for the task to finish before definitively terminating the application, killing these pending
+                        tasks.
+                    */
+                    AsyncDisposable.DisposeAsync().AsTask().Wait();
                 }
 #endif
             }

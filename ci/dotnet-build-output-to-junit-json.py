@@ -6,6 +6,8 @@ import json
 import time
 import fileinput
 
+from pathlib import Path
+
 expression = re.compile('(?P<file>.+)\((?P<line>\d+),(?P<column>\d+)\): (?P<severity>error|warning) (?:(?P<analyzerCode>\w+): )?(?P<message>.+)\[(?P<csprojPath>.+)\]')
 
 tests_by_file = {}
@@ -21,8 +23,10 @@ for line in fileinput.input():
     if file not in tests_by_file:
         tests_by_file[file] = []
 
+    file_name = Path(file).name
+
     tests_by_file[file].append({
-        "title": matches.group('analyzerCode') or 'Unknown',
+        "title": f"{file_name} ({matches.group('analyzerCode') or 'Unknown'})",
         "state": "failed",
         "fail": True,
         "duration": 0,

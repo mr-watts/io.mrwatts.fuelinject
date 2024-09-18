@@ -1,4 +1,7 @@
 #if UNITY_EDITOR
+
+#pragma warning disable
+
 using System;
 using UnityEditor;
 using System.Reflection;

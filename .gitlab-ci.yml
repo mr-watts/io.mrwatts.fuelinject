@@ -136,7 +136,6 @@ get-activation-file:
         # previous job's artifacts
         - apt-get update
         - apt-get install -y dotnet-sdk-8.0
-        - apt-get install -y python3
         - apt-get install -y default-jre libsaxonb-java
 
         ## Install NuGet Dependencies.
@@ -146,12 +145,6 @@ get-activation-file:
 
         - chmod +x ./ci/test.sh && ./ci/test.sh
         - saxonb-xslt -s $UNITY_DIR/$TEST_PLATFORM-results.xml -xsl $CI_PROJECT_DIR/ci/nunit-transforms/nunit3-junit.xslt >$UNITY_DIR/$TEST_PLATFORM-junit-results.xml
-
-        # Not strictly part of testing, but better to have this in a suboptimal place than to not have this at all.
-        # It can be extracted to a separate job later, which requires passing the right artifacts between steps.
-        - apt-get install -y npm
-        - npm install --save-dev jsonjunit
-        - chmod +x ./ci/dotnet-build.sh && ./ci/dotnet-build.sh
     artifacts:
         when: always
         paths:
@@ -161,7 +154,6 @@ get-activation-file:
             junit:
                 - $UNITY_DIR/$TEST_PLATFORM-junit-results.xml
                 - "$UNITY_DIR/$TEST_PLATFORM-coverage/coverage.xml"
-                - $UNITY_DIR/ci/dotnet-build-errors-junit.xml
         expire_in: 2 weeks
     tags:
         - saas-linux-large-amd64
@@ -287,6 +279,35 @@ test-playmode-with-junit-reports:
 #     only:
 #         - $CI_DEFAULT_BRANCH
 
+dotnet-analyzers:
+    stage: build_and_test
+    <<: *unity_defaults
+    script:
+        # This could be made faster by adding these packages to base image or running in a separate job (and step)
+        # We could use an image with these two depencencies only and only do the saxonb-xslt command on
+        # previous job's artifacts
+        - apt-get update
+        - apt-get install -y dotnet-sdk-8.0 python3 npm
+        - npm install --save-dev jsonjunit
+
+        ## Install NuGet Dependencies.
+        # Ignore post-processor task not being found first time.
+        - dotnet restore NuGetDependencies/Unity --locked-mode || true
+        - dotnet restore NuGetDependencies/Unity --locked-mode
+
+        - chmod +x ./ci/dotnet-build.sh && ./ci/dotnet-build.sh
+    artifacts:
+        when: always
+        paths:
+            - $UNITY_DIR/ci/dotnet-build-errors-junit.json
+            - $UNITY_DIR/ci/dotnet-build-errors-junit.xml
+        reports:
+            junit:
+                - $UNITY_DIR/ci/dotnet-build-errors-junit.xml
+        expire_in: 2 weeks
+    tags:
+        - saas-linux-large-amd64
+
 dotnet-format:
     image: mcr.microsoft.com/dotnet/sdk:6.0-alpine
     stage: build_and_test
@@ -307,6 +328,8 @@ dotnet-format:
         when: always
         paths:
             - report.json
+            - ci/junit-report.json
+            - ci/junit-report.xml
         reports:
             junit:
                 - ci/junit-report.xml

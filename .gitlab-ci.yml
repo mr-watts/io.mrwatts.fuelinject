@@ -279,6 +279,35 @@ test-playmode-with-junit-reports:
 #     only:
 #         - $CI_DEFAULT_BRANCH
 
+dotnet-analyzers:
+    stage: build_and_test
+    <<: *unity_defaults
+    script:
+        # This could be made faster by adding these packages to base image or running in a separate job (and step)
+        # We could use an image with these two depencencies only and only do the saxonb-xslt command on
+        # previous job's artifacts
+        - apt-get update
+        - apt-get install -y dotnet-sdk-8.0 python3 npm
+        - npm install --save-dev jsonjunit
+
+        ## Install NuGet Dependencies.
+        # Ignore post-processor task not being found first time.
+        - dotnet restore NuGetDependencies/Unity --locked-mode || true
+        - dotnet restore NuGetDependencies/Unity --locked-mode
+
+        - chmod +x ./ci/dotnet-build.sh && ./ci/dotnet-build.sh
+    artifacts:
+        when: always
+        paths:
+            - $UNITY_DIR/ci/dotnet-build-errors-junit.json
+            - $UNITY_DIR/ci/dotnet-build-errors-junit.xml
+        reports:
+            junit:
+                - $UNITY_DIR/ci/dotnet-build-errors-junit.xml
+        expire_in: 2 weeks
+    tags:
+        - saas-linux-large-amd64
+
 dotnet-format:
     image: mcr.microsoft.com/dotnet/sdk:6.0-alpine
     stage: build_and_test
@@ -293,12 +322,14 @@ dotnet-format:
         - dotnet new console --no-restore --name=App --output=.
         - dotnet format --verify-no-changes --no-restore whitespace App.csproj --include=Assets/Scripts/ --include=Assets/Package/ --include=Assets/Tests/ --report report.json || EXIT_STATUS=$?
         - ci/dotnet-format-json-to-junit-json.sh < report.json > ci/junit-report.json
-        - npx jsonjunit --json ci --junit ci
+        - node node_modules/.bin/jsonjunit --json ci --junit ci
         - exit $EXIT_STATUS
     artifacts:
         when: always
         paths:
             - report.json
+            - ci/junit-report.json
+            - ci/junit-report.xml
         reports:
             junit:
                 - ci/junit-report.xml

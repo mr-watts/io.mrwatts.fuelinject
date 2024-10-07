@@ -1,4 +1,6 @@
 namespace MrWatts.Internal.FuelInject.TestProject
 {
-    public sealed class Bar : IBar{}
+    public sealed class Bar : IBar
+    {
+    }
 }

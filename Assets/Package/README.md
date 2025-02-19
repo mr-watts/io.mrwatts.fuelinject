@@ -431,33 +431,12 @@ To run most CLI commands, you need a couple of environment variables to be set. 
 After all necessary variables are in your environment, in the project root folder:
 
 ```sh
-dotnet restore NuGetDependencies/Unity --locked-mode
+dotnet msbuild -target:PostProcessDotNetPackagesForUnity -restore NuGetDependencies/Unity/
 ```
-
-**You might need to run it twice the first time due to [a bug](https://gitlab.com/mr-watts/medenvision/live-surgery/unity-live-surgery/-/merge_requests/32#note_1225443419).**
 
 After post-processing finishes, you can start or focus the Unity window of your project and let Unity import the dependencies.
 
 ## Running Roslyn Analyzers
-
-Run the following to install them:
-
-```sh
-dotnet restore --locked-mode
-```
-
-**Look at the output**, it must say something like:
-
-```
-Determining projects to restore...
-  Restored /path/to/Project.csproj (in ... ms).
-```
-
-Sometimes when this command runs, it restores a completely different project despite the argument for an unknown reason and it won't work.
-
-After it finishes, restart OmniSharp and you should get the necessary highlighting in your editor.
-
-### Run Globally
 
 If you want to check for analyzer errors across the codebase in one go, run:
 

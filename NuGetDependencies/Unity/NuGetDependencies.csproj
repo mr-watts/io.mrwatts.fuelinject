@@ -23,20 +23,32 @@
         <PackageReference Include="Autofac" Version="6.4.0" />
 
         <!-- Development dependencies. -->
-        <PackageReference Include="MrWatts.MSBuild.UnityPostProcessor" Version="1.0.6" GeneratePathProperty="true" PrivateAssets="all" />
-        <ProjectReference Include="../RoslynAnalyzerDependencies.csproj" />
+        <PackageReference Include="MrWatts.MSBuild.UnityPostProcessor" Version="1.2.2" GeneratePathProperty="true" PrivateAssets="all" />
     </ItemGroup>
+
+    <Import Project="../RoslynAnalyzerDependencies.targets" />
 
     <!-- NOTE: Necessary because a `dotnet restore` will not prune packages you remove automatically. -->
     <Target Name="CleanUpUnityPackageFolder" BeforeTargets="Restore">
         <Message Text="Cleaning up installed packages to start from a clean slate..." Importance="high" />
-        <RemoveDir Directories="$(NuGetPackageRoot)" />
+
+        <!-- We can't use NuGetPackageRoot here due to it not being available yet before restore, so read the value explicitly. -->
+        <XmlPeek XmlInputPath="nuget.config" Query="configuration/config/add[@key='globalPackagesFolder']/@value">
+            <Output TaskParameter="Result" ItemName="value" />
+        </XmlPeek>
+
+        <RemoveDir Directories="@(value)" />
     </Target>
 
     <UsingTask TaskName="UnityPostProcessor.PostProcessDotNetPackagesForUnity" AssemblyFile="$(PostProcessDotNetPackagesForUnityAssemblyFile)" />
 
-    <Target Name="PostProcessDotNetPackagesForUnity" AfterTargets="Restore">
+    <Target Name="PostProcessDotNetPackagesForUnity">
         <Message Text="Running post-processing script for Unity..." Importance="high" />
-        <PostProcessDotNetPackagesForUnity ProjectRoot="$(ProjectDir)/../../" PackageRoot="$(NuGetPackageRoot)" UnityInstallationBasePath="$(UNITY_INSTALLATION_BASE_PATH)" />
+        <PostProcessDotNetPackagesForUnity ProjectRoot="$(ProjectDir)/../../" PackageRoot="$(NuGetPackageRoot)" UnityInstallationBasePath="$(UNITY_INSTALLATION_BASE_PATH)" GenerateAssemblyDefinitionsPerPackageVersion="true" />
+    </Target>
+
+    <Target Name="InstallCodingConventionsEditorConfig" AfterTargets="PostProcessDotNetPackagesForUnity">
+        <Message Text="Setting root .editorconfig in Unity project root to global one in Code Analysis Rulesets..." Importance="high" />
+        <Copy SourceFiles="$(PkgMrWatts_CodeAnalysisRulesets)/Editorconfigs/Global.editorconfig" DestinationFiles="$(ProjectDir)/../../.editorconfig" UseSymbolicLinksIfPossible="True" SkipUnchangedFiles="True" />
     </Target>
 </Project>

@@ -1,0 +1,19 @@
+<!--
+    This project file contains dependencies that should be used by both your IDE or language server (e.g. OmniSharp)
+    _and_ Unity. The C# project files for both import this one.
+-->
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <!--
+            NOTE: To avoid warnings about this in Unity about nullable contexts globally, add "-nowarn:CS8632" to the
+            additional compiler arguments in the project settings.
+        -->
+        <Nullable>enable</Nullable>
+
+        <CodeAnalysisRuleSet>Assets/Packages/NuGet/mrwatts.codeanalysisrulesets/3.3.0/Code Analysis Rulesets/CSharp/Ruleset.xml</CodeAnalysisRuleSet>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="MrWatts.CodeAnalysisRulesets" Version="3.3.0" GeneratePathProperty="true" />
+    </ItemGroup>
+</Project>

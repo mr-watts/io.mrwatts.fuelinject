@@ -69,6 +69,7 @@ Assets/Plugins/Github.meta
 Assets/Plugins/Github/
 
 # Exclude packages which are automatically installed.
+.editorconfig
 Assets/Packages/NuGet
 
 # Some packages allow installing Samples, we don't need these in the repo

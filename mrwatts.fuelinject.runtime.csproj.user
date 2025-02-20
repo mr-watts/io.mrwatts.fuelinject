@@ -4,29 +4,17 @@
     See also: https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/configure-language-version#configure-multiple-projects
 -->
 <Project>
-    <ItemGroup>
-        <!--
-            This trick pulls in the Roslyn analyzers to the Scripts C# project just for IDEs/OmniSharp, without making
-            Unity do so.
+    <!--
+        This trick pulls in Roslyn analyzers, its configuration, and other configuration we apply such as nullability
+        checks to the C# project just for IDEs/OmniSharp, without making Unity do so.
 
-            Because the nuget.config in this folder does not specify an installation path, these analyzers and their
-            dependencies are installed separately in your global NuGet cache folder and are independent of what is used
-            by Unity.
+        Because the nuget.config in this folder does not specify an installation path, these analyzers and their
+        dependencies are installed separately in your global NuGet cache folder and are independent of what is used
+        by Unity.
 
-            (We can't use NuGetDependencies/Unity/NuGetDependencies.csproj directly because this project will then restore
-            that project, which will look at the nuget.config next to it, and overwrite packages inside the Unity package
-            folder in Assets/Packages/Unity.)
-        -->
-        <ProjectReference Include="NuGetDependencies/RoslynAnalyzerDependencies.csproj" />
-    </ItemGroup>
-
-    <PropertyGroup>
-        <!--
-            NOTE: To avoid warnings about this in Unity about nullable contexts globally, add "-nowarn:CS8632" to the
-            additional compiler arguments in the project settings.
-        -->
-        <Nullable>enable</Nullable>
-
-        <CodeAnalysisRuleSet>./Assets/Packages/NuGet/mrwatts.codeanalysisrulesets/3.0.0/Code Analysis Rulesets/CSharp/Ruleset.xml</CodeAnalysisRuleSet>
-    </PropertyGroup>
+        (We can't use NuGetDependencies/Unity/NuGetDependencies.csproj directly because this project will then restore
+        that project, which will look at the nuget.config next to it, and overwrite packages inside the Unity package
+        folder in Assets/Packages/Unity.)
+    -->
+    <Import Project="NuGetDependencies/RoslynAnalyzerDependencies.targets" />
 </Project>

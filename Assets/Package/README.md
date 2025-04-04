@@ -10,6 +10,8 @@ Dependency injection framework for Unity based on Autofac.
 
 ## 1. Package
 
+### Private GitLab
+
 Add this scoped registry.
 
 ```json
@@ -28,7 +30,15 @@ Add the following dependency in the **manifest.json** file in the "Packages" fol
 
 _"io.mrwatts.fuelinject": "1.0.0"_
 
-The version number should be the latest version of the package (unless you want to target an older version on purpose).
+> The version number should be the latest version of the package (unless you want to target an older version on purpose).
+
+### Public GitHub
+
+Add the following dependency in the **manifest.json** file in the "Packages" folder.
+
+_"io.mrwatts.fuelinject": "https://github.com/mr-watts/io.mrwatts.fuelinject.git?path=/Assets/Package#1.0.0"_
+
+> The version number should be the latest version of the package (unless you want to target an older version on purpose).
 
 ## 2. NuGet Packages
 

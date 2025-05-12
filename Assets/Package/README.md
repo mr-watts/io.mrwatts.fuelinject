@@ -44,7 +44,7 @@ _"io.mrwatts.fuelinject": "https://github.com/mr-watts/io.mrwatts.fuelinject.git
 
 **This package depends on external NuGet packages.** Take a look at [PackageNuGetDependencies.csproj](Assets/Package/PackageNuGetDependencies.csproj) to check which ones you need. Instructions on how to do so are at the top of the file.
 
-It is recommended to use a tool such as [NuGetForUnity](https://github.com/GlitchEnzo/NuGetForUnity) to install this package and automatically resolve its dependencies.
+It is recommended to use a tool such as the [.NET MSBuild Unity PostProcessor](https://github.com/mr-watts/dotnet-msbuild-unity-postprocessor) or [NuGetForUnity](https://github.com/GlitchEnzo/NuGetForUnity) to install this package and automatically resolve its dependencies.
 
 ## 3. Assembly References
 

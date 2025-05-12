@@ -2,15 +2,6 @@
   "version": 1,
   "dependencies": {
     ".NETStandard,Version=v2.1": {
-      "Autofac": {
-        "type": "Direct",
-        "requested": "[8.3.0, )",
-        "resolved": "8.3.0",
-        "contentHash": "0Bv8aSKuK4nQAiDKw3+pIv9hUhbPwS63ql9KhjR6DRgE14UNdXrMqO8YMI0PnffZPyCrMs85lNhZRI4eBgQO4w==",
-        "dependencies": {
-          "System.Diagnostics.DiagnosticSource": "8.0.1"
-        }
-      },
       "MrWatts.CodeAnalysisRulesets": {
         "type": "Direct",
         "requested": "[4.0.0, )",
@@ -32,6 +23,14 @@
         "requested": "[1.2.2, )",
         "resolved": "1.2.2",
         "contentHash": "hcEUhB/i09u0ukJhcMakQ1XGsrXcZaLZYz8sLWum77Wa+lQUghlLLR5Z+FfQ7VzwDsZqLAkb00lGhvoqtJCOxQ=="
+      },
+      "Autofac": {
+        "type": "Transitive",
+        "resolved": "8.3.0",
+        "contentHash": "0Bv8aSKuK4nQAiDKw3+pIv9hUhbPwS63ql9KhjR6DRgE14UNdXrMqO8YMI0PnffZPyCrMs85lNhZRI4eBgQO4w==",
+        "dependencies": {
+          "System.Diagnostics.DiagnosticSource": "8.0.1"
+        }
       },
       "ErrorProne.NET.CoreAnalyzers": {
         "type": "Transitive",
@@ -106,6 +105,12 @@
         "type": "Transitive",
         "resolved": "1.4.7",
         "contentHash": "bhheOYYXVyWW/Fi/GQiZfZv7YjHJJ6Yj0LRfmj9aS9vDzXkUE3sl5cdDvJMeueNr6uFxqX9ofWtnkPRY32aKZA=="
+      },
+      "packagenugetdependencies": {
+        "type": "Project",
+        "dependencies": {
+          "Autofac": "[8.3.0, )"
+        }
       }
     }
   }

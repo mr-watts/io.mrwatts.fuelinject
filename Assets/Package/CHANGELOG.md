@@ -2,6 +2,11 @@
 
 -   No changes yet.
 
+# 2.0.0
+
+-   Update to Autofac 8.3.0.
+-   Add `PackageNuGetDependencies.csproj` to aid including projects with NuGet dependencies.
+
 # 1.0.0
 
 -   No changes except documentation changes.

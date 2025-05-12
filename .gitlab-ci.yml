@@ -67,6 +67,7 @@ registry-publication:
         - npm publish "${UNITY_PACKAGE_PATH}"
     variables:
         UNITY_PACKAGE_PATH: "Assets/Package/"
+        NPM_REGISTRY_PATH: "//gitlab.com/api/v4/projects/27157125/packages/npm/"
     only:
         - tags
 

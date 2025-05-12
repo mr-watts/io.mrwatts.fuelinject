@@ -10,8 +10,6 @@ namespace MrWatts.Internal.FuelInject.Testing.Utility
         /// <summary>
         /// Same as Find with a type, but throws an exception if the object is not found.
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="mustBeActive"></param>
         /// <exception cref="GameObjectFinderException">If the object was not found.</exception>
         public static T Get<T>(bool mustBeActive = false) where T : Object
         {
@@ -28,8 +26,6 @@ namespace MrWatts.Internal.FuelInject.Testing.Utility
         /// <summary>
         /// Same as Find with a name, but throws an exception if the object is not found.
         /// </summary>
-        /// <param name="name"></param>
-        /// <param name="mustBeActive"></param>
         /// <exception cref="GameObjectFinderException">If the object was not found.</exception>
         public static GameObject Get(string name, bool mustBeActive = false)
         {
@@ -48,18 +44,14 @@ namespace MrWatts.Internal.FuelInject.Testing.Utility
         /// <summary>
         /// Works like Object.FindObjectOfType, but has a shorthand that searches for inactive items as well.
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="mustBeActive"></param>
         public static T? Find<T>(bool mustBeActive = false) where T : Object
         {
-            return Object.FindObjectOfType<T>(!mustBeActive);
+            return Object.FindFirstObjectByType<T>(mustBeActive ? FindObjectsInactive.Exclude : FindObjectsInactive.Include);
         }
 
         /// <summary>
         /// Works like GameObject.Find, but can also find items that are inactive.
         /// </summary>
-        /// <param name="name"></param>
-        /// <param name="mustBeActive"></param>
         public static GameObject? Find(string name, bool mustBeActive = false)
         {
             if (mustBeActive)

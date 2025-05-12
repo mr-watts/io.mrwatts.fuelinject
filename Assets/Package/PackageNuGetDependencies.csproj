@@ -1,0 +1,17 @@
+<!--
+    This file documents the NuGet dependencies this package requires. Either:
+
+        - Include this file as ProjectReference in your main C# project file and use the MSBuild Unity Postprocessor (https://github.com/mr-watts/dotnet-msbuild-unity-postprocessor).
+        - Use something like NuGetForUnity (https://github.com/GlitchEnzo/NuGetForUnity) to install them.
+        - Download and extract the NuGet packages manually and ensure they are inside your Unity project's Assets folder somewhere.
+-->
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <TargetFramework>netstandard2.1</TargetFramework>
+        <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Autofac" Version="8.3.0" />
+    </ItemGroup>
+</Project>

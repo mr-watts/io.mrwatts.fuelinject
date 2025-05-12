@@ -10,10 +10,10 @@
         -->
         <Nullable>enable</Nullable>
 
-        <CodeAnalysisRuleSet>Assets/Packages/NuGet/mrwatts.codeanalysisrulesets/3.3.0/Code Analysis Rulesets/CSharp/Ruleset.xml</CodeAnalysisRuleSet>
+        <CodeAnalysisRuleSet>Assets/Packages/NuGet/mrwatts.codeanalysisrulesets/4.0.0/Code Analysis Rulesets/CSharp/Ruleset.xml</CodeAnalysisRuleSet>
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="MrWatts.CodeAnalysisRulesets" Version="3.3.0" GeneratePathProperty="true" />
+        <PackageReference Include="MrWatts.CodeAnalysisRulesets" Version="4.0.0" GeneratePathProperty="true" />
     </ItemGroup>
 </Project>

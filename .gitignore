@@ -84,7 +84,8 @@ obj
 .env
 UserSettings
 
-# Include this since we use it to configure our static code analysis tools
+# Include this since we use it to configure our NuGet dependencies and static code analysis tools
+!Assets/Package/PackageNuGetDependencies.csproj
 !NuGetDependencies/Unity/NuGetDependencies.csproj
 !NuGetDependencies/RoslynAnalyzerDependencies.csproj
 

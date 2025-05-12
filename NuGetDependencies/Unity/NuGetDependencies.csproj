@@ -20,7 +20,7 @@
 
             https://docs.microsoft.com/en-us/nuget/concepts/dependency-resolution#floating-versions
         -->
-        <PackageReference Include="Autofac" Version="6.4.0" />
+        <PackageReference Include="Autofac" Version="8.3.0" />
 
         <!-- Development dependencies. -->
         <PackageReference Include="MrWatts.MSBuild.UnityPostProcessor" Version="1.2.2" GeneratePathProperty="true" PrivateAssets="all" />

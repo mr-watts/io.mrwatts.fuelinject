@@ -26,7 +26,7 @@ namespace MrWatts.Internal.FuelInject
 
         public IComponentRegistry ComponentRegistry => ValidDelegatee.ComponentRegistry;
 
-        public object ResolveComponent(ResolveRequest request)
+        public object ResolveComponent(in ResolveRequest request)
         {
             return ValidDelegatee.ResolveComponent(request);
         }

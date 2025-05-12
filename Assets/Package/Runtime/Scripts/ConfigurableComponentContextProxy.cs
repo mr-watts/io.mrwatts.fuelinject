@@ -17,7 +17,7 @@ namespace MrWatts.Internal.FuelInject
             {
                 if (Delegatee is null)
                 {
-                    throw new Exception("Component resolution was requested, but can't proxy call since no delegatee was configured yet");
+                    throw new NotSupportedException("Component resolution was requested, but can't proxy call since no delegatee was configured yet");
                 }
 
                 return Delegatee;
@@ -26,6 +26,7 @@ namespace MrWatts.Internal.FuelInject
 
         public IComponentRegistry ComponentRegistry => ValidDelegatee.ComponentRegistry;
 
+        /// <inheritdoc/>
         public object ResolveComponent(in ResolveRequest request)
         {
             return ValidDelegatee.ResolveComponent(request);

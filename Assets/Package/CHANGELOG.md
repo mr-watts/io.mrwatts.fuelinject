@@ -2,6 +2,10 @@
 
 -   No changes yet.
 
+# 1.0.0
+
+-   No changes except documentation changes.
+
 # 0.6.1
 
 -   Fix `IAsyncDisposable`s not being properly awaited on Android devices, resulting in pending tasks being killed.

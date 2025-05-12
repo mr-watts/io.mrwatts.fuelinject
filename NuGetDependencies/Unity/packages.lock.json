@@ -13,17 +13,18 @@
       },
       "MrWatts.CodeAnalysisRulesets": {
         "type": "Direct",
-        "requested": "[3.3.0, )",
-        "resolved": "3.3.0",
-        "contentHash": "XPThQOZgwNOvu5C1BKz8qwKd8NVsj0oCE2XW4GBIzb2yHAGqGwJMS+76hY+EzaNr3NNMuvk75ZhK9uq6qUGEbQ==",
+        "requested": "[4.0.0, )",
+        "resolved": "4.0.0",
+        "contentHash": "B4h7Puk3u2/l57lrwmUk+tDh45nPwafoU4vCEj25NqF9mopaTjBcASwIdms+4UnLueAjHxu7YsR/Ekl3qjIC6w==",
         "dependencies": {
           "ErrorProne.NET.CoreAnalyzers": "0.7.0-beta.1",
-          "Meziantou.Analyzer": "2.0.186",
-          "Microsoft.Unity.Analyzers": "1.21.0",
-          "Roslynator.Analyzers": "4.12.11",
-          "Roslynator.CodeAnalysis.Analyzers": "4.12.11",
-          "Roslynator.Formatting.Analyzers": "4.12.11",
-          "Tetractic.CodeAnalysis.ExceptionAnalyzers": "1.4.6"
+          "Meziantou.Analyzer": "2.0.201",
+          "Microsoft.CodeAnalysis.NetAnalyzers": "9.0.0",
+          "Microsoft.Unity.Analyzers": "1.22.0",
+          "Roslynator.Analyzers": "4.13.1",
+          "Roslynator.CodeAnalysis.Analyzers": "4.13.1",
+          "Roslynator.Formatting.Analyzers": "4.13.1",
+          "Tetractic.CodeAnalysis.ExceptionAnalyzers": "1.4.7"
         }
       },
       "MrWatts.MSBuild.UnityPostProcessor": {
@@ -39,28 +40,33 @@
       },
       "Meziantou.Analyzer": {
         "type": "Transitive",
-        "resolved": "2.0.186",
-        "contentHash": "PE8c9opHuUWLNqnZTN/KQC9oIfD/ZtsQ25sHF7/og4KfIRVnN4mgiyYw5NwCp8YPGapLoduIxuyQAcic6Eqcjg=="
+        "resolved": "2.0.201",
+        "contentHash": "ehMMCZcz1jFsMlxf62K4LBp9t+dF1spSwr4vjWRAiMvc8lVKw27dNpKH7bnrropwdWTSWDim9arCvyNyfPTEnA=="
+      },
+      "Microsoft.CodeAnalysis.NetAnalyzers": {
+        "type": "Transitive",
+        "resolved": "9.0.0",
+        "contentHash": "JajbvkrBgtdRghavIjcJuNHMOja4lqBmEezbhZyqWPYh2cpLhT5mPpfC7NQVDO4IehWQum9t/nwF4v+qQGtYWg=="
       },
       "Microsoft.Unity.Analyzers": {
         "type": "Transitive",
-        "resolved": "1.21.0",
-        "contentHash": "u10s0nEnmnQF+feUVYumFZuOkKPLsqPhjojxn74g2SAWkVHvQDgLMtEqpHW2MWIRuMHXZGQCF+pv0P6dOjCXLg=="
+        "resolved": "1.22.0",
+        "contentHash": "aurbA5ZG6m7iWXRJm3iDXrHLDYG/2TGpa8z9iReNHAiRgacwwjebD7vOChP65JdAgN7hohbSjA2ydHVWxy3U7w=="
       },
       "Roslynator.Analyzers": {
         "type": "Transitive",
-        "resolved": "4.12.11",
-        "contentHash": "yvsRYT5EVtcT+V8ZW+5cxd1O9Sgf8PbC7DlQL/T5NA4g5yjaFe+WQ7evpy92Lj29m2E+XayBsO2TnCWKZlPWaA=="
+        "resolved": "4.13.1",
+        "contentHash": "KZpLy6ZlCebMk+d/3I5KU2R7AOb4LNJ6tPJqPtvFXmO8bEBHQvCIAvJOnY2tu4C9/aVOROTDYUFADxFqw1gh/g=="
       },
       "Roslynator.CodeAnalysis.Analyzers": {
         "type": "Transitive",
-        "resolved": "4.12.11",
-        "contentHash": "IUh5LVaCrhFpuNMbtEEZkMzzdn1bkPXiIn5dMkT7zY3m4Y64s2Vh2tpGE7IdJcmnEaIHdmLVkE1WaE0H8IXtcQ=="
+        "resolved": "4.13.1",
+        "contentHash": "PwbuGlRFp87pdx9GVIjDmFwkYEfxVQKs0yWuIedTrUht2JwIzLe0Y7QNzgeJaE7E3YsCVED09h1X6WBqQ95XIA=="
       },
       "Roslynator.Formatting.Analyzers": {
         "type": "Transitive",
-        "resolved": "4.12.11",
-        "contentHash": "+6Rlz0wY5Rc1eceHytRjM3+Hg9kt8zDPfGOeutv2Yy62rQgyFhvFAAdOT+SP64jEj9MTIjiasO5W965NBWxi7g=="
+        "resolved": "4.13.1",
+        "contentHash": "V9gCt0T1Tnu+jMWJDLiUV/vOTmGzmofEdVeUPKPdh8MJW7f3kkhFXSeDotwl8Ob88OxrBf+4LrV/D7OA4tAluA=="
       },
       "System.Buffers": {
         "type": "Transitive",
@@ -97,8 +103,8 @@
       },
       "Tetractic.CodeAnalysis.ExceptionAnalyzers": {
         "type": "Transitive",
-        "resolved": "1.4.6",
-        "contentHash": "d2JCZ3RJnOqqhBCTQQQlkJmosaqi5KP3UwbK3+qjqGJZYPW2heYdVP2+Q2h10cuDrxxmKEm2CpBlKX58Q+9MZw=="
+        "resolved": "1.4.7",
+        "contentHash": "bhheOYYXVyWW/Fi/GQiZfZv7YjHJJ6Yj0LRfmj9aS9vDzXkUE3sl5cdDvJMeueNr6uFxqX9ofWtnkPRY32aKZA=="
       }
     }
   }

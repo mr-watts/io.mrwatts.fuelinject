@@ -1,6 +1,5 @@
 using System;
 using System.Collections;
-using System.Threading.Tasks;
 using Autofac;
 using MrWatts.Internal.FuelInject.Testing.Utility;
 using UnityEngine;
@@ -17,6 +16,8 @@ namespace MrWatts.Internal.FuelInject.Testing
         protected SceneLoader SceneLoader { get; } = new();
         protected SceneUnloader SceneUnloader { get; } = new();
 
+        protected bool WaitForDisposalOnTeardown => true;
+
         [UnitySetUp]
         public IEnumerator SetUp()
         {
@@ -26,13 +27,13 @@ namespace MrWatts.Internal.FuelInject.Testing
                 end of the test, and are (strangely enough) back again when the _next_ test starts, resulting in test
                 leakage.
             */
-            yield return SceneUnloader.UnloadAll();
+            yield return TearDownAllScenes(WaitForDisposalOnTeardown);
         }
 
         [UnityTearDown]
         public IEnumerator TearDown()
         {
-            yield return SceneUnloader.UnloadAll();
+            yield return TearDownAllScenes(WaitForDisposalOnTeardown);
         }
 
         /// <summary>
@@ -73,6 +74,30 @@ namespace MrWatts.Internal.FuelInject.Testing
                 {
                     yield return new WaitForAsyncResult(kernel.InitializationTask);
                 }
+            }
+        }
+
+        protected IEnumerator TearDownAllScenes(bool waitForDisposal = true)
+        {
+            UnityKernel[] kernels = UnityEngine.Object.FindObjectsByType<UnityKernel>(FindObjectsInactive.Exclude, FindObjectsSortMode.InstanceID);
+
+            yield return SceneUnloader.UnloadAll();
+
+            foreach (UnityKernel kernel in kernels)
+            {
+                yield return TearDownKernel(kernel, waitForDisposal);
+            }
+        }
+
+        private IEnumerator TearDownKernel(UnityKernel kernel, bool waitForDisposal = true)
+        {
+            // Unloading the scene is not sufficient to let the UnityKernel objects get destroyed. Force it so disposal
+            // happens.
+            UnityEngine.Object.DestroyImmediate(kernel);
+
+            if (waitForDisposal)
+            {
+                yield return new WaitForAsyncResult(kernel.DisposalTask);
             }
         }
 

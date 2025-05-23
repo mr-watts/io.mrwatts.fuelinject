@@ -48,6 +48,9 @@ namespace MrWatts.Internal.FuelInject
 
         private TaskCompletionSource<bool> initializationCompletionSource = new();
         public Task InitializationTask => initializationCompletionSource.Task;
+        
+        private TaskCompletionSource<bool> disposalCompletionSource = new();
+        public Task DisposalTask => disposalCompletionSource.Task;
 
         private async void Start()
         {
@@ -143,6 +146,8 @@ namespace MrWatts.Internal.FuelInject
 
         private void OnDestroy()
         {
+            disposalCompletionSource = new();
+
             try
             {
                 Disposable?.Dispose();
@@ -163,7 +168,12 @@ namespace MrWatts.Internal.FuelInject
             catch (Exception exception)
             {
                 LogException(exception);
+
+                disposalCompletionSource.SetException(exception);
+                return;
             }
+
+            disposalCompletionSource.SetResult(true);
         }
 
         private void OnApplicationQuit()

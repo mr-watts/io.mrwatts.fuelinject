@@ -27,7 +27,7 @@ namespace MrWatts.Internal.FuelInject.TestProject.Tests.Behaviour
 
             Assert.IsFalse(wasCalled);
 
-            yield return SceneUnloader.UnloadAll();
+            yield return TearDownAllScenes();
 
             Assert.IsTrue(wasCalled);
         }
@@ -51,7 +51,7 @@ namespace MrWatts.Internal.FuelInject.TestProject.Tests.Behaviour
 
             Assert.IsFalse(listeningUnityKernelLogger.WasExceptionLogged);
 
-            yield return SceneUnloader.UnloadAll();
+            yield return TearDownAllScenes();
 
             Assert.IsTrue(listeningUnityKernelLogger.WasExceptionLogged);
         }

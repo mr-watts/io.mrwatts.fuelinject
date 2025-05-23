@@ -1,5 +1,6 @@
 # Unreleased
 
+-   By default, wait for disposables to be executed when tearing down tests.
 -   Fix tests not waiting for initializables with `automaticallyAddRootGameObjectModules` disabled.
 
 # 2.0.0

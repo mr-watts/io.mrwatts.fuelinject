@@ -2213,3 +2213,4 @@ InputManager:
     type: 2
     axis: 2
     joyNum: 0
+  m_UsePhysicalKeys: 0

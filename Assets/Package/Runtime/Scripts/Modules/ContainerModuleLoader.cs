@@ -84,10 +84,7 @@ namespace MrWatts.Internal.FuelInject
                 builder.RegisterModule(new UnityLoggerModule());
             }
 
-            if (automaticallyAddRootGameObjectModules)
-            {
-                modules.AddRange(RetrieveModulesForAutoload());
-            }
+            modules.AddRange(RetrieveModulesToAutoload(automaticallyAddRootGameObjectModules));
 
             foreach (IModule module in modules.OrderBy(x => x.Priority).Select(x => x.Module))
             {
@@ -100,33 +97,43 @@ namespace MrWatts.Internal.FuelInject
             return startupModules
                 .Select(TryRetrieveModuleFromComponent)
                 .Where(x => x.Module is not null)
-                .Cast<(int Priority, IModule Module)>()
+                .Cast<(int Priority, bool AlwaysLoads, IModule Module)>()
+                .Select(x => (x.Priority, x.Module))
                 .ToList();
         }
 
-        private List<(int Priority, IModule Module)> RetrieveModulesForAutoload()
+        private List<(int Priority, IModule Module)> RetrieveModulesToAutoload(bool automaticallyAddRootGameObjectModules)
         {
             List<(int Priority, IModule Module)> modules = new();
 
             for (int i = 0; i < SceneManager.sceneCount; ++i)
             {
-                modules.AddRange(RetrieveRootGameObjectModulesFromScene(SceneManager.GetSceneAt(i)));
+                List<(int Priority, bool AlwaysLoads, IModule Module)> modulesInScene = RetrieveRootGameObjectModulesFromScene(SceneManager.GetSceneAt(i));
+
+                foreach ((int Priority, bool AlwaysLoads, IModule Module) moduleInScene in modulesInScene)
+                {
+                    if (automaticallyAddRootGameObjectModules || moduleInScene.AlwaysLoads)
+                    {
+                        modules.Add((moduleInScene.Priority, moduleInScene.Module));
+                    }
+                }
+
             }
 
             return modules;
         }
 
-        private List<(int Priority, IModule Module)> RetrieveModulesFromGameObject(GameObject gameObject)
+        private List<(int Priority, bool AlwaysLoads, IModule Module)> RetrieveModulesFromGameObject(GameObject gameObject)
         {
             return gameObject
                 .GetComponents<Component>()
                 .Select(TryRetrieveModuleFromComponent)
                 .Where(x => x.Module is not null)
-                .Cast<(int Priority, IModule Module)>()
+                .Cast<(int Priority, bool AlwaysLoads, IModule Module)>()
                 .ToList();
         }
 
-        private (int Priority, IModule? Module) TryRetrieveModuleFromComponent(Component component)
+        private (int Priority, bool AlwaysLoads, IModule? Module) TryRetrieveModuleFromComponent(Component component)
         {
             IModule? module = null;
 
@@ -139,10 +146,14 @@ namespace MrWatts.Internal.FuelInject
                 module = autofacModule;
             }
 
-            return (component is IPrioritizable prioritizable ? prioritizable.Priority : DEFAULT_MODULE_PRIORITY, module);
+            return (
+                component is IPrioritizable prioritizable ? prioritizable.Priority : DEFAULT_MODULE_PRIORITY,
+                component is IGlobalOverridingModule,
+                module
+            );
         }
 
-        private List<(int Priority, IModule Module)> RetrieveRootGameObjectModulesFromScene(Scene scene)
+        private List<(int Priority, bool AlwaysLoads, IModule Module)> RetrieveRootGameObjectModulesFromScene(Scene scene)
         {
             return scene.GetRootGameObjects().SelectMany(RetrieveModulesFromGameObject).ToList();
         }

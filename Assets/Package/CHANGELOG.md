@@ -2,6 +2,7 @@
 
 -   By default, wait for disposables to be executed when tearing down tests.
 -   Fix tests not waiting for initializables with `automaticallyAddRootGameObjectModules` disabled.
+-   Fix tests ignoring `containerBindingCallback` when `automaticallyAddRootGameObjectModules` was disabled.
 
 # 2.0.0
 

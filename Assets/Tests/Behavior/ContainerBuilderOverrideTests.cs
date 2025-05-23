@@ -63,5 +63,21 @@ namespace MrWatts.Internal.FuelInject.TestProject.Tests.Behaviour
                 "aren't loaded after the actual scene modules and are thus overridden again by them?"
             );
         }
+
+        [UnityTest]
+        public IEnumerator GlobalOverridingModuleIsOnlyRegisteredOnceWithAutomaticallyAddRootGameObjectModulesEnabled()
+        {
+            int timesOverrideInvoked = 0;
+
+            yield return SetupScene(
+                "TestScene",
+                builder =>
+                {
+                    ++timesOverrideInvoked;
+                }
+            );
+
+            Assert.AreEqual(1, timesOverrideInvoked, "Global overriding modules should only be registered once");
+        }
     }
 }

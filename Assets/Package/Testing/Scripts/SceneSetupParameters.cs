@@ -17,10 +17,9 @@ namespace MrWatts.Internal.FuelInject.Testing
         public Action<ContainerBuilder>? ContainerBindingCallback { get; set; }
 
         /// <summary>
-        /// Whether or not to inject additional listeners into the container automatically that allow listening to
-        /// kernel events (such as IInitializable's finishing).
+        /// Whether or not to wait for all initializables to finish executing before finishing.
         /// </summary>
-        public bool AttachKernelListeners { get; set; } = true;
+        public bool WaitForInitializables { get; set; } = true;
 
         public SceneSetupParameters(string sceneName)
         {

@@ -45,54 +45,35 @@ namespace MrWatts.Internal.FuelInject.Testing
         /// <param name="waitForInitializables">Whether or not to wait for all initializables to finish executing before proceeding with the test.</param>
         protected IEnumerator SetupScene(string name, Action<ContainerBuilder>? containerBindingCallback = null, bool waitForInitializables = true)
         {
-            SceneSetupResult result = SetupScene(
-                new(name)
+            yield return SetupScene(
+                new SceneSetupParameters(name)
                 {
                     ContainerBindingCallback = containerBindingCallback,
-                    AttachKernelListeners = waitForInitializables,
+                    WaitForInitializables = waitForInitializables,
                 }
             );
-
-            yield return result.SceneLoadingOperation;
-
-            if (waitForInitializables)
-            {
-                yield return new WaitForAsyncResult(result.InitializableTask);
-                yield return new WaitForAsyncResult(result.AsyncInitializableTask);
-            }
         }
 
-        protected SceneSetupResult SetupScene(SceneSetupParameters parameters)
+        protected IEnumerator SetupScene(SceneSetupParameters parameters)
         {
-            TaskCompletionSource<bool> initializableSource = new();
-            TaskCompletionSource<bool> asyncInitializableSource = new();
-
-            if (parameters.AttachKernelListeners)
-            {
-                RegisterContainerOverrideHandler(builder =>
-                {
-                    builder
-                        .Register(_ => new CallbackInvokingInitializable(() => initializableSource.SetResult(true)))
-                        .As<IInitializable>()
-                        .SingleInstance();
-
-                    builder
-                        .Register(_ => new CallbackInvokingAsyncInitializable(() => asyncInitializableSource.SetResult(true)))
-                        .As<IAsyncInitializable>()
-                        .SingleInstance();
-                });
-            }
-
             if (parameters.ContainerBindingCallback is not null)
             {
                 RegisterContainerOverrideHandler(parameters.ContainerBindingCallback);
             }
 
-            return new(
-                SceneLoader.Load(parameters.SceneName, true),
-                initializableSource.Task,
-                asyncInitializableSource.Task
-            );
+            SceneSetupResult result = new(SceneLoader.Load(parameters.SceneName, true));
+
+            yield return result.SceneLoadingOperation;
+
+            if (parameters.WaitForInitializables)
+            {
+                UnityKernel[] kernels = UnityEngine.Object.FindObjectsByType<UnityKernel>(FindObjectsInactive.Exclude, FindObjectsSortMode.InstanceID);
+
+                foreach (UnityKernel kernel in kernels)
+                {
+                    yield return new WaitForAsyncResult(kernel.InitializationTask);
+                }
+            }
         }
 
         /// <summary>

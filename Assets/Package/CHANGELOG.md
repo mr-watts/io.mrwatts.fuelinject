@@ -1,6 +1,6 @@
 # Unreleased
 
--   No changes yet.
+-   Fix tests not waiting for initializables with `automaticallyAddRootGameObjectModules` disabled.
 
 # 2.0.0
 

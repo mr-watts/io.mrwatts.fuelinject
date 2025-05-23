@@ -46,8 +46,13 @@ namespace MrWatts.Internal.FuelInject
 
         private ConcurrentDictionary<IAsyncTickable, Task> activeAsyncTickables = new();
 
+        private TaskCompletionSource<bool> initializationCompletionSource = new();
+        public Task InitializationTask => initializationCompletionSource.Task;
+
         private async void Start()
         {
+            initializationCompletionSource = new();
+
             try
             {
                 Initializable?.Initialize();
@@ -60,7 +65,12 @@ namespace MrWatts.Internal.FuelInject
             catch (Exception exception)
             {
                 LogException(exception);
+
+                initializationCompletionSource.SetException(exception);
+                return;
             }
+
+            initializationCompletionSource.SetResult(true);
         }
 
         private void Update()

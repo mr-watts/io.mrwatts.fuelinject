@@ -71,7 +71,7 @@ namespace MrWatts.Internal.FuelInject.TestProject.Tests.Behaviour
 
             yield return SetupScene(
                 "TestScene",
-                builder =>
+                _ =>
                 {
                     ++timesOverrideInvoked;
                 }

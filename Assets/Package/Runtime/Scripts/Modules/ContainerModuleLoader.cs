@@ -37,6 +37,14 @@ namespace MrWatts.Internal.FuelInject
         [Tooltip("Modules (implementing IUnityContainerModule) to load when the scene starts up. This is usually a module of your scene itself. If you consume other modules as well, such as from libraries, you usually want to register those using RegisterModule in the scene module itself instead of adding them here, so you can apply additional configuration if necessary.")]
         private Component[] startupModules = default!;
 
+        /// <summary>
+        /// The reference to the container as IComponentContext, if it has been created.
+        /// </summary>
+        /// <remarks>
+        /// Avoid using this directly and instead inject <see cref="IComponentContext"/> into your service directly.
+        /// </remarks>
+        public IComponentContext? Container { get; private set; }
+
         private void Awake()
         {
             ContainerBuilder builder = new();
@@ -62,6 +70,8 @@ namespace MrWatts.Internal.FuelInject
             gameObject.AddComponent<UnityKernel>();
 
             container.Resolve<IInjector<Scene>>().Inject(gameObject.scene);
+
+            Container = container;
         }
 
         private void LoadModules(ContainerBuilder builder)

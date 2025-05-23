@@ -18,6 +18,22 @@ namespace MrWatts.Internal.FuelInject.Testing
 
         protected bool WaitForDisposalOnTeardown => true;
 
+        /// <summary>
+        /// Retrieves the container in the scene.
+        /// </summary>
+        /// <remarks>
+        /// Scenes with multiple containers are not supported can yield a random container due to race conditions.
+        /// </remarks>
+        protected IComponentContext Container
+        {
+            get
+            {
+                IComponentContext? context = UnityEngine.Object.FindAnyObjectByType<ContainerModuleLoader>().Container;
+
+                return context ?? throw new NullReferenceException("Test helper could not be found");
+            }
+        }
+
         [UnitySetUp]
         public IEnumerator SetUp()
         {

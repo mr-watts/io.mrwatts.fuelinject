@@ -1,6 +1,7 @@
 # Unreleased
 
 -   By default, wait for disposables to be executed when tearing down tests.
+-   Allow retrieving the container in `SceneTestGroup` subclasses for convenience.
 -   Fix tests not waiting for initializables with `automaticallyAddRootGameObjectModules` disabled.
 -   Fix tests ignoring `containerBindingCallback` when `automaticallyAddRootGameObjectModules` was disabled.
 

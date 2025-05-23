@@ -48,7 +48,7 @@ namespace MrWatts.Internal.FuelInject
 
         private TaskCompletionSource<bool> initializationCompletionSource = new();
         public Task InitializationTask => initializationCompletionSource.Task;
-        
+
         private TaskCompletionSource<bool> disposalCompletionSource = new();
         public Task DisposalTask => disposalCompletionSource.Task;
 

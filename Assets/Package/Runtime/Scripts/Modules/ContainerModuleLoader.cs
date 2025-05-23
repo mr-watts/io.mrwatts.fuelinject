@@ -117,7 +117,6 @@ namespace MrWatts.Internal.FuelInject
                         modules.Add((moduleInScene.Priority, moduleInScene.Module));
                     }
                 }
-
             }
 
             return modules;

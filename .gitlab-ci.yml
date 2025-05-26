@@ -24,7 +24,7 @@ include:
     - component: $CI_SERVER_FQDN/mr-watts/internal/yaml-gitlab-ci-cd-components/unity-dotnet-analyzers@0.4.3
       inputs:
           unity-project-directory: $CI_PROJECT_DIR
-          unity-version: 6000.0.25f1
+          unity-version: 6000.1.2f1
           unity-license: $UNITY_LICENSE
           dotnet-version: '9.0'
           job-file-download-token: $GITLAB_CI_CD_COMPONENTS_PROJECT_TOKEN
@@ -34,7 +34,7 @@ include:
     - component: $CI_SERVER_FQDN/mr-watts/internal/yaml-gitlab-ci-cd-components/unity-tests@0.4.3
       inputs:
           unity-project-directory: $CI_PROJECT_DIR
-          unity-version: 6000.0.25f1
+          unity-version: 6000.1.2f1
           unity-license: $UNITY_LICENSE
           dotnet-version: '9.0'
           job-stage: test

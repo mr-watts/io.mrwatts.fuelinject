@@ -1,5 +1,9 @@
 # Unreleased
 
+-   No changes yet.
+
+# 2.0.1
+
 -   By default, wait for disposables to be executed when tearing down tests.
 -   Allow retrieving the container in `SceneTestGroup` subclasses for convenience.
 -   Fix tests not waiting for initializables with `automaticallyAddRootGameObjectModules` disabled.

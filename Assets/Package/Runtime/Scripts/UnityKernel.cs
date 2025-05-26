@@ -46,8 +46,16 @@ namespace MrWatts.Internal.FuelInject
 
         private ConcurrentDictionary<IAsyncTickable, Task> activeAsyncTickables = new();
 
+        private TaskCompletionSource<bool> initializationCompletionSource = new();
+        public Task InitializationTask => initializationCompletionSource.Task;
+
+        private TaskCompletionSource<bool> disposalCompletionSource = new();
+        public Task DisposalTask => disposalCompletionSource.Task;
+
         private async void Start()
         {
+            initializationCompletionSource = new();
+
             try
             {
                 Initializable?.Initialize();
@@ -60,7 +68,12 @@ namespace MrWatts.Internal.FuelInject
             catch (Exception exception)
             {
                 LogException(exception);
+
+                initializationCompletionSource.SetException(exception);
+                return;
             }
+
+            initializationCompletionSource.SetResult(true);
         }
 
         private void Update()
@@ -133,6 +146,8 @@ namespace MrWatts.Internal.FuelInject
 
         private void OnDestroy()
         {
+            disposalCompletionSource = new();
+
             try
             {
                 Disposable?.Dispose();
@@ -153,7 +168,12 @@ namespace MrWatts.Internal.FuelInject
             catch (Exception exception)
             {
                 LogException(exception);
+
+                disposalCompletionSource.SetException(exception);
+                return;
             }
+
+            disposalCompletionSource.SetResult(true);
         }
 
         private void OnApplicationQuit()

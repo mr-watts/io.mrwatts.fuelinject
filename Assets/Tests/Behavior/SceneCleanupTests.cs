@@ -72,6 +72,35 @@ namespace MrWatts.Internal.FuelInject.TestProject.Tests.Behaviour
         //     );
         // }
 
+        [UnityTest]
+        [Order(5)]
+        public IEnumerator SceneTestProperlyCleansUpDontDestroyOnLoadGameObjectsPreparation()
+        {
+            yield return LoadTestScene();
+
+            var fooMonoBehaviour = GameObjectFinder.Find<MonoBehaviourWithBarDependency>();
+
+            Assert.NotNull(fooMonoBehaviour);
+
+            UnityEngine.Object.DontDestroyOnLoad(fooMonoBehaviour);
+        }
+
+        [UnityTest]
+        [Order(6)]
+        public IEnumerator SceneTestProperlyCleansUpDontDestroyOnLoadGameObjects()
+        {
+            yield return null;
+
+            var fooMonoBehaviour = GameObjectFinder.Find<MonoBehaviourWithBarDependency>();
+
+            Assert.IsNull(
+                fooMonoBehaviour,
+                "Foo still exists in a test that never loaded a scene. If you are running all tests in succession " +
+                "and this fails, this means another scene test is leaking its DontDestroyOnLoad scene objects and " +
+                "not clearing them properly."
+            );
+        }
+
         private IEnumerator LoadTestScene()
         {
             yield return SetupScene("TestScene");

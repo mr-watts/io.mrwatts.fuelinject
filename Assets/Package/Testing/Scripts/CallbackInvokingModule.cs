@@ -7,7 +7,7 @@ namespace MrWatts.Internal.FuelInject.Testing
     /// <summary>
     /// Module that, on Configure, executes the specified callback.
     /// </summary>
-    internal sealed class CallbackInvokingModule : MonoBehaviour, IUnityContainerModule, IPrioritizable
+    internal sealed class CallbackInvokingModule : MonoBehaviour, IUnityContainerModule, IPrioritizable, IGlobalOverridingModule
     {
         public Action<ContainerBuilder>? Callback { get; set; }
         public int Priority { get; set; }

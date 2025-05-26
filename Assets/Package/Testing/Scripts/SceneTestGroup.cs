@@ -1,6 +1,5 @@
 using System;
 using System.Collections;
-using System.Threading.Tasks;
 using Autofac;
 using MrWatts.Internal.FuelInject.Testing.Utility;
 using UnityEngine;
@@ -17,22 +16,40 @@ namespace MrWatts.Internal.FuelInject.Testing
         protected SceneLoader SceneLoader { get; } = new();
         protected SceneUnloader SceneUnloader { get; } = new();
 
+        protected bool WaitForDisposalOnTeardown => true;
+
+        /// <summary>
+        /// Retrieves the container in the scene.
+        /// </summary>
+        /// <remarks>
+        /// Scenes with multiple containers are not supported can yield a random container due to race conditions.
+        /// </remarks>
+        protected IComponentContext Container
+        {
+            get
+            {
+                IComponentContext? context = UnityEngine.Object.FindAnyObjectByType<ContainerModuleLoader>().Container;
+
+                return context ?? throw new NullReferenceException("Test helper could not be found");
+            }
+        }
+
         [UnitySetUp]
         public IEnumerator SetUp()
         {
             /*
                 Normally unloading all scenes in TearDown should be sufficient, but there appears to be a "bug" in Unity
-                2021.3.8 where the SceneManager omits scenes loaded during tests in TearDown that are still there at the
-                end of the test, and are (strangely enough) back again when the _next_ test starts, resulting in test
-                leakage.
+                >= 2021.3.8 where the SceneManager omits scenes loaded during tests in TearDown that are still there at
+                the end of the test, and are (strangely enough) back again when the _next_ test starts, resulting in
+                test leakage.
             */
-            yield return SceneUnloader.UnloadAll();
+            yield return TearDownAllScenes(WaitForDisposalOnTeardown);
         }
 
         [UnityTearDown]
         public IEnumerator TearDown()
         {
-            yield return SceneUnloader.UnloadAll();
+            yield return TearDownAllScenes(WaitForDisposalOnTeardown);
         }
 
         /// <summary>
@@ -45,54 +62,59 @@ namespace MrWatts.Internal.FuelInject.Testing
         /// <param name="waitForInitializables">Whether or not to wait for all initializables to finish executing before proceeding with the test.</param>
         protected IEnumerator SetupScene(string name, Action<ContainerBuilder>? containerBindingCallback = null, bool waitForInitializables = true)
         {
-            SceneSetupResult result = SetupScene(
-                new(name)
+            yield return SetupScene(
+                new SceneSetupParameters(name)
                 {
                     ContainerBindingCallback = containerBindingCallback,
-                    AttachKernelListeners = waitForInitializables,
+                    WaitForInitializables = waitForInitializables,
                 }
             );
-
-            yield return result.SceneLoadingOperation;
-
-            if (waitForInitializables)
-            {
-                yield return new WaitForAsyncResult(result.InitializableTask);
-                yield return new WaitForAsyncResult(result.AsyncInitializableTask);
-            }
         }
 
-        protected SceneSetupResult SetupScene(SceneSetupParameters parameters)
+        protected IEnumerator SetupScene(SceneSetupParameters parameters)
         {
-            TaskCompletionSource<bool> initializableSource = new();
-            TaskCompletionSource<bool> asyncInitializableSource = new();
-
-            if (parameters.AttachKernelListeners)
-            {
-                RegisterContainerOverrideHandler(builder =>
-                {
-                    builder
-                        .Register(_ => new CallbackInvokingInitializable(() => initializableSource.SetResult(true)))
-                        .As<IInitializable>()
-                        .SingleInstance();
-
-                    builder
-                        .Register(_ => new CallbackInvokingAsyncInitializable(() => asyncInitializableSource.SetResult(true)))
-                        .As<IAsyncInitializable>()
-                        .SingleInstance();
-                });
-            }
-
             if (parameters.ContainerBindingCallback is not null)
             {
                 RegisterContainerOverrideHandler(parameters.ContainerBindingCallback);
             }
 
-            return new(
-                SceneLoader.Load(parameters.SceneName, true),
-                initializableSource.Task,
-                asyncInitializableSource.Task
-            );
+            SceneSetupResult result = new(SceneLoader.Load(parameters.SceneName, true));
+
+            yield return result.SceneLoadingOperation;
+
+            if (parameters.WaitForInitializables)
+            {
+                UnityKernel[] kernels = UnityEngine.Object.FindObjectsByType<UnityKernel>(FindObjectsInactive.Exclude, FindObjectsSortMode.InstanceID);
+
+                foreach (UnityKernel kernel in kernels)
+                {
+                    yield return new WaitForAsyncResult(kernel.InitializationTask);
+                }
+            }
+        }
+
+        protected IEnumerator TearDownAllScenes(bool waitForDisposal = true)
+        {
+            UnityKernel[] kernels = UnityEngine.Object.FindObjectsByType<UnityKernel>(FindObjectsInactive.Exclude, FindObjectsSortMode.InstanceID);
+
+            yield return SceneUnloader.UnloadAll();
+
+            foreach (UnityKernel kernel in kernels)
+            {
+                yield return TearDownKernel(kernel, waitForDisposal);
+            }
+        }
+
+        private IEnumerator TearDownKernel(UnityKernel kernel, bool waitForDisposal = true)
+        {
+            // Unloading the scene is not sufficient to let the UnityKernel objects get destroyed. Force it so disposal
+            // happens and we can wait for it as well so it can fail as part of the test if incorrectly implemented.
+            UnityEngine.Object.DestroyImmediate(kernel);
+
+            if (waitForDisposal)
+            {
+                yield return new WaitForAsyncResult(kernel.DisposalTask);
+            }
         }
 
         /// <summary>

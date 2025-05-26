@@ -1,6 +1,6 @@
 # Unreleased
 
--   No changes yet.
+-   Fix build errors in consuming projects around `UnitySetUp` not being found due to `SceneTestGroup` test code.
 
 # 2.0.1
 

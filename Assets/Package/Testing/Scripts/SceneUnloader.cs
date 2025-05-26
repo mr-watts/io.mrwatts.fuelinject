@@ -19,17 +19,12 @@ namespace MrWatts.Internal.FuelInject.Testing
 
         public IEnumerator UnloadAll()
         {
-            // This loads in a dummy scene (additively) because Unity does not allow unloading the last scene. This way
-            // we can still use UnloadSceneAsync to unload the scene completely.
-            SceneManager.CreateScene($"FuelInjectTestDummy-{Guid.NewGuid()}");
-
             for (int i = 0; i < SceneManager.sceneCount; ++i)
             {
                 Scene activeScene = SceneManager.GetSceneAt(i);
 
                 // Unity spawns its own scene that we don't need to try to unload.
-                if (activeScene.name.StartsWith("FuelInjectTestDummy", StringComparison.Ordinal) ||
-                    activeScene.name.StartsWith("InitTestScene", StringComparison.Ordinal))
+                if (activeScene.name.StartsWith("InitTestScene", StringComparison.Ordinal))
                 {
                     continue;
                 }

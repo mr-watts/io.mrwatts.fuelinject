@@ -108,7 +108,7 @@ namespace MrWatts.Internal.FuelInject.Testing
         private IEnumerator TearDownKernel(UnityKernel kernel, bool waitForDisposal = true)
         {
             // Unloading the scene is not sufficient to let the UnityKernel objects get destroyed. Force it so disposal
-            // happens.
+            // happens and we can wait for it as well so it can fail as part of the test if incorrectly implemented.
             UnityEngine.Object.DestroyImmediate(kernel);
 
             if (waitForDisposal)

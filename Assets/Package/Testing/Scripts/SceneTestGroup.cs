@@ -39,9 +39,9 @@ namespace MrWatts.Internal.FuelInject.Testing
         {
             /*
                 Normally unloading all scenes in TearDown should be sufficient, but there appears to be a "bug" in Unity
-                2021.3.8 where the SceneManager omits scenes loaded during tests in TearDown that are still there at the
-                end of the test, and are (strangely enough) back again when the _next_ test starts, resulting in test
-                leakage.
+                >= 2021.3.8 where the SceneManager omits scenes loaded during tests in TearDown that are still there at
+                the end of the test, and are (strangely enough) back again when the _next_ test starts, resulting in
+                test leakage.
             */
             yield return TearDownAllScenes(WaitForDisposalOnTeardown);
         }

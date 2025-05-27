@@ -314,9 +314,16 @@ Follow [the standard procedure](https://docs.unity3d.com/Packages/com.unity.test
 
 You can also look at [the tests in this repository](https://gitlab.com/mr-watts/internal/packages/unity-fuel-inject/-/tree/master/Assets/Tests/Behavior), which also serve as examples.
 
-**Enable `automaticallyAddRootGameObjectModules` for your `ContainerModuleLoader`** to allow the test utilities to override and inject additional bindings without requiring changes in your application code.
+Add the assembly `mrwatts.fuelinject.testing` to your (test) assembly references to get access to the test utilities. To get access to the scene test code, ensure you also add the following to your project's `manifest.json`:
 
-Also, don't forget to add the assembly `mrwatts.fuelinject.testing` to your (test) assembly references to get access to the test utilities.
+```json
+"testables": [
+  "io.mrwatts.fuelinject"
+]
+```
+
+> [!note]
+> To ensure the code in the test assembly isn't included in builds, it is constrained under `UNITY_INCLUDE_TESTS`, which makes its code not be available in your tests either as this is a package assembly. Including it as testable resolves this.
 
 ## Basic Scene Test
 

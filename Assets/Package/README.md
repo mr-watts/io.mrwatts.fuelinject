@@ -308,6 +308,29 @@ Fuel Inject supports the `enableContainerDiagnostics` setting on `ContainerModul
 
 If you want to log the diagnostics somewhere else, you can either add `ContainerDiagnosticsModule` with your own tracer yourself (and keep `enableContainerDiagnostics` disabled), or add your own build callback, as described on the documentation page above.
 
+# Container Forwarding (Multiple Containers)
+
+Sometimes you may want some services to always be present in your application, even as other scenes are loaded and unloaded, and have them be shared between them.
+
+To facilitate this, you could create a single startup scene with a `ContainerModuleLoader` and your application-wide services, and additively load and unload other scenes at runtime, with each of those scenes also having their own `ContainerModuleLoader` containing services specific to that scene. However, none of these containers know about one another they can't resolve each other's services.
+
+Fuel Inject provides a few classes to help with this. To forward services from one container to another:
+
+1. Add the `ContainerForwardingRegistrationSource` component to the scene that you want to use as fallback (your application-wide container scene).
+2. Add the `ContainerForwardingRegisteringModule` component to the scene where you want to fetch services from another container and register it as module.
+
+How this works is that `ContainerForwardingRegisteringModule` scans all open scenes and `GameObject`s for `ContainerForwardingRegistrationSource`s, registering them in the container as [Autofac registration source](https://autofac.readthedocs.io/en/latest/advanced/registration-sources.html).
+
+## Forwarding And Providing Simultaneously
+
+In more complex setups such as a secondary scene also itself needing to function as forwarding registration source ('providing'), you can set `containerForwardingRegistrationSourceToIgnore` on `ContainerForwardingRegisteringModule` so it container doesn't get itself configured as source.
+
+## Scene Timing
+
+`ContainerModuleLoader` injects services on root objects when it awakes in the scene. At this point it injects itself on the `ContainerForwardingRegistrationSource` in the same scene. If you load scenes in quick succession, you may get an error that its `Container` is `null` because injection hasn't happened yet.
+
+To solve this, you could check `ContainerForwardingRegistrationSource.IsInitialized` before loading the next scene to ensure that the next scene's module probing it doesn't do so too soon.
+
 # Testing
 
 Follow [the standard procedure](https://docs.unity3d.com/Packages/com.unity.test-framework@1.1) for writing tests in Unity and ensure that you can run basic unit tests before proceeding.

@@ -1,6 +1,6 @@
 # Unreleased
 
--   No changes yet.
+-   Add built-in support for container forwarding to share services between scenes and containers.
 
 # 2.0.2
 

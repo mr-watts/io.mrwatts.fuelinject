@@ -1,5 +1,9 @@
 # Unreleased
 
+-   No changes yet.
+
+# 2.1.0
+
 -   Fix race condition where scenes didn't get properly unloaded after (between subsequent) tests.
 -   Add built-in support for container forwarding to share services between scenes and containers.
 

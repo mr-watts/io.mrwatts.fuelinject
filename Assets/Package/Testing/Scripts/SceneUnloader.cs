@@ -19,13 +19,17 @@ namespace MrWatts.Internal.FuelInject.Testing
 
         public IEnumerator UnloadAll()
         {
-            for (int i = 0; i < SceneManager.sceneCount; ++i)
+            int i = 0;
+
+            // Can't for-loop on sceneCount as the scene indices change as we unload.
+            while (i < SceneManager.sceneCount)
             {
                 Scene activeScene = SceneManager.GetSceneAt(i);
 
                 // Unity spawns its own scene that we don't need to try to unload.
                 if (activeScene.name.StartsWith("InitTestScene", StringComparison.Ordinal))
                 {
+                    ++i;
                     continue;
                 }
 

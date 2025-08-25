@@ -11,6 +11,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/TestSceneExplicitModules.unity
     guid: a9ab9181624d60452aa27e1ceed16995
+  - enabled: 1
+    path: Assets/Scenes/FallbackContainerScene.unity
+    guid: 2e2785340ddd054f1acfc46900e810c0
   m_configObjects:
     Unity.XR.WindowsMR.Settings: {fileID: 11400000, guid: 80084d8dd931c4547ba03424b6355369,
       type: 2}

@@ -1,6 +1,6 @@
 # Unreleased
 
--   No changes yet.
+-   Fix race condition where scenes didn't get properly unloaded after (between subsequent) tests.
 
 # 2.0.2
 

@@ -108,7 +108,7 @@ namespace MrWatts.Internal.FuelInject.Testing
         /// <summary>
         /// <para>Registers a callback that is invoked when container bindings are registered in modules.</para>
         /// <para>This works by simply creating a fake container module and ensuring it is part of the scene.</para>
-        /// <para>You *must* call this **before** loading your actual scene, and the ContainerModuleLoader in your scene **must** have automaticallyAddRootGameObjectModules set!</para>
+        /// <para>You *must* call this **before** loading your actual scene.</para>
         /// </summary>
         /// <param name="callback">Callback that takes a container, overriding its bindings.</param>
         private void RegisterContainerOverrideHandler(Action<ContainerBuilder> callback)

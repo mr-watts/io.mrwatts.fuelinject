@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using System.Threading.Tasks;
 
 namespace MrWatts.Internal.FuelInject.Testing.Utility
 {
@@ -25,7 +26,25 @@ namespace MrWatts.Internal.FuelInject.Testing.Utility
     {
         private readonly IAsyncResult result;
 
-        public override bool keepWaiting => !result.IsCompleted;
+        public override bool keepWaiting
+        {
+            get
+            {
+                if (!result.IsCompleted)
+                {
+                    return true;
+                }
+
+                if (result is Task task && task.IsFaulted)
+                {
+                    // Exceptions thrown here are ignored by Unity. Logging an error or exception however also makes
+                    // tests fail in the Unity test runner so it's good enough.
+                    Debug.LogException(task.Exception);
+                }
+
+                return false;
+            }
+        }
 
         public WaitForAsyncResult(IAsyncResult result)
         {

@@ -30,6 +30,7 @@ namespace MrWatts.Internal.FuelInject.Testing.Utility
                     // Exceptions thrown here are ignored by Unity. Logging an error or exception however also makes
                     // tests fail in the Unity test runner so it's good enough.
                     Debug.LogError($"Timed out waiting {timeToWait.TotalSeconds} seconds for predicate to return true");
+                    return false;
                 }
 
                 return !predicate();

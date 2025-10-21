@@ -1,6 +1,8 @@
 # Unreleased
 
--   No changes yet.
+-   Fix `WaitTemporarilyUntil` still waiting indefinitely after logging error and timing out.
+-   Fix exception thrown within `WaitTemporarilyUntil` not getting logged anywhere during tests.
+-   Fix exceptions thrown within `WaitForAsyncResult` closures not getting logged anywhere during tests.
 
 # 2.1.0
 

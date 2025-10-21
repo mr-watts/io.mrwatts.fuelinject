@@ -8,6 +8,7 @@ using MrWatts.Internal.FuelInject.Testing.Utility;
 using NUnit.Framework;
 using NUnit.Framework.Internal;
 using UnityEngine.TestTools;
+using System.Text.RegularExpressions;
 
 namespace MrWatts.Internal.FuelInject.TestProject.Tests.Behaviour
 {
@@ -111,6 +112,8 @@ namespace MrWatts.Internal.FuelInject.TestProject.Tests.Behaviour
         [UnityTest]
         public IEnumerator ExceptionsAreSentToUnityKernelLogger()
         {
+            const string MESSAGE = "Oh no, asynchronous action failed";
+
             TaskCompletionSource<bool> completionSource = new();
             var asyncInitializable = new ConfigurableAsyncInitializable(completionSource.Task);
             var listeningUnityKernelLogger = new ListeningUnityKernelLogger();
@@ -126,11 +129,13 @@ namespace MrWatts.Internal.FuelInject.TestProject.Tests.Behaviour
 
             Assert.IsFalse(asyncInitializable.IsInitialized);
 
-            completionSource.SetException(new Exception("Oh no, asynchronous action failed"));
+            completionSource.SetException(new Exception(MESSAGE));
 
             yield return sceneLoadingCoroutine;
 
             Assert.IsTrue(listeningUnityKernelLogger.WasExceptionLogged);
+
+            LogAssert.Expect(UnityEngine.LogType.Exception, $"Exception: {MESSAGE}");
         }
     }
 }

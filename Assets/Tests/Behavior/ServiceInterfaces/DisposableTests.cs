@@ -71,7 +71,9 @@ namespace MrWatts.Internal.FuelInject.TestProject.Tests.Behaviour
         [UnityTest]
         public IEnumerator ExceptionsAreSentToUnityKernelLogger()
         {
-            CallbackInvokingDisposable disposable = new(() => throw new Exception("Oh no, disposable failed"));
+            const string MESSAGE = "Oh no, asynchronous action failed";
+
+            CallbackInvokingDisposable disposable = new(() => throw new Exception(MESSAGE));
             ListeningUnityKernelLogger listeningUnityKernelLogger = new();
 
             IEnumerator sceneLoadingCoroutine = SetupScene(
@@ -90,6 +92,8 @@ namespace MrWatts.Internal.FuelInject.TestProject.Tests.Behaviour
             yield return TearDownAllScenes();
 
             Assert.IsTrue(listeningUnityKernelLogger.WasExceptionLogged);
+
+            LogAssert.Expect(UnityEngine.LogType.Exception, $"Exception: {MESSAGE}");
         }
     }
 }

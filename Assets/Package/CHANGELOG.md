@@ -1,4 +1,4 @@
-# Unreleased
+# 2.1.1
 
 -   Fix `WaitTemporarilyUntil` still waiting indefinitely after logging error and timing out.
 -   Fix exception thrown within `WaitTemporarilyUntil` not getting logged anywhere during tests.

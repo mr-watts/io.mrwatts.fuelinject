@@ -116,7 +116,8 @@ namespace MrWatts.Internal.FuelInject
                     {
                         activeAsyncTickables.TryRemove(asyncTickable, out _);
                     }
-                }, TaskScheduler.FromCurrentSynchronizationContext());
+                },
+                .FromCurrentSynchronizationContext());
             }
         }
 

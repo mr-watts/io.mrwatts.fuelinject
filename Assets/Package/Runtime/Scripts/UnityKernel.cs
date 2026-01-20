@@ -103,20 +103,22 @@ namespace MrWatts.Internal.FuelInject
 
                 activeAsyncTickables.TryAdd(asyncTickable, task);
 
-                _ = task.ContinueWith(result =>
-                {
-                    try
+                _ = task.ContinueWith(
+                    result =>
                     {
-                        if (result.IsFaulted)
+                        try
                         {
-                            LogException(result.Exception);
+                            if (result.IsFaulted)
+                            {
+                                LogException(result.Exception);
+                            }
                         }
-                    }
-                    finally
-                    {
-                        activeAsyncTickables.TryRemove(asyncTickable, out _);
-                    }
-                });
+                        finally
+                        {
+                            activeAsyncTickables.TryRemove(asyncTickable, out _);
+                        }
+                    },
+                    TaskScheduler.FromCurrentSynchronizationContext());
             }
         }
 

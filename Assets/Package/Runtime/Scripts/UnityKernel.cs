@@ -110,7 +110,7 @@ namespace MrWatts.Internal.FuelInject
                         {
                             if (result.IsFaulted)
                             {
-                               LogException(result.Exception);
+                                LogException(result.Exception);
                             }
                         }
                         finally

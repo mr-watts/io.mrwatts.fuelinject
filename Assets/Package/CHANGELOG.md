@@ -1,3 +1,7 @@
+# 2.1.2
+
+-   Fix `IAsyncTickable` not being invoked on WebGL targets.
+
 # 2.1.1
 
 -   Fix `WaitTemporarilyUntil` still waiting indefinitely after logging error and timing out.
